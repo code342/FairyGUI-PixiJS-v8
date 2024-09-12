@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    /* Bundler mode */
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    "target": "es2020",
+    "lib": ["ESNext", "DOM", "WebWorker"],
+    "module": "ESNext",
+    "allowJs": false,
+    "removeComments": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+  },
+  "include": ["src"]
+}
