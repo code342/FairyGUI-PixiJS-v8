@@ -1,2 +1,2 @@
-    export class UBBParser extends Laya.UBBParser {
-    }
+export class UBBParser extends Laya.UBBParser {
+}
