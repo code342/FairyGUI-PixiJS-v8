@@ -1,55 +1,57 @@
-import { GearBase } from "./GearBase";
-import { ByteBuffer } from "../utils/ByteBuffer";
-import { ObjectPropID } from "../FieldTypes";
+///<reference path="GearBase.ts"/>
 
-export class GearAnimation extends GearBase {
-    private _storage: { [index: string]: GearAnimationValue };
-    private _default: GearAnimationValue;
-
-    protected init(): void {
-        this._default = {
-            playing: this._owner.getProp(ObjectPropID.Playing),
-            frame: this._owner.getProp(ObjectPropID.Frame)
-        };
-        this._storage = {};
+namespace fgui {
+    interface Value {
+        playing?: boolean;
+        frame?: number;
     }
 
-    protected addStatus(pageId: string, buffer: ByteBuffer): void {
-        var gv: GearAnimationValue;
-        if (!pageId)
-            gv = this._default;
-        else {
-            gv = {};
-            this._storage[pageId] = gv;
-        }
-        gv.playing = buffer.readBool();
-        gv.frame = buffer.readInt();
-    }
+    export class GearAnimation extends GearBase {
+        private _storage: Record<string, Value>;
+        private _default: Value;
 
-    public apply(): void {
-        this._owner._gearLocked = true;
-
-        var gv: GearAnimationValue = this._storage[this._controller.selectedPageId] || this._default;
-        this._owner.setProp(ObjectPropID.Playing, gv.playing);
-        this._owner.setProp(ObjectPropID.Frame, gv.frame);
-
-        this._owner._gearLocked = false;
-    }
-
-    public updateState(): void {
-        var gv: GearAnimationValue = this._storage[this._controller.selectedPageId];
-        if (!gv) {
-            gv = {};
-            this._storage[this._controller.selectedPageId] = gv;
+        constructor(owner: GObject) {
+            super(owner);
         }
 
-        gv.playing = this._owner.getProp(ObjectPropID.Playing);
-        gv.frame = this._owner.getProp(ObjectPropID.Frame);
+        protected init(): void {
+            this._default = {
+                playing: this._owner.getProp(ObjectPropID.Playing),
+                frame: this._owner.getProp(ObjectPropID.Frame)
+            };
+            this._storage = {};
+        }
+
+        protected addStatus(pageId: string, buffer: ByteBuffer): void {
+            var gv: Value;
+            if (pageId == null)
+                gv = this._default;
+            else
+                this._storage[pageId] = gv = {};
+            gv.playing = buffer.readBool();
+            gv.frame = buffer.getInt32();
+        }
+
+        public apply(): void {
+            this._owner._gearLocked = true;
+
+            var gv: Value = this._storage[this._controller.selectedPageId];
+            if (!gv)
+                gv = this._default;
+
+            this._owner.setProp(ObjectPropID.Playing, gv.playing);
+            this._owner.setProp(ObjectPropID.Frame, gv.frame);
+
+            this._owner._gearLocked = false;
+        }
+
+        public updateState(): void {
+            var gv: Value = this._storage[this._controller.selectedPageId];
+            if (!gv)
+                this._storage[this._controller.selectedPageId] = gv = {};
+
+            gv.playing = this._owner.getProp(ObjectPropID.Playing);
+            gv.frame = this._owner.getProp(ObjectPropID.Frame);
+        }
     }
 }
-
-interface GearAnimationValue {
-    playing?: boolean;
-    frame?: number;
-}
-

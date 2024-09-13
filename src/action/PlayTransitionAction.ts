@@ -1,44 +1,41 @@
-import { ControllerAction } from "./ControllerAction";
-import { Controller } from "../Controller";
-import { Transition } from "../Transition";
-import { ByteBuffer } from "../utils/ByteBuffer";
+namespace fgui {
+    export class PlayTransitionAction extends ControllerAction {
+        public transitionName: string;
+        public playTimes: number;
+        public delay: number;
+        public stopOnExit: boolean;
 
-export class PlayTransitionAction extends ControllerAction {
-    public transitionName: string;
-    public playTimes: number = 1;
-    public delay: number = 0;
-    public stopOnExit: boolean;
+        private _currentTransition?: Transition;
 
-    private _currentTransition: Transition;
-
-    constructor() {
-        super();
-    }
-
-    protected enter(controller: Controller): void {
-        var trans: Transition = controller.parent.getTransition(this.transitionName);
-        if (trans) {
-            if (this._currentTransition && this._currentTransition.playing)
-                trans.changePlayTimes(this.playTimes);
-            else
-                trans.play(null, this.playTimes, this.delay);
-            this._currentTransition = trans;
+        constructor() {
+            super();
         }
-    }
 
-    protected leave(controller: Controller): void {
-        if (this.stopOnExit && this._currentTransition) {
-            this._currentTransition.stop();
-            this._currentTransition = null;
+        protected enter(controller: Controller): void {
+            var trans: Transition = controller.parent.getTransition(this.transitionName);
+            if (trans) {
+                if (this._currentTransition && this._currentTransition.playing)
+                    trans.changePlayTimes(this.playTimes);
+                else
+                    trans.play(null, this.playTimes, this.delay);
+                this._currentTransition = trans;
+            }
         }
-    }
 
-    public setup(buffer: ByteBuffer): void {
-        super.setup(buffer);
+        protected leave(controller: Controller): void {
+            if (this.stopOnExit && this._currentTransition) {
+                this._currentTransition.stop();
+                this._currentTransition = null;
+            }
+        }
 
-        this.transitionName = buffer.readS();
-        this.playTimes = buffer.readInt();
-        this.delay = buffer.readFloat();
-        this.stopOnExit = buffer.readBool();
+        public setup(buffer: ByteBuffer): void {
+            super.setup(buffer);
+
+            this.transitionName = buffer.readS();
+            this.playTimes = buffer.getInt32();
+            this.delay = buffer.getFloat32();
+            this.stopOnExit = buffer.readBool();
+        }
     }
 }

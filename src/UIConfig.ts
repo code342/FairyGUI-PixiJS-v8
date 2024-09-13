@@ -1,12 +1,11 @@
-import { AssetManager, Color, Font, Layers, resources } from "cc";
-import { ScrollBarDisplayType } from "./FieldTypes";
-
-export class UIConfig {
-    public constructor() {
+namespace fgui {
+  export class UIConfig {
+    constructor() {
     }
 
     //Default font name
-    public static defaultFont: string = "Arial";
+    public static get defaultFont() { return Laya.Config.defaultFont; }
+    public static set defaultFont(value: string) { Laya.Config.defaultFont = value; }
 
     //Resource using in Window.ShowModalWait for locking the window.
     public static windowModalWaiting: string;
@@ -14,25 +13,36 @@ export class UIConfig {
     public static globalModalWaiting: string;
 
     //When a modal window is in front, the background becomes dark.
-    public static modalLayerColor: Color = new Color(0x33, 0x33, 0x33, 0x33);
+    public static modalLayerColor: string = "rgba(33,33,33,0.2)";
 
     //Default button click sound
     public static buttonSound: string;
     public static buttonSoundVolumeScale: number = 1;
 
+    //Default button click sound
     public static horizontalScrollBar: string;
     public static verticalScrollBar: string;
-
     //Scrolling step in pixels
     public static defaultScrollStep: number = 25;
     //Deceleration ratio of scrollpane when its in touch dragging.
     public static defaultScrollDecelerationRate: number = 0.967;
+
     //Default scrollbar display mode. Recommened visible for Desktop and Auto for mobile.
     public static defaultScrollBarDisplay: number = ScrollBarDisplayType.Visible;
     //Allow dragging the content to scroll. Recommeded true for mobile.
     public static defaultScrollTouchEffect: boolean = true;
     //The "rebound" effect in the scolling container. Recommeded true for mobile.
     public static defaultScrollBounceEffect: boolean = true;
+
+    /**
+      * 当滚动容器设置为“贴近ITEM”时，判定贴近到哪一个ITEM的滚动距离阀值。
+      */
+    public static defaultScrollSnappingThreshold: number = 0.1;
+
+    /**
+      * 当滚动容器设置为“页面模式”时，判定翻到哪一页的滚动距离阀值。
+      */
+    public static defaultScrollPagingThreshold: number = 0.3;
 
     //Resources for PopupMenu.
     public static popupMenu: string;
@@ -49,9 +59,6 @@ export class UIConfig {
     // Pixel offsets of finger to trigger scrolling.
     public static touchScrollSensitivity: number = 20;
 
-    //Default Gloader assetsBundle Name.
-    public static loaderAssetsBundleName:string;
-
     // Pixel offsets of finger to trigger dragging.
     public static touchDragSensitivity: number = 10;
 
@@ -61,25 +68,12 @@ export class UIConfig {
     // When click the window, brings to front automatically.
     public static bringWindowToFrontOnClick: boolean = true;
 
-    public static frameTimeForAsyncUIConstruction: number = 0.002;
+    public static frameTimeForAsyncUIConstruction: number = 2;
 
-    public static linkUnderline: boolean = true;
+    public static textureLinearSampling: boolean = true;
 
-    //Default group name of UI node.<br/>
-    public static defaultUILayer: number = Layers.Enum.UI_2D;
-}
+    public static packageFileExtension: string = "fui";
 
-let _fontRegistry: { [index: string]: Font } = {};
-export function registerFont(name: string, font?: Font | string, bundle?: AssetManager.Bundle): void {
-    if (font instanceof Font)
-        _fontRegistry[name] = font;
-    else {
-        (bundle || resources).load(font || name, Font, (err: Error | null, asset: Font) => {
-            _fontRegistry[name] = asset;
-        });
-    }
-};
-
-export function getFontByName(name: string): Font {
-    return _fontRegistry[name];
+    public static useLayaSkeleton: boolean = false;
+  }
 }

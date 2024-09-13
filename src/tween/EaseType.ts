@@ -1,36 +1,37 @@
+namespace fgui {
+    export class EaseType {
+        public static Linear: number = 0;
+        public static SineIn: number = 1;
+        public static SineOut: number = 2;
+        public static SineInOut: number = 3;
+        public static QuadIn: number = 4;
+        public static QuadOut: number = 5;
+        public static QuadInOut: number = 6;
+        public static CubicIn: number = 7;
+        public static CubicOut: number = 8;
+        public static CubicInOut: number = 9;
+        public static QuartIn: number = 10;
+        public static QuartOut: number = 11;
+        public static QuartInOut: number = 12;
+        public static QuintIn: number = 13;
+        public static QuintOut: number = 14;
+        public static QuintInOut: number = 15;
+        public static ExpoIn: number = 16;
+        public static ExpoOut: number = 17;
+        public static ExpoInOut: number = 18;
+        public static CircIn: number = 19;
+        public static CircOut: number = 20;
+        public static CircInOut: number = 21;
+        public static ElasticIn: number = 22;
+        public static ElasticOut: number = 23;
+        public static ElasticInOut: number = 24;
+        public static BackIn: number = 25;
+        public static BackOut: number = 26;
+        public static BackInOut: number = 27;
+        public static BounceIn: number = 28;
+        public static BounceOut: number = 29;
+        public static BounceInOut: number = 30;
+        public static Custom: number = 31;
+    }
 
-export enum EaseType {
-    Linear = 0,
-    SineIn = 1,
-    SineOut = 2,
-    SineInOut = 3,
-    QuadIn = 4,
-    QuadOut = 5,
-    QuadInOut = 6,
-    CubicIn = 7,
-    CubicOut = 8,
-    CubicInOut = 9,
-    QuartIn = 10,
-    QuartOut = 11,
-    QuartInOut = 12,
-    QuintIn = 13,
-    QuintOut = 14,
-    QuintInOut = 15,
-    ExpoIn = 16,
-    ExpoOut = 17,
-    ExpoInOut = 18,
-    CircIn = 19,
-    CircOut = 20,
-    CircInOut = 21,
-    ElasticIn = 22,
-    ElasticOut = 23,
-    ElasticInOut = 24,
-    BackIn = 25,
-    BackOut = 26,
-    BackInOut = 27,
-    BounceIn = 28,
-    BounceOut = 29,
-    BounceInOut = 30,
-    Custom = 31,
 }
-

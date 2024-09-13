@@ -1,229 +1,107 @@
-import { Color, EditBox, HorizontalTextAlignment, Overflow, UITransform, VerticalTextAlignment } from "cc";
-import { Event as FUIEvent } from "./event/Event";
-import { AutoSizeType } from "./FieldTypes";
-import { GTextField } from "./GTextField";
-import { ByteBuffer } from "./utils/ByteBuffer";
-import { defaultParser } from "./utils/UBBParser";
+///<reference path="GTextField.ts"/>
 
-export class GTextInput extends GTextField {
-    public _editBox: EditBox;
+namespace fgui {
+    export class GTextInput extends GTextField {
+        declare _displayObject: Laya.Input;
 
-    private _promptText: string;
-
-    public constructor() {
-        super();
-
-        this._node.name = "GTextInput";
-        this._touchDisabled = false;
-    }
-
-    protected createRenderer() {
-        this._editBox = this._node.addComponent(MyEditBox);
-        this._editBox.maxLength = -1;
-        this._editBox["_updateTextLabel"]();
-
-        this._node.on('text-changed', this.onTextChanged, this);
-        this.on(FUIEvent.TOUCH_END, this.onTouchEnd1, this);
-
-        this.autoSize = AutoSizeType.None;
-    }
-
-    public set editable(val: boolean) {
-        this._editBox.enabled = val;
-    }
-
-    public get editable(): boolean {
-        return this._editBox.enabled;
-    }
-
-    public set maxLength(val: number) {
-        if (val == 0)
-            val = -1;
-        this._editBox.maxLength = val;
-    }
-
-    public get maxLength(): number {
-        return this._editBox.maxLength;
-    }
-
-    public set promptText(val: string | null) {
-        this._promptText = val;
-        let newCreate: boolean = !this._editBox.placeholderLabel;
-        this._editBox["_updatePlaceholderLabel"]();
-        if (newCreate)
-            this.assignFont(this._editBox.placeholderLabel, this._realFont);
-        this._editBox.placeholderLabel.string = defaultParser.parse(this._promptText, true);
-
-        if (defaultParser.lastColor) {
-            let c = this._editBox.placeholderLabel.color;
-            if (!c)
-                c = new Color();
-            c.fromHEX(defaultParser.lastColor);
-            this.assignFontColor(this._editBox.placeholderLabel, c);
+        constructor() {
+            super();
         }
-        else
-            this.assignFontColor(this._editBox.placeholderLabel, this._color);
 
-        if (defaultParser.lastSize)
-            this._editBox.placeholderLabel.fontSize = parseInt(defaultParser.lastSize);
-        else
-            this._editBox.placeholderLabel.fontSize = this._fontSize;
-    }
-
-    public get promptText(): string | null {
-        return this._promptText;
-    }
-
-    public set restrict(value: string | null) {
-        //not supported
-    }
-
-    public get restrict(): string | null {
-        return "";
-    }
-
-    public get password(): boolean {
-        return this._editBox.inputFlag == EditBox.InputFlag.PASSWORD;;
-    }
-
-    public set password(val: boolean) {
-        this._editBox.inputFlag = val ? EditBox.InputFlag.PASSWORD : EditBox.InputFlag.DEFAULT;
-    }
-
-    public get align(): HorizontalTextAlignment {
-        return this._editBox.textLabel.horizontalAlign;
-    }
-
-    public set align(value: HorizontalTextAlignment) {
-        this._editBox.textLabel.horizontalAlign = value;
-        if (this._editBox.placeholderLabel) {
-            this._editBox.placeholderLabel.horizontalAlign = value;
+        protected createDisplayObject(): void {
+            this._displayObject = new Laya.Input();
+            this._displayObject["$owner"] = this;
         }
-    }
 
-    public get verticalAlign(): VerticalTextAlignment {
-        return this._editBox.textLabel.verticalAlign;
-    }
-
-    public set verticalAlign(value: VerticalTextAlignment) {
-        this._editBox.textLabel.verticalAlign = value;
-        if (this._editBox.placeholderLabel) {
-            this._editBox.placeholderLabel.verticalAlign = value;
+        public get nativeInput(): Laya.Input {
+            return this._displayObject;
         }
-    }
 
-    public get singleLine(): boolean {
-        return this._editBox.inputMode != EditBox.InputMode.ANY;
-    }
-
-    public set singleLine(value: boolean) {
-        this._editBox.inputMode = value ? EditBox.InputMode.SINGLE_LINE : EditBox.InputMode.ANY;
-    }
-
-    public requestFocus(): void {
-        this._editBox.focus();
-    }
-
-    protected markSizeChanged(): void {
-        //不支持自动大小，所以这里空
-    }
-
-    protected updateText(): void {
-        var text2: string = this._text;
-
-        if (this._templateVars)
-            text2 = this.parseTemplate(text2);
-
-        if (this._ubbEnabled) //不支持同一个文本不同样式
-            text2 = defaultParser.parse(text2, true);
-
-        this._editBox.string = text2;
-    }
-
-    protected updateFont() {
-        this.assignFont(this._editBox.textLabel, this._realFont);
-        if (this._editBox.placeholderLabel)
-            this.assignFont(this._editBox.placeholderLabel, this._realFont);
-    }
-
-    protected updateFontColor() {
-        this.assignFontColor(this._editBox.textLabel, this._color);
-    }
-
-    protected updateFontSize() {
-        this._editBox.textLabel.fontSize = this._fontSize;
-        this._editBox.textLabel.lineHeight = this._fontSize + this._leading;
-        if (this._editBox.placeholderLabel)
-            this._editBox.placeholderLabel.fontSize = this._editBox.textLabel.fontSize;
-    }
-
-    protected updateOverflow() {
-        //not supported
-    }
-
-    private onTextChanged() {
-        this._text = this._editBox.string;
-    }
-
-    private onTouchEnd1(evt: FUIEvent) {
-        (<MyEditBox>this._editBox).openKeyboard();
-        evt.propagationStopped = true
-    }
-
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
-        super.setup_beforeAdd(buffer, beginPos);
-
-        buffer.seek(beginPos, 4);
-
-        var str: string = buffer.readS();
-        if (str != null)
-            this.promptText = str;
-        else if (this._editBox.placeholderLabel)
-            this._editBox.placeholderLabel.string = "";
-
-        str = buffer.readS();
-        if (str != null)
-            this.restrict = str;
-
-        var iv: number = buffer.readInt();
-        if (iv != 0)
-            this.maxLength = iv;
-        iv = buffer.readInt();
-        if (iv != 0) {//keyboardType
+        public get password(): boolean {
+            return this._displayObject.type == "password";
         }
-        if (buffer.readBool())
-            this.password = true;
 
-        //同步一下对齐方式
-
-        if (this._editBox.placeholderLabel) {
-            let hAlign = this._editBox.textLabel.horizontalAlign;
-            this._editBox.placeholderLabel.horizontalAlign = hAlign;
-
-            let vAlign = this._editBox.textLabel.verticalAlign;
-            this._editBox.placeholderLabel.verticalAlign = vAlign;
+        public set password(value: boolean) {
+            if (value)
+                this._displayObject.type = "password";
+            else
+                this._displayObject.type = "text";
         }
-    }
-}
 
-class MyEditBox extends EditBox {
-    protected _init(): void {
-        super._init();
+        public get keyboardType(): string {
+            return this._displayObject.type;
+        }
 
-        this.placeholderLabel.getComponent(UITransform).setAnchorPoint(0, 1);
-        this.textLabel.getComponent(UITransform).setAnchorPoint(0, 1);
-        this.placeholderLabel.overflow = Overflow.CLAMP;
-        this.textLabel.overflow = Overflow.CLAMP;
-    }
+        public set keyboardType(value: string) {
+            this._displayObject.type = value;
+        }
 
-    protected _registerEvent() {
-        //取消掉原来的事件处理
-    }
+        public set editable(value: boolean) {
+            this._displayObject.editable = value;
+        }
 
-    public openKeyboard() {
-        let impl = this["_impl"];
-        if (impl) {
-            impl.beginEditing();
+        public get editable(): boolean {
+            return this._displayObject.editable;
+        }
+
+        public set maxLength(value: number) {
+            this._displayObject.maxChars = value;
+        }
+
+        public get maxLength(): number {
+            return this._displayObject.maxChars;
+        }
+
+        public set promptText(value: string) {
+            var str: string = UBBParser.defaultParser.parse(value, true);
+            this._displayObject.prompt = str;
+            if (UBBParser.defaultParser.lastColor)
+                this._displayObject.promptColor = UBBParser.defaultParser.lastColor;
+        }
+
+        public get promptText(): string {
+            return this._displayObject.prompt;
+        }
+
+        public set restrict(value: string) {
+            this._displayObject.restrict = value;
+        }
+
+        public get restrict(): string {
+            return this._displayObject.restrict;
+        }
+
+        public requestFocus(): void {
+            this._displayObject.focus = true;
+
+            super.requestFocus();
+        }
+
+        public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
+            super.setup_beforeAdd(buffer, beginPos);
+
+            buffer.seek(beginPos, 4);
+
+            var str: string = buffer.readS();
+            if (str != null)
+                this.promptText = str;
+
+            str = buffer.readS();
+            if (str != null)
+                this._displayObject.restrict = str;
+
+            var iv: number = buffer.getInt32();
+            if (iv != 0)
+                this._displayObject.maxChars = iv;
+            iv = buffer.getInt32();
+            if (iv != 0) {
+                if (iv == 4)
+                    this.keyboardType = Laya.Input.TYPE_NUMBER;
+                else if (iv == 3)
+                    this.keyboardType = Laya.Input.TYPE_URL;
+            }
+            if (buffer.readBool())
+                this.password = true;
         }
     }
 }
