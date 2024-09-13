@@ -1,4 +1,3 @@
-namespace fgui {
     export class EaseType {
         public static Linear: number = 0;
         public static SineIn: number = 1;
@@ -33,5 +32,3 @@ namespace fgui {
         public static BounceInOut: number = 30;
         public static Custom: number = 31;
     }
-
-}

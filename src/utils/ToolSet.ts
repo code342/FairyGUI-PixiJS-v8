@@ -1,6 +1,3 @@
-///<reference path="UBBParser.ts"/>
-
-namespace fgui {
     export class ToolSet {
         public static startsWith(source: string, str: string, ignoreCase?: boolean): boolean {
             if (!source)
@@ -201,4 +198,3 @@ namespace fgui {
         helper.matrix.forEach((e, i) => result[i] = e);
         return result;
     }
-}

@@ -1,4 +1,4 @@
-namespace fgui {
+
     export class ControllerAction {
         public fromPage: string[];
         public toPage: string[];
@@ -48,4 +48,4 @@ namespace fgui {
                 this.toPage[i] = buffer.readS();
         }
     }
-}
+

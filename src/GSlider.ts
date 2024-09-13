@@ -1,4 +1,3 @@
-namespace fgui {
     export class GSlider extends GComponent {
         private _min: number = 0;
         private _max: number = 0;
@@ -265,4 +264,3 @@ namespace fgui {
     }
 
     var s_vec2: Laya.Point = new Laya.Point();
-}

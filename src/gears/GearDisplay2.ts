@@ -1,4 +1,3 @@
-namespace fgui {
     export class GearDisplay2 extends GearBase {
         public pages: string[];
         public condition: number;
@@ -30,4 +29,3 @@ namespace fgui {
             return v;
         }
     }
-}

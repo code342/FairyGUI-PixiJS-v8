@@ -1,4 +1,3 @@
-namespace fgui {
     let _func: Function = Laya.HitArea["_isHitGraphic"];
 
     export class ChildHitArea extends Laya.HitArea {
@@ -29,4 +28,3 @@ namespace fgui {
                 return _func(x - tPos.x, y - tPos.y, sp, this.hit);
         }
     }
-}

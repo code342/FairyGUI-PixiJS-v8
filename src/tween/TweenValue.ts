@@ -1,4 +1,3 @@
-namespace fgui {
     export class TweenValue {
         public x: number;
         public y: number;
@@ -58,4 +57,3 @@ namespace fgui {
             this.x = this.y = this.z = this.w = 0;
         }
     }
-}

@@ -1,4 +1,3 @@
-namespace fgui {
     export class Margin {
         public left: number = 0;
         public right: number = 0;
@@ -12,4 +11,3 @@ namespace fgui {
             this.right = source.right;
         }
     }
-}

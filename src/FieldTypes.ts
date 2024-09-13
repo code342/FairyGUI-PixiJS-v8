@@ -1,4 +1,3 @@
-namespace fgui {
     export enum ButtonMode {
         Common,
         Check,
@@ -191,4 +190,3 @@ namespace fgui {
         FontSize,
         Selected
     }
-}

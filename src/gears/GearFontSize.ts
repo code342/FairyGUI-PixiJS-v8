@@ -1,4 +1,3 @@
-namespace fgui {
     export class GearFontSize extends GearBase {
         private _storage: Record<string, number>;
         private _default: number = 0;
@@ -35,4 +34,3 @@ namespace fgui {
             this._storage[this._controller.selectedPageId] = this._owner.getProp(ObjectPropID.FontSize);
         }
     }
-}

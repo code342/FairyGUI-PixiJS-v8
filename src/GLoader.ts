@@ -1,6 +1,3 @@
-///<reference path="GObjectPool.ts"/>
-
-namespace fgui {
     export class GLoader extends GObject {
         private _url: string;
         private _align: string;
@@ -536,4 +533,3 @@ namespace fgui {
                 this.loadContent();
         }
     }
-}

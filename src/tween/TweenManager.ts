@@ -1,4 +1,3 @@
-namespace fgui {
     export class TweenManager {
         public static createTween(): GTweener {
             if (!_inited) {
@@ -120,4 +119,3 @@ namespace fgui {
     var _tweenerPool: GTweener[] = [];
     var _totalActiveTweens: number = 0;
     var _inited: boolean = false;
-}

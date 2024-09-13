@@ -1,4 +1,3 @@
-namespace fgui {
     export class PixelHitTest extends Laya.HitArea {
         private _data: PixelHitTestData;
 
@@ -58,4 +57,3 @@ namespace fgui {
             }
         }
     }
-}

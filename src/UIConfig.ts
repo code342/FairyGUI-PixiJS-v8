@@ -1,4 +1,3 @@
-namespace fgui {
   export class UIConfig {
     constructor() {
     }
@@ -76,4 +75,3 @@ namespace fgui {
 
     public static useLayaSkeleton: boolean = false;
   }
-}

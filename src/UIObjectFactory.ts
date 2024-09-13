@@ -1,6 +1,4 @@
 
-module fgui {
-
     export class UIObjectFactory {
         public static extensions: Record<string, new () => GComponent> = {};
         public static loaderType: new () => GLoader;
@@ -120,4 +118,3 @@ module fgui {
             return obj;
         }
     }
-}

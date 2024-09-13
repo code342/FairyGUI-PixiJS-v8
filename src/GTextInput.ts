@@ -1,6 +1,3 @@
-///<reference path="GTextField.ts"/>
-
-namespace fgui {
     export class GTextInput extends GTextField {
         declare _displayObject: Laya.Input;
 
@@ -104,4 +101,3 @@ namespace fgui {
                 this.password = true;
         }
     }
-}

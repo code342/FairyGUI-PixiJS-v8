@@ -1,4 +1,3 @@
-namespace fgui {
     export class GTree extends GList {
         public treeNodeRender: Laya.Handler | ((node: GTreeNode, obj: GComponent) => void);
         public treeNodeWillExpand: Laya.Handler | ((node: GTreeNode, expanded: boolean) => void);
@@ -402,4 +401,3 @@ namespace fgui {
     }
 
     var s_list: number[] = new Array<number>();
-}

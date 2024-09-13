@@ -1,4 +1,3 @@
-namespace fgui {
     export class Window extends GComponent {
         private _contentPane: GComponent;
         private _modalWaitPane: GObject;
@@ -290,4 +289,3 @@ namespace fgui {
             this.startDrag();
         }
     }
-}

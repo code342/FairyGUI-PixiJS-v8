@@ -1,4 +1,3 @@
-namespace fgui {
     export class GRoot extends GComponent {
         public static contentScaleLevel: number = 0;
 
@@ -412,4 +411,3 @@ namespace fgui {
                 GRoot.contentScaleLevel = 0;
         }
     }
-}

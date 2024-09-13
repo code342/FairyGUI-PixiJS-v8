@@ -1,5 +1,4 @@
 
-namespace fgui {
     interface Value {
         color?: string;
         strokeColor?: string;
@@ -53,4 +52,3 @@ namespace fgui {
             gv.strokeColor = this._owner.getProp(ObjectPropID.OutlineColor);
         }
     }
-}

@@ -1,4 +1,3 @@
-namespace fgui {
     export class GProgressBar extends GComponent {
         private _min: number = 0;
         private _max: number = 0;
@@ -204,4 +203,3 @@ namespace fgui {
             this.update(this._value);
         }
     }
-}

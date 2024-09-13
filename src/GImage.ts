@@ -1,4 +1,3 @@
-namespace fgui {
     export class GImage extends GObject {
         private _image: Image;
         private _flip: number = 0;
@@ -139,4 +138,3 @@ namespace fgui {
             }
         }
     }
-}

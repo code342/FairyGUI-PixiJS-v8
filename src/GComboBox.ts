@@ -1,4 +1,3 @@
-namespace fgui {
     export class GComboBox extends GComponent {
         public dropdown: GComponent;
 
@@ -471,4 +470,3 @@ namespace fgui {
             }
         }
     }
-}

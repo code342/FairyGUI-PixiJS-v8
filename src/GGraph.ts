@@ -1,4 +1,3 @@
-namespace fgui {
     export enum GGGraphType {
         Empty = 0,
         Rect = 1,
@@ -300,4 +299,3 @@ namespace fgui {
             }
         }
     }
-}

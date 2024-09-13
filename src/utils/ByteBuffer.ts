@@ -1,4 +1,3 @@
-namespace fgui {
     export class ByteBuffer extends Laya.Byte {
         public stringTable: string[];
         public version: number;
@@ -126,4 +125,3 @@ namespace fgui {
             }
         }
     }
-}

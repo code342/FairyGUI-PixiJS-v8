@@ -1,4 +1,3 @@
-namespace fgui {
     export class GTweener {
         public _target: any;
         public _propType: any;
@@ -506,4 +505,3 @@ namespace fgui {
     }
 
     var s_vec2: Laya.Point = new Laya.Point();
-}

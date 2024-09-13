@@ -1,6 +1,3 @@
-///<reference path="GTextField.ts"/>
-
-namespace fgui {
     export class GRichTextField extends GTextField {
 
         constructor() {
@@ -27,5 +24,4 @@ namespace fgui {
     }
 
     Laya.HtmlParser.classMap[Laya.HtmlElementType.Image] = GHtmlImage;
-}
 

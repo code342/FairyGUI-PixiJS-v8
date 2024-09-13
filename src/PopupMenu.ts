@@ -1,4 +1,3 @@
-namespace fgui {
     export class PopupMenu {
 
         protected _contentPane: GComponent;
@@ -169,4 +168,3 @@ namespace fgui {
         }
 
     }
-}

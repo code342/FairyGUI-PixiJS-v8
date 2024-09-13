@@ -1,6 +1,3 @@
-///<reference path="GObject.ts"/>
-
-namespace fgui {
     export class GTextField extends GObject {
         protected _text: string;
         protected _autoSize: number;
@@ -313,6 +310,5 @@ namespace fgui {
                 this.text = str;
         }
     }
-}
 
 const labelPadding = [2, 2, 2, 2];

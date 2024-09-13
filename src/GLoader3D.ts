@@ -1,4 +1,3 @@
-namespace fgui {
     export class GLoader3D extends GObject {
         private _url: string;
         private _align: AlignType;
@@ -428,4 +427,3 @@ namespace fgui {
                 this.loadContent();
         }
     }
-}

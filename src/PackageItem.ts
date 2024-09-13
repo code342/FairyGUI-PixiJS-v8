@@ -1,4 +1,3 @@
-namespace fgui {
     export class PackageItem {
         public owner: UIPackage;
 
@@ -72,4 +71,3 @@ namespace fgui {
             return this.name;
         }
     }
-}

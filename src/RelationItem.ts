@@ -1,4 +1,3 @@
-namespace fgui {
     export class RelationItem {
         private _owner: GObject;
         private _target: GObject;
@@ -628,4 +627,3 @@ namespace fgui {
             this.axis = source.axis;
         }
     }
-}

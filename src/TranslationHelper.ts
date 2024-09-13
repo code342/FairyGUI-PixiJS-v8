@@ -1,4 +1,3 @@
-namespace fgui {
     export class TranslationHelper {
         public static strings: Record<string, Record<string, string>>;
 
@@ -240,4 +239,3 @@ namespace fgui {
             }
         }
     }
-}

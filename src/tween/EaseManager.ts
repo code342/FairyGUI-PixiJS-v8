@@ -36,7 +36,6 @@
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-namespace fgui {
     const _PiOver2: number = Math.PI * 0.5;
     const _TwoPi: number = Math.PI * 2;
 
@@ -171,4 +170,3 @@ namespace fgui {
         }
         return bounce_easeOut(time * 2 - duration, duration) * 0.5 + 0.5;
     }
-}

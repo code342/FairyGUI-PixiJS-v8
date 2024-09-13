@@ -1,4 +1,3 @@
-namespace fgui {
     export class GPath {
         private _segments: Array<Segment>;
         private _points: Array<Laya.Point>;
@@ -296,4 +295,3 @@ namespace fgui {
         ptStart?: number;
         ptCount?: number;
     }
-}

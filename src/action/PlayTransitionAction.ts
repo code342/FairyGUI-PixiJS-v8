@@ -1,4 +1,3 @@
-namespace fgui {
     export class PlayTransitionAction extends ControllerAction {
         public transitionName: string;
         public playTimes: number;
@@ -38,4 +37,3 @@ namespace fgui {
             this.stopOnExit = buffer.readBool();
         }
     }
-}

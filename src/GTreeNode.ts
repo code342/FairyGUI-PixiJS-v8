@@ -1,4 +1,3 @@
-namespace fgui {
     export class GTreeNode {
         public data: any;
 
@@ -260,4 +259,3 @@ namespace fgui {
             }
         }
     }
-}

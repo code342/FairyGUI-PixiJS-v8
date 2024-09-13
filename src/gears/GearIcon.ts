@@ -1,6 +1,3 @@
-
-namespace fgui {
-
     export class GearIcon extends GearBase {
         private _storage: Record<string, string>;
         private _default: string;
@@ -37,4 +34,3 @@ namespace fgui {
             this._storage[this._controller.selectedPageId] = this._owner.icon;
         }
     }
-}

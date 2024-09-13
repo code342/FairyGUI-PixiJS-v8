@@ -1,4 +1,3 @@
-namespace fgui {
     export class GLabel extends GComponent {
         protected _titleObject: GObject;
         protected _iconObject: GObject;
@@ -195,4 +194,3 @@ namespace fgui {
             }
         }
     }
-}

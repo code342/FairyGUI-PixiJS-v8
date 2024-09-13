@@ -1,4 +1,3 @@
-namespace fgui {
     export class GMovieClip extends GObject {
         private _movieClip: MovieClip;
 
@@ -136,4 +135,3 @@ namespace fgui {
             this._movieClip.playing = buffer.readBool();
         }
     }
-}

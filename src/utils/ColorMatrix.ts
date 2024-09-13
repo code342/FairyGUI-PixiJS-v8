@@ -1,6 +1,4 @@
 
-namespace fgui {
-
     export class ColorMatrix {
         public readonly matrix: Array<number>;
 
@@ -141,4 +139,3 @@ namespace fgui {
     const LUMA_R: number = 0.299;
     const LUMA_G: number = 0.587;
     const LUMA_B: number = 0.114;
-}

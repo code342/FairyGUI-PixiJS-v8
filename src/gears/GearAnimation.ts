@@ -1,6 +1,3 @@
-///<reference path="GearBase.ts"/>
-
-namespace fgui {
     interface Value {
         playing?: boolean;
         frame?: number;
@@ -54,4 +51,3 @@ namespace fgui {
             gv.frame = this._owner.getProp(ObjectPropID.Frame);
         }
     }
-}

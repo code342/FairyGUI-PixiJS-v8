@@ -1,6 +1,3 @@
-///<reference path="GComponent.ts"/>
-
-namespace fgui {
     export class GButton extends GComponent {
         protected _titleObject: GObject;
         protected _iconObject: GObject;
@@ -526,4 +523,3 @@ namespace fgui {
             }
         }
     }
-}

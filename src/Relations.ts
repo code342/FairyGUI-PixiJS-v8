@@ -1,4 +1,3 @@
-namespace fgui {
     export class Relations {
         private _owner: GObject;
         private _items: RelationItem[];
@@ -150,4 +149,3 @@ namespace fgui {
             }
         }
     }
-}

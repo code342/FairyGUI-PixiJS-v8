@@ -1,4 +1,3 @@
-namespace fgui {
     export class Events {
         public static STATE_CHANGED: string = "fui_state_changed";
         public static XY_CHANGED: string = "fui_xy_changed";
@@ -32,4 +31,3 @@ namespace fgui {
 
     /** 通用无参数回调 */
     export type SimpleHandler = Laya.Handler | (() => void);
-}

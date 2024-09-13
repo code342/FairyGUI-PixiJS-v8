@@ -1,4 +1,3 @@
-namespace fgui {
     export class GGroup extends GObject {
         private _layout: number = 0;
         private _lineGap: number = 0;
@@ -445,4 +444,3 @@ namespace fgui {
                 this.handleVisibleChanged();
         }
     }
-}

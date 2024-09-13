@@ -1,4 +1,3 @@
-namespace fgui {
     export class Image extends Laya.Sprite {
         protected _source: Laya.Texture;
         protected _scaleByTile?: boolean;
@@ -220,4 +219,3 @@ namespace fgui {
             g.drawPoly(0, 0, points, "#FFFFFF", null, 0);
         }
     }
-}

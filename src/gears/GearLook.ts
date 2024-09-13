@@ -1,6 +1,4 @@
 
-namespace fgui {
-
     interface Value {
         alpha?: number;
         rotation?: number;
@@ -111,4 +109,3 @@ namespace fgui {
             gv.touchable = this._owner.touchable;
         }
     }
-}

@@ -1,4 +1,3 @@
-namespace fgui {
     export class GScrollBar extends GComponent {
         private _grip: GObject;
         private _arrowButton1: GObject;
@@ -164,4 +163,3 @@ namespace fgui {
     }
 
     var s_vec2: Laya.Point = new Laya.Point();
-}

@@ -1,5 +1,3 @@
-namespace fgui {
-
     export class GTween {
         public static catchCallbackExceptions: boolean = true;
 
@@ -45,5 +43,3 @@ namespace fgui {
             return TweenManager.getTween(target, propType);
         }
     }
-
-}

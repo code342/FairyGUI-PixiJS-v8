@@ -1,4 +1,3 @@
-namespace fgui {
     type PackageDependency = { id: string, name: string };
 
     export class UIPackage {
@@ -815,4 +814,3 @@ namespace fgui {
         originalSize: Laya.Point;
         rotated?: boolean;
     }
-}

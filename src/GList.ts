@@ -1,4 +1,3 @@
-namespace fgui {
     export class GList extends GComponent {
         public itemRenderer: Laya.Handler | ((index: number, item: GObject) => void);
         public itemProvider: Laya.Handler | ((index: number) => string);
@@ -2385,4 +2384,3 @@ namespace fgui {
     }
 
     var s_n: number = 0;
-}

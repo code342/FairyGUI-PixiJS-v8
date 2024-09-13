@@ -1,6 +1,3 @@
-///<reference path="./Image.ts"/>
-
-namespace fgui {
     export interface Frame {
         addDelay: number;
         texture?: Laya.Texture;
@@ -302,4 +299,3 @@ namespace fgui {
             Laya.timer.clear(this, this.update);
         }
     }
-}

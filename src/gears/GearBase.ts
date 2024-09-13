@@ -1,4 +1,3 @@
-namespace fgui {
     export class GearBase {
         public static disableAllTweenEffect: boolean;
 
@@ -136,4 +135,3 @@ namespace fgui {
             this.delay = 0;
         }
     }
-}

@@ -1,5 +1,4 @@
 
-namespace fgui {
     interface Value {
         width?: number;
         height?: number;
@@ -120,4 +119,3 @@ namespace fgui {
             this.updateState();
         }
     }
-}

@@ -1,4 +1,3 @@
-namespace fgui {
     export class ScrollPane {
         private _owner: GComponent;
         private _container: Laya.Sprite;
@@ -1779,4 +1778,3 @@ namespace fgui {
     function easeFunc(t: number, d: number): number {
         return (t = t / d - 1) * t * t + 1;//cubicOut
     }
-}

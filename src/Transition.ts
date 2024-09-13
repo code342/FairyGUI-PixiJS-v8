@@ -1,4 +1,3 @@
-namespace fgui {
     export class Transition {
         public name: string;
 
@@ -1288,4 +1287,3 @@ namespace fgui {
     const OPTION_IGNORE_DISPLAY_CONTROLLER: number = 1;
     const OPTION_AUTO_STOP_DISABLED: number = 2;
     const OPTION_AUTO_STOP_AT_END: number = 4;
-}

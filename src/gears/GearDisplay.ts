@@ -1,6 +1,4 @@
 
-namespace fgui {
-
     export class GearDisplay extends GearBase {
         public pages: string[];
         private _visible: number;
@@ -44,4 +42,3 @@ namespace fgui {
             return this._controller == null || this._visible > 0;
         }
     }
-}
