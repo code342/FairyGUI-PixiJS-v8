@@ -1,3 +1,5 @@
+import { GObject, GObjectView } from "./GObject";
+
 export class GMovieClip extends GObject {
     private _movieClip: MovieClip;
 
@@ -16,7 +18,7 @@ export class GMovieClip extends GObject {
     protected createDisplayObject(): void {
         this._displayObject = this._movieClip = new MovieClip();
         this._movieClip.mouseEnabled = false;
-        this._displayObject["$owner"] = this;
+        (this._displayObject as GObjectView).$owner = this;
     }
 
     public get playing(): boolean {

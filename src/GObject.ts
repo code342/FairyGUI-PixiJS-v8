@@ -1,3 +1,7 @@
+import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter} from "pixi.js";
+import { GRoot } from "./GRoot";
+
+
 export class GObject {
     public data: any;
     public packageItem: PackageItem;
@@ -31,9 +35,9 @@ export class GObject {
     private _gears: GearBase[];
     private _dragBounds?: Rectangle;
     private _dragTesting?: boolean;
-    private _dragStartPos?: Laya.Point;
+    private _dragStartPos?: Point;
 
-    protected _displayObject: Laya.Sprite;
+    protected _displayObject: Container;
     protected _yOffset: number = 0;
 
     public minWidth: number = 0;
@@ -296,7 +300,7 @@ export class GObject {
             this._skewX = sx;
             this._skewY = sy;
             if (this._displayObject) {
-                this._displayObject.skew(-sx, sy);
+                this._displayObject.skew = Point.shared.set(-sx*DEG_TO_RAD, sy*DEG_TO_RAD);
                 this.applyPivot();
             }
         }
@@ -343,10 +347,14 @@ export class GObject {
 
     private updatePivotOffset(): void {
         if (this._displayObject) {
-            if (this._displayObject.transform && (this._pivotX != 0 || this._pivotY != 0)) {
+            if (this._pivotX != 0 || this._pivotY != 0) {
                 sHelperPoint.x = this._pivotX * this._width;
                 sHelperPoint.y = this._pivotY * this._height;
-                var pt: Laya.Point = this._displayObject.transform.transformPoint(sHelperPoint);
+                this._displayObject.updateLocalTransform();//TODO: sync with PIXI instead of update actively
+                let trans = this._displayObject.localTransform;
+                let pt: Point = trans.apply(sHelperPoint, sHelperPoint);
+                pt.x -= trans.tx;   //pt cntains the translation
+                pt.y -= trans.ty;
                 this._pivotOffsetX = this._pivotX * this._width - pt.x;
                 this._pivotOffsetY = this._pivotY * this._height - pt.y;
             }
@@ -379,7 +387,7 @@ export class GObject {
                 return;
 
             if (this._displayObject)
-                this._displayObject.mouseEnabled = this._touchable;
+                this._displayObject.interactive = this._touchable;
         }
     }
 
@@ -412,7 +420,7 @@ export class GObject {
         if (this._rotation != value) {
             this._rotation = value;
             if (this._displayObject) {
-                this._displayObject.rotation = this.normalizeRotation;
+                this._displayObject.rotation = DEG_TO_RAD * this.normalizeRotation;
                 this.applyPivot();
             }
             this.updateGear(3);
@@ -456,8 +464,7 @@ export class GObject {
     }
 
     public get internalVisible(): boolean {
-        return this._internalVisible && (!this._group || this._group.internalVisible)
-            && !(<any>this._displayObject)._cacheStyle.maskParent;
+        return this._internalVisible && (!this._group || this._group.internalVisible);
     }
 
     public get internalVisible2(): boolean {
@@ -497,14 +504,14 @@ export class GObject {
 
     public set tooltips(value: string) {
         if (this._tooltips) {
-            this.off(Laya.Event.ROLL_OVER, this, this.__rollOver);
-            this.off(Laya.Event.ROLL_OUT, this, this.__rollOut);
+            this.off(Laya.Event.ROLL_OVER, this.__rollOver, this);
+            this.off(Laya.Event.ROLL_OUT, this.__rollOut, this);
         }
 
         this._tooltips = value;
         if (this._tooltips) {
-            this.on(Laya.Event.ROLL_OVER, this, this.__rollOver);
-            this.on(Laya.Event.ROLL_OUT, this, this.__rollOut);
+            this.on(Laya.Event.ROLL_OVER, this.__rollOver, this);
+            this.on(Laya.Event.ROLL_OUT, this.__rollOut, this);
         }
     }
 
@@ -528,23 +535,31 @@ export class GObject {
     }
 
     public set blendMode(value: string) {
-        this._displayObject.blendMode = value;
+        this._displayObject.blendMode = value as BLEND_MODES;
     }
 
-    public get filters(): any[] {
+    public get filters(): Filter | Filter[] {
         return this._displayObject.filters;
     }
 
-    public set filters(value: any[]) {
+    public set filters(value: Filter | Filter[]) {
         this._displayObject.filters = value;
     }
+    
 
     public get inContainer(): boolean {
         return this._displayObject != null && this._displayObject.parent != null;
     }
 
     public get onStage(): boolean {
-        return this._displayObject != null && this._displayObject.stage != null;
+        if(!this._displayObject){
+            return false;
+        }
+        let current = this._displayObject;
+        while(current.parent){
+            current = current.parent;
+        }
+        return current == GRoot.inst.stage;
     }
 
     public get resourceURL(): string {
@@ -643,7 +658,7 @@ export class GObject {
         this._relations.remove(target, relationType);
     }
 
-    public get displayObject(): Laya.Sprite {
+    public get displayObject(): Container {
         return this._displayObject;
     }
 
@@ -661,15 +676,6 @@ export class GObject {
     }
 
     public get root(): GRoot {
-        if (this instanceof GRoot)
-            return this;
-
-        var p: GObject = this._parent;
-        while (p) {
-            if (p instanceof GRoot)
-                return p;
-            p = p.parent;
-        }
         return GRoot.inst;
     }
 
@@ -771,24 +777,30 @@ export class GObject {
         }
     }
 
-    public onClick(thisObj: any, listener: Function, args?: any[]): void {
-        this.on(Laya.Event.CLICK, thisObj, listener, args);
+    public onClick(thisObj: any, listener: (...args: any) => void, args?: any[]): void {
+        this.on("pointertap", listener, thisObj, args);
     }
 
-    public offClick(thisObj: any, listener: Function): void {
-        this.off(Laya.Event.CLICK, thisObj, listener);
+    public offClick(thisObj: any, listener: (...args: any) => void): void {
+        this.off("pointertap", listener, thisObj);
     }
 
     public hasClickListener(): boolean {
-        return this._displayObject.hasListener(Laya.Event.CLICK);
+        return this._displayObject.listenerCount("pointertap") > 0;
     }
 
-    public on(type: string, thisObject: any, listener: Function, args?: any[]): void {
-        this._displayObject.on(type, thisObject, listener, args);
+    public on(type: string, listener: (...args: any) => void, thisObject: any, args?: any[]): void {
+        if (args) {
+            const wrappedListener = (...eventArgs: any[]) => listener.call(thisObject, ...args, ...eventArgs);
+            this._displayObject.on(type, wrappedListener, thisObject);
+        } else {
+            this._displayObject.on(type, listener, thisObject);
+        }
+        
     }
 
-    public off(type: string, thisObject: any, listener: Function): void {
-        this._displayObject.off(type, thisObject, listener);
+    public off(type: string, listener: (...args: any) => void, thisObject: any): void {
+        this._displayObject.off(type, listener, thisObject)
     }
 
     public get draggable(): boolean {
@@ -802,16 +814,16 @@ export class GObject {
         }
     }
 
-    public get dragBounds(): Laya.Rectangle {
+    public get dragBounds(): Rectangle {
         return this._dragBounds;
     }
 
-    public set dragBounds(value: Laya.Rectangle) {
+    public set dragBounds(value: Rectangle) {
         this._dragBounds = value;
     }
 
     public startDrag(touchID?: number): void {
-        if (this._displayObject.stage == null)
+        if (!this.onStage)
             return;
 
         this.dragBegin(touchID);
@@ -825,7 +837,7 @@ export class GObject {
         return GObject.draggingObject == this;
     }
 
-    public localToGlobal(ax?: number, ay?: number, result?: Laya.Point): Laya.Point {
+    public localToGlobal(ax?: number, ay?: number, result?: Point, skipUpdate?:boolean): Point {
         ax = ax || 0;
         ay = ay || 0;
 
@@ -834,19 +846,18 @@ export class GObject {
             ay += this._pivotY * this._height;
         }
 
-        result = result || new Laya.Point();
+        result = result || new Point();
         result.x = ax;
         result.y = ay;
-        return this._displayObject.localToGlobal(result, false);
+        return this._displayObject.toGlobal(result, result, skipUpdate);
     }
 
-    public globalToLocal(ax?: number, ay?: number, result?: Laya.Point): Laya.Point {
+    public globalToLocal(ax?: number, ay?: number, result?: Point, skipUpdate?:boolean): Point {
         ax = ax || 0;
         ay = ay || 0;
-        result = result || new Laya.Point();
-        result.x = ax;
-        result.y = ay;
-        result = this._displayObject.globalToLocal(result, false);
+        result = result || new Point();
+        result.set(ax, ay);
+        result = this._displayObject.toLocal(result, null, result, skipUpdate);
 
         if (this._pivotAsAnchor) {
             result.x -= this._pivotX * this._width;
@@ -856,31 +867,31 @@ export class GObject {
         return result;
     }
 
-    public localToGlobalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: Laya.Rectangle): Laya.Rectangle {
+    public localToGlobalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: Rectangle): Rectangle {
         ax = ax || 0;
         ay = ay || 0;
         aw = aw || 0;
         ah = ah || 0;
-        result = result || new Laya.Rectangle();
-        var pt: Laya.Point = this.localToGlobal(ax, ay);
+        result = result || new Rectangle();
+        var pt: Point = this.localToGlobal(ax, ay);
         result.x = pt.x;
         result.y = pt.y;
-        pt = this.localToGlobal(ax + aw, ay + ah);
+        pt = this.localToGlobal(ax + aw, ay + ah, null, true);
         result.width = pt.x - result.x;
         result.height = pt.y - result.y;
         return result;
     }
 
-    public globalToLocalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: Laya.Rectangle): Laya.Rectangle {
+    public globalToLocalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: Rectangle): Rectangle {
         ax = ax || 0;
         ay = ay || 0;
         aw = aw || 0;
         ah = ah || 0;
-        result = result || new Laya.Rectangle();
-        var pt: Laya.Point = this.globalToLocal(ax, ay);
+        result = result || new Rectangle();
+        var pt: Point = this.globalToLocal(ax, ay);
         result.x = pt.x;
         result.y = pt.y;
-        pt = this.globalToLocal(ax + aw, ay + ah);
+        pt = this.globalToLocal(ax + aw, ay + ah, null, true);
         result.width = pt.x - result.x;
         result.height = pt.y - result.y;
         return result;
@@ -899,8 +910,8 @@ export class GObject {
     }
 
     protected createDisplayObject(): void {
-        this._displayObject = new Laya.Sprite();
-        this._displayObject["$owner"] = this;
+        this._displayObject = new Container();
+        (this._displayObject as GObjectView).$owner = this;
     }
 
     protected handleXYChanged(): void {
@@ -915,15 +926,16 @@ export class GObject {
             yv = Math.round(yv);
         }
 
-        this._displayObject.pos(xv + this._pivotOffsetX, yv + this._pivotOffsetY);
+        this._displayObject.position.set(xv + this._pivotOffsetX, yv + this._pivotOffsetY);
     }
 
     protected handleSizeChanged(): void {
-        this._displayObject.size(this._width, this._height);
+        this._displayObject.width = this._width;
+        this._displayObject.height = this._height;
     }
 
     protected handleScaleChanged(): void {
-        this._displayObject.scale(this._scaleX, this._scaleY, true);
+        this._displayObject.scale.set(this._scaleX, this._scaleY);
     }
 
     protected handleGrayedChanged(): void {
@@ -1084,9 +1096,9 @@ export class GObject {
 
     private initDrag(): void {
         if (this._draggable)
-            this.on(Laya.Event.MOUSE_DOWN, this, this.__begin);
+            this.on(Laya.Event.MOUSE_DOWN, this.__begin, this);
         else
-            this.off(Laya.Event.MOUSE_DOWN, this, this.__begin);
+            this.off(Laya.Event.MOUSE_DOWN, this.__begin, this);
     }
 
     private dragBegin(touchID?: number): void {
@@ -1098,15 +1110,14 @@ export class GObject {
             Events.dispatch(Events.DRAG_END, tmp._displayObject, { touchId: touchID });
         }
 
-        sGlobalDragStart.x = Laya.stage.mouseX;
-        sGlobalDragStart.y = Laya.stage.mouseY;
+        sGlobalDragStart.copyFrom(GRoot.inst.mousePosition);
 
         this.localToGlobalRect(0, 0, this.width, this.height, sGlobalRect);
         this._dragTesting = true;
         GObject.draggingObject = this;
 
-        Laya.stage.on(Laya.Event.MOUSE_MOVE, this, this.__moving);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this, this.__end);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__moving, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__end, this);
     }
 
     private dragEnd(): void {
@@ -1119,19 +1130,19 @@ export class GObject {
     }
 
     private reset(): void {
-        Laya.stage.off(Laya.Event.MOUSE_MOVE, this, this.__moving);
-        Laya.stage.off(Laya.Event.MOUSE_UP, this, this.__end);
+        Laya.stage.off(Laya.Event.MOUSE_MOVE, this.__moving, this);
+        Laya.stage.off(Laya.Event.MOUSE_UP, this.__end, this);
     }
 
     private __begin(): void {
         if (!this._dragStartPos)
-            this._dragStartPos = new Laya.Point();
+            this._dragStartPos = new Point();
         this._dragStartPos.x = Laya.stage.mouseX;
         this._dragStartPos.y = Laya.stage.mouseY;
         this._dragTesting = true;
 
-        Laya.stage.on(Laya.Event.MOUSE_MOVE, this, this.__moving);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this, this.__end);
+        Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__moving, this);
+        Laya.stage.on(Laya.Event.MOUSE_UP, this.__end, this);
     }
 
     private __moving(evt: Laya.Event): void {
@@ -1155,7 +1166,7 @@ export class GObject {
             var yy: number = Laya.stage.mouseY - sGlobalDragStart.y + sGlobalRect.y;
 
             if (this._dragBounds) {
-                var rect: Laya.Rectangle = GRoot.inst.localToGlobalRect(this._dragBounds.x, this._dragBounds.y,
+                var rect: Rectangle = GRoot.inst.localToGlobalRect(this._dragBounds.x, this._dragBounds.y,
                     this._dragBounds.width, this._dragBounds.height, sDragHelperRect);
                 if (xx < rect.x)
                     xx = rect.x;
@@ -1175,7 +1186,7 @@ export class GObject {
             }
 
             sUpdateInDragging = true;
-            var pt: Laya.Point = this.parent.globalToLocal(xx, yy, sHelperPoint);
+            var pt: Point = this.parent.globalToLocal(xx, yy, sHelperPoint);
             this.setXY(Math.round(pt.x), Math.round(pt.y));
             sUpdateInDragging = false;
 
@@ -1197,8 +1208,8 @@ export class GObject {
     }
     //-------------------------------------------------------------------
 
-    public static cast(sprite: Laya.Sprite): GObject {
-        return <GObject>(sprite["$owner"]);
+    public static cast(sprite: Container): GObject {
+        return (sprite as GObjectView).$owner;
     }
 }
 
@@ -1208,10 +1219,14 @@ export const BlendMode = {
     //4: Laya.BlendMode.SCREEN
 }
 
+export interface GObjectView extends Container {
+    $owner: GObject;
+}
+
 var _gInstanceCounter: number = 0;
-var sGlobalDragStart: Laya.Point = new Laya.Point();
-var sGlobalRect: Laya.Rectangle = new Laya.Rectangle();
-var sHelperPoint: Laya.Point = new Laya.Point();
-var sDragHelperRect: Laya.Rectangle = new Laya.Rectangle();
+var sGlobalDragStart: Point = new Point();
+var sGlobalRect: Rectangle = new Rectangle();
+var sHelperPoint: Point = new Point();
+var sDragHelperRect: Rectangle = new Rectangle();
 var sUpdateInDragging: boolean;
 var sDraggingQuery: boolean;

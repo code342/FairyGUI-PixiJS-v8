@@ -73,16 +73,6 @@ export class ToolSet {
             return parseInt(str, 16);
     }
 
-    public static displayObjectToGObject(obj: Laya.Node): GObject {
-        while (obj && !(obj instanceof Laya.Stage)) {
-            if (obj["$owner"])
-                return obj["$owner"];
-
-            obj = obj.parent;
-        }
-        return null;
-    }
-
     public static encodeHTML(str: string): string {
         if (!str)
             return "";

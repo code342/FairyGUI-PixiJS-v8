@@ -10,13 +10,13 @@ export class PopupMenu {
                 throw "UIConfig.popupMenu not defined";
         }
         this._contentPane = UIPackage.createObjectFromURL(resourceURL).asCom;
-        this._contentPane.on(Laya.Event.DISPLAY, this, this.__addedToStage);
+        this._contentPane.on(Laya.Event.DISPLAY, this.__addedToStage, this);
         this._list = <GList>(this._contentPane.getChild("list"));
         this._list.removeChildrenToPool();
         this._list.addRelation(this._contentPane, RelationType.Width);
         this._list.removeRelation(this._contentPane, RelationType.Height);
         this._contentPane.addRelation(this._list, RelationType.Height);
-        this._list.on(Events.CLICK_ITEM, this, this.__clickItem);
+        this._list.on(Events.CLICK_ITEM, this.__clickItem, this);
     }
 
     public dispose(): void {

@@ -21,9 +21,9 @@ export class Window extends GComponent {
         this._uiSources = [];
         this.bringToFontOnClick = UIConfig.bringWindowToFrontOnClick;
 
-        this.displayObject.on(Laya.Event.DISPLAY, this, this.__onShown);
-        this.displayObject.on(Laya.Event.UNDISPLAY, this, this.__onHidden);
-        this.displayObject.on(Laya.Event.MOUSE_DOWN, this, this.__mouseDown);
+        this.displayObject.on(Laya.Event.DISPLAY, this.__onShown, this);
+        this.displayObject.on(Laya.Event.UNDISPLAY, this.__onHidden, this);
+        this.displayObject.on(Laya.Event.MOUSE_DOWN, this.__mouseDown, this);
     }
 
     public addUISource(source: IUISource): void {
@@ -77,7 +77,7 @@ export class Window extends GComponent {
         if (this._dragArea != value) {
             if (this._dragArea) {
                 this._dragArea.draggable = false;
-                this._dragArea.off(Events.DRAG_START, this, this.__dragStart);
+                this._dragArea.off(Events.DRAG_START, this.__dragStart, this);
             }
 
             this._dragArea = value;
@@ -85,7 +85,7 @@ export class Window extends GComponent {
                 if (this._dragArea instanceof GGraph)
                     this._dragArea.asGraph.drawRect(0, null, null);
                 this._dragArea.draggable = true;
-                this._dragArea.on(Events.DRAG_START, this, this.__dragStart);
+                this._dragArea.on(Events.DRAG_START, this.__dragStart, this);
             }
         }
     }

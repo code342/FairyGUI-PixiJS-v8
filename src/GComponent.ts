@@ -1,3 +1,5 @@
+import { GObject } from "./GObject";
+
 export class GComponent extends GObject {
     private _sortingChildCount: number = 0;
     private _opaque: boolean;
@@ -1187,8 +1189,8 @@ export class GComponent extends GObject {
         }
 
         if (this._transitions.length > 0) {
-            this.displayObject.on(Laya.Event.DISPLAY, this, this.___added);
-            this.displayObject.on(Laya.Event.UNDISPLAY, this, this.___removed);
+            this.displayObject.on(Laya.Event.DISPLAY, this.___added, this);
+            this.displayObject.on(Laya.Event.UNDISPLAY, this.___removed, this);
         }
 
         this.applyAllControllers();

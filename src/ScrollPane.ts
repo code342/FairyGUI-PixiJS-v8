@@ -99,8 +99,8 @@ export class ScrollPane {
         this._mouseWheelStep = this._scrollStep * 2;
         this._decelerationRate = UIConfig.defaultScrollDecelerationRate;
 
-        this._owner.on(Laya.Event.MOUSE_DOWN, this, this.__mouseDown);
-        this._owner.on(Laya.Event.MOUSE_WHEEL, this, this.__mouseWheel);
+        this._owner.on(Laya.Event.MOUSE_DOWN, this.__mouseDown, this);
+        this._owner.on(Laya.Event.MOUSE_WHEEL, this.__mouseWheel, this);
     }
 
     public setup(buffer: ByteBuffer): void {
@@ -577,9 +577,9 @@ export class ScrollPane {
     }
 
     public cancelDragging(): void {
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_MOVE, this, this.__mouseMove);
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_UP, this, this.__mouseUp);
-        this._owner.displayObject.stage.off(Laya.Event.CLICK, this, this.__click);
+        this._owner.displayObject.stage.off(Laya.Event.MOUSE_MOVE, this.__mouseMove, this);
+        this._owner.displayObject.stage.off(Laya.Event.MOUSE_UP, this.__mouseUp, this);
+        this._owner.displayObject.stage.off(Laya.Event.CLICK, this.__click, this);
 
         if (ScrollPane.draggingPane == this)
             ScrollPane.draggingPane = null;
@@ -997,9 +997,9 @@ export class ScrollPane {
         this._velocityScale = 1;
         this._lastMoveTime = Laya.timer.currTimer / 1000;
 
-        this._owner.displayObject.stage.on(Laya.Event.MOUSE_MOVE, this, this.__mouseMove);
-        this._owner.displayObject.stage.on(Laya.Event.MOUSE_UP, this, this.__mouseUp);
-        this._owner.displayObject.stage.on(Laya.Event.CLICK, this, this.__click);
+        this._owner.displayObject.stage.on(Laya.Event.MOUSE_MOVE, this.__mouseMove, this);
+        this._owner.displayObject.stage.on(Laya.Event.MOUSE_UP, this.__mouseUp, this);
+        this._owner.displayObject.stage.on(Laya.Event.CLICK, this.__click, this);
     }
 
     private __mouseMove(): void {
@@ -1181,9 +1181,9 @@ export class ScrollPane {
         if (this._owner.isDisposed)
             return;
 
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_MOVE, this, this.__mouseMove);
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_UP, this, this.__mouseUp);
-        this._owner.displayObject.stage.off(Laya.Event.CLICK, this, this.__click);
+        this._owner.displayObject.stage.off(Laya.Event.MOUSE_MOVE, this.__mouseMove, this);
+        this._owner.displayObject.stage.off(Laya.Event.MOUSE_UP, this.__mouseUp, this);
+        this._owner.displayObject.stage.off(Laya.Event.CLICK, this.__click, this);
 
         if (ScrollPane.draggingPane == this)
             ScrollPane.draggingPane = null;

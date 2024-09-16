@@ -170,10 +170,10 @@ export class GSlider extends GComponent {
             this._barStartY = this._barObjectV.y;
         }
         if (this._gripObject) {
-            this._gripObject.on(Laya.Event.MOUSE_DOWN, this, this.__gripMouseDown);
+            this._gripObject.on(Laya.Event.MOUSE_DOWN, this.__gripMouseDown, this);
         }
 
-        this.displayObject.on(Laya.Event.MOUSE_DOWN, this, this.__barMouseDown);
+        this.displayObject.on(Laya.Event.MOUSE_DOWN, this.__barMouseDown, this);
     }
 
     protected handleSizeChanged(): void {
@@ -215,8 +215,8 @@ export class GSlider extends GComponent {
         this._clickPos = this.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY);
         this._clickPercent = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
 
-        Laya.stage.on(Laya.Event.MOUSE_MOVE, this, this.__gripMouseMove);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this, this.__gripMouseUp);
+        Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        Laya.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
     }
 
     private __gripMouseMove(evt: Laya.Event): void {
@@ -240,8 +240,8 @@ export class GSlider extends GComponent {
     }
 
     private __gripMouseUp(evt: Laya.Event): void {
-        Laya.stage.off(Laya.Event.MOUSE_MOVE, this, this.__gripMouseMove);
-        Laya.stage.off(Laya.Event.MOUSE_UP, this, this.__gripMouseUp);
+        Laya.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        Laya.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
     }
 
     private __barMouseDown(evt: Laya.Event): void {

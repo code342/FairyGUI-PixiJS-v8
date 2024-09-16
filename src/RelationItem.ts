@@ -502,9 +502,9 @@ export class RelationItem {
 
     private addRefTarget(): void {
         if (this._target != this._owner.parent)
-            this._target.on(Events.XY_CHANGED, this, this.__targetXYChanged);
-        this._target.on(Events.SIZE_CHANGED, this, this.__targetSizeChanged);
-        this._target.on(Events.SIZE_DELAY_CHANGE, this, this.__targetSizeWillChange);
+            this._target.on(Events.XY_CHANGED, this.__targetXYChanged, this);
+        this._target.on(Events.SIZE_CHANGED, this.__targetSizeChanged, this);
+        this._target.on(Events.SIZE_DELAY_CHANGE, this.__targetSizeWillChange, this);
 
         this._targetX = this._targetInitX = this._target.x;
         this._targetY = this._targetInitY = this._target.y;
@@ -516,9 +516,9 @@ export class RelationItem {
         if (this._target.displayObject == null)
             return;
 
-        this._target.off(Events.XY_CHANGED, this, this.__targetXYChanged);
-        this._target.off(Events.SIZE_CHANGED, this, this.__targetSizeChanged);
-        this._target.off(Events.SIZE_DELAY_CHANGE, this, this.__targetSizeWillChange);
+        this._target.off(Events.XY_CHANGED, this.__targetXYChanged, this);
+        this._target.off(Events.SIZE_CHANGED, this.__targetSizeChanged, this);
+        this._target.off(Events.SIZE_DELAY_CHANGE, this.__targetSizeWillChange, this);
     }
 
     private __targetXYChanged(): void {

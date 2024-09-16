@@ -1,3 +1,6 @@
+import { Application, Container, Point } from "pixi.js";
+import { GComponent } from "./GComponent";
+
 export class GRoot extends GComponent {
     public static contentScaleLevel: number = 0;
 
@@ -8,7 +11,8 @@ export class GRoot extends GComponent {
     private _tooltipWin: GObject;
     private _defaultTooltipWin: GObject;
     private _checkPopups: boolean;
-
+    public app:Application;
+    public stage:Container;
     private static _inst: GRoot;
 
     public static get inst(): GRoot {
@@ -26,6 +30,15 @@ export class GRoot extends GComponent {
         this._popupStack = [];
         this._justClosedPopups = [];
         this.displayObject.once(Laya.Event.DISPLAY, this, this.__addedToStage);
+    }
+
+    public launch(app:Application){
+        this.app = app;
+        this.stage = app.stage;
+    }
+
+    public get mousePosition():Point{
+        return this.app.renderer.events.pointer.global
     }
 
     public showWindow(win: Window): void {
@@ -335,15 +348,15 @@ export class GRoot extends GComponent {
     }
 
     private __addedToStage(): void {
-        Laya.stage.on(Laya.Event.MOUSE_DOWN, this, this.__stageMouseDown);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this, this.__stageMouseUp);
+        Laya.stage.on(Laya.Event.MOUSE_DOWN, this.__stageMouseDown, this);
+        Laya.stage.on(Laya.Event.MOUSE_UP, this.__stageMouseUp, this);
 
         this._modalLayer = new GGraph();
         this._modalLayer.setSize(this.width, this.height);
         this._modalLayer.drawRect(0, null, UIConfig.modalLayerColor);
         this._modalLayer.addRelation(this, RelationType.Size);
 
-        this.displayObject.stage.on(Laya.Event.RESIZE, this, this.__winResize);
+        this.displayObject.stage.on(Laya.Event.RESIZE, this.__winResize, this);
 
         this.__winResize();
     }

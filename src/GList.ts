@@ -228,7 +228,7 @@ export class GList extends GComponent {
             child.selected = false;
             child.changeStateOnClick = false;
         }
-        child.on(Laya.Event.CLICK, this, this.__clickItem);
+        child.on(Laya.Event.CLICK, this.__clickItem, this);
 
         return child;
     }
@@ -249,7 +249,7 @@ export class GList extends GComponent {
         if (dispose)
             child.dispose();
         else
-            child.off(Laya.Event.CLICK, this, this.__clickItem);
+            child.off(Laya.Event.CLICK, this.__clickItem, this);
 
         return child;
     }
@@ -1001,7 +1001,7 @@ export class GList extends GComponent {
                     this._scrollPane._loop = 1;
             }
 
-            this.on(Events.SCROLL, this, this.__scrolled);
+            this.on(Events.SCROLL, this.__scrolled, this);
             this.setVirtualListChangedFlag(true);
         }
     }

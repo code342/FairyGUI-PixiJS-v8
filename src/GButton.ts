@@ -379,10 +379,10 @@ export class GButton extends GComponent {
         if (this._mode == ButtonMode.Common)
             this.setState(GButton.UP);
 
-        this.on(Laya.Event.ROLL_OVER, this, this.__rollover);
-        this.on(Laya.Event.ROLL_OUT, this, this.__rollout);
-        this.on(Laya.Event.MOUSE_DOWN, this, this.__mousedown);
-        this.on(Laya.Event.CLICK, this, this.__click);
+        this.on(Laya.Event.ROLL_OVER, this.__rollover, this);
+        this.on(Laya.Event.ROLL_OUT, this.__rollout, this);
+        this.on(Laya.Event.MOUSE_DOWN, this.__mousedown, this);
+        this.on(Laya.Event.CLICK, this.__click, this);
     }
 
     public setup_afterAdd(buffer: ByteBuffer, beginPos: number): void {
@@ -460,7 +460,7 @@ export class GButton extends GComponent {
         this._down = true;
         GRoot.inst.checkPopups(evt.target);
 
-        Laya.stage.on(Laya.Event.MOUSE_UP, this, this.__mouseup);
+        Laya.stage.on(Laya.Event.MOUSE_UP, this.__mouseup, this);
 
         if (this._mode == ButtonMode.Common) {
             if (this.grayed && this._buttonController && this._buttonController.hasPage(GButton.DISABLED))
@@ -479,7 +479,7 @@ export class GButton extends GComponent {
 
     private __mouseup(): void {
         if (this._down) {
-            Laya.stage.off(Laya.Event.MOUSE_UP, this, this.__mouseup);
+            Laya.stage.off(Laya.Event.MOUSE_UP, this.__mouseup, this);
             this._down = false;
 
             if (this._displayObject == null)

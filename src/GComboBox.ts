@@ -304,7 +304,7 @@ export class GComboBox extends GComponent {
                 Laya.Log.print(this.resourceURL + ": 下拉框的弹出元件里必须包含名为list的列表");
                 return;
             }
-            this._list.on(Events.CLICK_ITEM, this, this.__clickItem);
+            this._list.on(Events.CLICK_ITEM, this.__clickItem, this);
 
             this._list.addRelation(this.dropdown, RelationType.Width);
             this._list.removeRelation(this.dropdown, RelationType.Height);
@@ -312,12 +312,12 @@ export class GComboBox extends GComponent {
             this.dropdown.addRelation(this._list, RelationType.Height);
             this.dropdown.removeRelation(this._list, RelationType.Width);
 
-            this.dropdown.displayObject.on(Laya.Event.UNDISPLAY, this, this.__popupWinClosed);
+            this.dropdown.displayObject.on(Laya.Event.UNDISPLAY, this.__popupWinClosed, this);
         }
 
-        this.on(Laya.Event.ROLL_OVER, this, this.__rollover);
-        this.on(Laya.Event.ROLL_OUT, this, this.__rollout);
-        this.on(Laya.Event.MOUSE_DOWN, this, this.__mousedown);
+        this.on(Laya.Event.ROLL_OVER, this.__rollover, this);
+        this.on(Laya.Event.ROLL_OUT, this.__rollout, this);
+        this.on(Laya.Event.MOUSE_DOWN, this.__mousedown, this);
     }
 
     public setup_afterAdd(buffer: ByteBuffer, beginPos: number): void {
@@ -450,7 +450,7 @@ export class GComboBox extends GComponent {
         this._down = true;
         GRoot.inst.checkPopups(evt.target);
 
-        Laya.stage.on(Laya.Event.MOUSE_UP, this, this.__mouseup);
+        Laya.stage.on(Laya.Event.MOUSE_UP, this.__mouseup, this);
 
         if (this.dropdown)
             this.showDropdown();
@@ -459,7 +459,7 @@ export class GComboBox extends GComponent {
     private __mouseup(): void {
         if (this._down) {
             this._down = false;
-            Laya.stage.off(Laya.Event.MOUSE_UP, this, this.__mouseup);
+            Laya.stage.off(Laya.Event.MOUSE_UP, this.__mouseup, this);
 
             if (this.dropdown && !this.dropdown.parent) {
                 if (this._over)

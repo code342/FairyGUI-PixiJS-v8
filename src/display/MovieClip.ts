@@ -31,8 +31,8 @@ export class MovieClip extends Image {
 
         this.setPlaySettings();
 
-        this.on(Laya.Event.DISPLAY, this, this.__addToStage);
-        this.on(Laya.Event.UNDISPLAY, this, this.__removeFromStage);
+        this.on(Laya.Event.DISPLAY, this.__addToStage, this);
+        this.on(Laya.Event.UNDISPLAY, this.__removeFromStage, this);
     }
 
     public get frames(): Frame[] {

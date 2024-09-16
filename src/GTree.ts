@@ -122,7 +122,7 @@ export class GTree extends GList {
 
         cc = child.getController("expanded");
         if (cc) {
-            cc.on(Events.STATE_CHANGED, this, this.__expandedStateChanged);
+            cc.on(Events.STATE_CHANGED, this.__expandedStateChanged, this);
             cc.selectedIndex = node.expanded ? 1 : 0;
         }
 
@@ -131,7 +131,7 @@ export class GTree extends GList {
             cc.selectedIndex = node.isFolder ? 0 : 1;
 
         if (node.isFolder)
-            child.on(Laya.Event.MOUSE_DOWN, this, this.__cellMouseDown);
+            child.on(Laya.Event.MOUSE_DOWN, this.__cellMouseDown, this);
 
         if (typeof this.treeNodeRender === 'function')
             this.treeNodeRender(node, child);

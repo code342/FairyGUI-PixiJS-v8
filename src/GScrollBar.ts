@@ -77,14 +77,14 @@ export class GScrollBar extends GComponent {
         this._arrowButton1 = this.getChild("arrow1");
         this._arrowButton2 = this.getChild("arrow2");
 
-        this._grip.on(Laya.Event.MOUSE_DOWN, this, this.__gripMouseDown);
+        this._grip.on(Laya.Event.MOUSE_DOWN, this.__gripMouseDown, this);
 
         if (this._arrowButton1)
-            this._arrowButton1.on(Laya.Event.MOUSE_DOWN, this, this.__arrowButton1Click);
+            this._arrowButton1.on(Laya.Event.MOUSE_DOWN, this.__arrowButton1Click, this);
         if (this._arrowButton2)
-            this._arrowButton2.on(Laya.Event.MOUSE_DOWN, this, this.__arrowButton2Click);
+            this._arrowButton2.on(Laya.Event.MOUSE_DOWN, this.__arrowButton2Click, this);
 
-        this.on(Laya.Event.MOUSE_DOWN, this, this.__barMouseDown);
+        this.on(Laya.Event.MOUSE_DOWN, this.__barMouseDown, this);
     }
 
     private __gripMouseDown(evt: Laya.Event): void {
@@ -93,8 +93,8 @@ export class GScrollBar extends GComponent {
         this._gripDragging = true;
         this._target.updateScrollBarVisible();
 
-        Laya.stage.on(Laya.Event.MOUSE_MOVE, this, this.__gripMouseMove);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this, this.__gripMouseUp);
+        Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        Laya.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
 
         this.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY, this._dragOffset);
         this._dragOffset.x -= this._grip.x;
@@ -120,8 +120,8 @@ export class GScrollBar extends GComponent {
         if (!this.onStage)
             return;
 
-        Laya.stage.off(Laya.Event.MOUSE_MOVE, this, this.__gripMouseMove);
-        Laya.stage.off(Laya.Event.MOUSE_UP, this, this.__gripMouseUp);
+        Laya.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        Laya.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
 
         this._gripDragging = false;
         this._target.updateScrollBarVisible();
