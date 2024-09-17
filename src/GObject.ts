@@ -1,5 +1,6 @@
 import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter} from "pixi.js";
 import { GRoot } from "./GRoot";
+import { MouseEvents } from "./utils/LayaCompliant";
 
 
 export class GObject {
@@ -504,14 +505,14 @@ export class GObject {
 
     public set tooltips(value: string) {
         if (this._tooltips) {
-            this.off(Laya.Event.ROLL_OVER, this.__rollOver, this);
-            this.off(Laya.Event.ROLL_OUT, this.__rollOut, this);
+            this.off(MouseEvents.Over, this.__rollOver, this);
+            this.off(MouseEvents.Out, this.__rollOut, this);
         }
 
         this._tooltips = value;
         if (this._tooltips) {
-            this.on(Laya.Event.ROLL_OVER, this.__rollOver, this);
-            this.on(Laya.Event.ROLL_OUT, this.__rollOut, this);
+            this.on(MouseEvents.Over, this.__rollOver, this);
+            this.on(MouseEvents.Out, this.__rollOut, this);
         }
     }
 
@@ -778,15 +779,15 @@ export class GObject {
     }
 
     public onClick(thisObj: any, listener: (...args: any) => void, args?: any[]): void {
-        this.on("pointertap", listener, thisObj, args);
+        this.on(MouseEvents.Click, listener, thisObj, args);
     }
 
     public offClick(thisObj: any, listener: (...args: any) => void): void {
-        this.off("pointertap", listener, thisObj);
+        this.off(MouseEvents.Click, listener, thisObj);
     }
 
     public hasClickListener(): boolean {
-        return this._displayObject.listenerCount("pointertap") > 0;
+        return this._displayObject.listenerCount(MouseEvents.Click) > 0;
     }
 
     public on(type: string, listener: (...args: any) => void, thisObject: any, args?: any[]): void {
@@ -1096,9 +1097,9 @@ export class GObject {
 
     private initDrag(): void {
         if (this._draggable)
-            this.on(Laya.Event.MOUSE_DOWN, this.__begin, this);
+            this.on(MouseEvents.Down, this.__begin, this);
         else
-            this.off(Laya.Event.MOUSE_DOWN, this.__begin, this);
+            this.off(MouseEvents.Down, this.__begin, this);
     }
 
     private dragBegin(touchID?: number): void {
@@ -1116,8 +1117,8 @@ export class GObject {
         this._dragTesting = true;
         GObject.draggingObject = this;
 
-        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__moving, this);
-        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__end, this);
+        GRoot.inst.stage.on(MouseEvents.Move, this.__moving, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__end, this);
     }
 
     private dragEnd(): void {
@@ -1130,8 +1131,8 @@ export class GObject {
     }
 
     private reset(): void {
-        GRoot.inst.stage.off(Laya.Event.MOUSE_MOVE, this.__moving, this);
-        GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__end, this);
+        GRoot.inst.stage.off(MouseEvents.Move, this.__moving, this);
+        GRoot.inst.stage.off(MouseEvents.Up, this.__end, this);
     }
 
     private __begin(): void {
@@ -1140,8 +1141,8 @@ export class GObject {
         this._dragStartPos.copyFrom(GRoot.inst.mousePosition);
         this._dragTesting = true;
 
-        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__moving, this);
-        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__end, this);
+        GRoot.inst.stage.on(MouseEvents.Move, this.__moving, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__end, this);
     }
 
     private __moving(evt: Laya.Event): void {

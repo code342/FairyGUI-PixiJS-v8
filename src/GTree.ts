@@ -1,3 +1,5 @@
+import { MouseEvents } from "./utils/LayaCompliant";
+
 export class GTree extends GList {
     public treeNodeRender: Laya.Handler | ((node: GTreeNode, obj: GComponent) => void);
     public treeNodeWillExpand: Laya.Handler | ((node: GTreeNode, expanded: boolean) => void);
@@ -131,7 +133,7 @@ export class GTree extends GList {
             cc.selectedIndex = node.isFolder ? 0 : 1;
 
         if (node.isFolder)
-            child.on(Laya.Event.MOUSE_DOWN, this.__cellMouseDown, this);
+            child.on(MouseEvents.Down, this.__cellMouseDown, this);
 
         if (typeof this.treeNodeRender === 'function')
             this.treeNodeRender(node, child);

@@ -1,3 +1,5 @@
+import { DisplayEvent } from "../utils/LayaCompliant";
+
 export interface Frame {
     addDelay: number;
     texture?: Laya.Texture;
@@ -31,8 +33,8 @@ export class MovieClip extends Image {
 
         this.setPlaySettings();
 
-        this.on(Laya.Event.DISPLAY, this.__addToStage, this);
-        this.on(Laya.Event.UNDISPLAY, this.__removeFromStage, this);
+        this.on(DisplayEvent.Added, this.__addToStage, this);
+        this.on(DisplayEvent.Removed, this.__removeFromStage, this);
     }
 
     public get frames(): Frame[] {

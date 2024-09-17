@@ -1,5 +1,6 @@
 import { Point } from "pixi.js";
 import { GRoot } from "./GRoot";
+import { MouseEvents } from "./utils/LayaCompliant";
 
 export class GScrollBar extends GComponent {
     private _grip: GObject;
@@ -80,14 +81,14 @@ export class GScrollBar extends GComponent {
         this._arrowButton1 = this.getChild("arrow1");
         this._arrowButton2 = this.getChild("arrow2");
 
-        this._grip.on(Laya.Event.MOUSE_DOWN, this.__gripMouseDown, this);
+        this._grip.on(MouseEvents.Down, this.__gripMouseDown, this);
 
         if (this._arrowButton1)
-            this._arrowButton1.on(Laya.Event.MOUSE_DOWN, this.__arrowButton1Click, this);
+            this._arrowButton1.on(MouseEvents.Down, this.__arrowButton1Click, this);
         if (this._arrowButton2)
-            this._arrowButton2.on(Laya.Event.MOUSE_DOWN, this.__arrowButton2Click, this);
+            this._arrowButton2.on(MouseEvents.Down, this.__arrowButton2Click, this);
 
-        this.on(Laya.Event.MOUSE_DOWN, this.__barMouseDown, this);
+        this.on(MouseEvents.Down, this.__barMouseDown, this);
     }
 
     private __gripMouseDown(evt: Laya.Event): void {
@@ -96,8 +97,8 @@ export class GScrollBar extends GComponent {
         this._gripDragging = true;
         this._target.updateScrollBarVisible();
 
-        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.on(MouseEvents.Move, this.__gripMouseMove, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__gripMouseUp, this);
 
         let mousePoint:Point = GRoot.inst.mousePosition;
         this.globalToLocal(mousePoint.x, mousePoint.y, this._dragOffset);
@@ -125,8 +126,8 @@ export class GScrollBar extends GComponent {
         if (!this.onStage)
             return;
 
-        GRoot.inst.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.off(MouseEvents.Move, this.__gripMouseMove, this);
+        GRoot.inst.stage.off(MouseEvents.Up, this.__gripMouseUp, this);
 
         this._gripDragging = false;
         this._target.updateScrollBarVisible();

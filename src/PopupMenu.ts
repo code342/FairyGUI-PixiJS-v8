@@ -1,3 +1,5 @@
+import { DisplayEvent } from "./utils/LayaCompliant";
+
 export class PopupMenu {
 
     protected _contentPane: GComponent;
@@ -10,7 +12,7 @@ export class PopupMenu {
                 throw "UIConfig.popupMenu not defined";
         }
         this._contentPane = UIPackage.createObjectFromURL(resourceURL).asCom;
-        this._contentPane.on(Laya.Event.DISPLAY, this.__addedToStage, this);
+        this._contentPane.on(DisplayEvent.Added, this.__addedToStage, this);
         this._list = <GList>(this._contentPane.getChild("list"));
         this._list.removeChildrenToPool();
         this._list.addRelation(this._contentPane, RelationType.Width);

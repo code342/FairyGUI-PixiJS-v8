@@ -1,3 +1,6 @@
+import { GComponent } from "./GComponent";
+import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
+
 export class Window extends GComponent {
     private _contentPane: GComponent;
     private _modalWaitPane: GObject;
@@ -21,9 +24,9 @@ export class Window extends GComponent {
         this._uiSources = [];
         this.bringToFontOnClick = UIConfig.bringWindowToFrontOnClick;
 
-        this.displayObject.on(Laya.Event.DISPLAY, this.__onShown, this);
-        this.displayObject.on(Laya.Event.UNDISPLAY, this.__onHidden, this);
-        this.displayObject.on(Laya.Event.MOUSE_DOWN, this.__mouseDown, this);
+        this.displayObject.on(DisplayEvent.Added, this.__onShown, this);
+        this.displayObject.on(DisplayEvent.Removed, this.__onHidden, this);
+        this.displayObject.on(MouseEvents.Down, this.__mouseDown, this);
     }
 
     public addUISource(source: IUISource): void {

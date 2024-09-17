@@ -1,6 +1,7 @@
 import { Application, Container, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
 import { GObject, GObjectView } from "./GObject";
+import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 
 export class GRoot extends GComponent {
     public static contentScaleLevel: number = 0;
@@ -30,7 +31,7 @@ export class GRoot extends GComponent {
         this.opaque = false;
         this._popupStack = [];
         this._justClosedPopups = [];
-        this.displayObject.once(Laya.Event.DISPLAY, this.__addedToStage, this);
+        this.displayObject.once(DisplayEvent.Added, this.__addedToStage, this);
     }
 
     public launch(app:Application){
@@ -351,15 +352,15 @@ export class GRoot extends GComponent {
     }
 
     private __addedToStage(): void {
-        GRoot.inst.stage.on(Laya.Event.MOUSE_DOWN, this.__stageMouseDown, this);
-        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__stageMouseUp, this);
+        GRoot.inst.stage.on(MouseEvents.Down, this.__stageMouseDown, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__stageMouseUp, this);
 
         this._modalLayer = new GGraph();
         this._modalLayer.setSize(this.width, this.height);
         this._modalLayer.drawRect(0, null, UIConfig.modalLayerColor);
         this._modalLayer.addRelation(this, RelationType.Size);
 
-        this.displayObject.stage.on(Laya.Event.RESIZE, this.__winResize, this);
+        this.app.renderer.on('resize', this.__winResize, this);
 
         this.__winResize();
     }

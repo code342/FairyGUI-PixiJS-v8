@@ -1,3 +1,5 @@
+import { MouseEvents } from "./utils/LayaCompliant";
+
 export class GList extends GComponent {
     public itemRenderer: Laya.Handler | ((index: number, item: GObject) => void);
     public itemProvider: Laya.Handler | ((index: number) => string);
@@ -228,7 +230,7 @@ export class GList extends GComponent {
             child.selected = false;
             child.changeStateOnClick = false;
         }
-        child.on(Laya.Event.CLICK, this.__clickItem, this);
+        child.on(MouseEvents.Click, this.__clickItem, this);
 
         return child;
     }
@@ -249,7 +251,7 @@ export class GList extends GComponent {
         if (dispose)
             child.dispose();
         else
-            child.off(Laya.Event.CLICK, this.__clickItem, this);
+            child.off(MouseEvents.Click, this.__clickItem, this);
 
         return child;
     }

@@ -1,4 +1,5 @@
 import { GRoot } from "./GRoot";
+import { MouseEvents } from "./utils/LayaCompliant";
 
 export class GSlider extends GComponent {
     private _min: number = 0;
@@ -172,10 +173,10 @@ export class GSlider extends GComponent {
             this._barStartY = this._barObjectV.y;
         }
         if (this._gripObject) {
-            this._gripObject.on(Laya.Event.MOUSE_DOWN, this.__gripMouseDown, this);
+            this._gripObject.on(MouseEvents.Down, this.__gripMouseDown, this);
         }
 
-        this.displayObject.on(Laya.Event.MOUSE_DOWN, this.__barMouseDown, this);
+        this.displayObject.on(MouseEvents.Down, this.__barMouseDown, this);
     }
 
     protected handleSizeChanged(): void {
@@ -218,8 +219,8 @@ export class GSlider extends GComponent {
         this._clickPos = this.globalToLocal(mousePoint.x, mousePoint.y);
         this._clickPercent = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
 
-        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.on(MouseEvents.Move, this.__gripMouseMove, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__gripMouseUp, this);
     }
 
     private __gripMouseMove(evt: Laya.Event): void {
@@ -244,8 +245,8 @@ export class GSlider extends GComponent {
     }
 
     private __gripMouseUp(evt: Laya.Event): void {
-        GRoot.inst.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.off(MouseEvents.Move, this.__gripMouseMove, this);
+        GRoot.inst.stage.off(MouseEvents.Up, this.__gripMouseUp, this);
     }
 
     private __barMouseDown(evt: Laya.Event): void {

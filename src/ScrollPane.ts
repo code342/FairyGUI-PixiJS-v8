@@ -1,5 +1,6 @@
-import { Point } from "pixi.js";
+import { FederatedWheelEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
+import { MouseEvents } from "./utils/LayaCompliant";
 
 export class ScrollPane {
     private _owner: GComponent;
@@ -102,8 +103,8 @@ export class ScrollPane {
         this._mouseWheelStep = this._scrollStep * 2;
         this._decelerationRate = UIConfig.defaultScrollDecelerationRate;
 
-        this._owner.on(Laya.Event.MOUSE_DOWN, this.__mouseDown, this);
-        this._owner.on(Laya.Event.MOUSE_WHEEL, this.__mouseWheel, this);
+        this._owner.on(MouseEvents.Down, this.__mouseDown, this);
+        this._owner.on(MouseEvents.Wheel, this.__mouseWheel, this);
     }
 
     public setup(buffer: ByteBuffer): void {
@@ -580,9 +581,9 @@ export class ScrollPane {
     }
 
     public cancelDragging(): void {
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_MOVE, this.__mouseMove, this);
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_UP, this.__mouseUp, this);
-        this._owner.displayObject.stage.off(Laya.Event.CLICK, this.__click, this);
+        this._owner.displayObject.stage.off(MouseEvents.Move, this.__mouseMove, this);
+        this._owner.displayObject.stage.off(MouseEvents.Up, this.__mouseUp, this);
+        this._owner.displayObject.stage.off(MouseEvents.Click, this.__click, this);
 
         if (ScrollPane.draggingPane == this)
             ScrollPane.draggingPane = null;
@@ -1001,9 +1002,9 @@ export class ScrollPane {
         this._velocityScale = 1;
         this._lastMoveTime = Laya.timer.currTimer / 1000;
 
-        this._owner.displayObject.stage.on(Laya.Event.MOUSE_MOVE, this.__mouseMove, this);
-        this._owner.displayObject.stage.on(Laya.Event.MOUSE_UP, this.__mouseUp, this);
-        this._owner.displayObject.stage.on(Laya.Event.CLICK, this.__click, this);
+        this._owner.displayObject.stage.on(MouseEvents.Move, this.__mouseMove, this);
+        this._owner.displayObject.stage.on(MouseEvents.Up, this.__mouseUp, this);
+        this._owner.displayObject.stage.on(MouseEvents.Click, this.__click, this);
     }
 
     private __mouseMove(): void {
@@ -1186,9 +1187,9 @@ export class ScrollPane {
         if (this._owner.isDisposed)
             return;
 
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_MOVE, this.__mouseMove, this);
-        this._owner.displayObject.stage.off(Laya.Event.MOUSE_UP, this.__mouseUp, this);
-        this._owner.displayObject.stage.off(Laya.Event.CLICK, this.__click, this);
+        this._owner.displayObject.stage.off(MouseEvents.Move, this.__mouseMove, this);
+        this._owner.displayObject.stage.off(MouseEvents.Up, this.__mouseUp, this);
+        this._owner.displayObject.stage.off(MouseEvents.Click, this.__click, this);
 
         if (ScrollPane.draggingPane == this)
             ScrollPane.draggingPane = null;
@@ -1298,11 +1299,11 @@ export class ScrollPane {
         this._dragged = false;
     }
 
-    private __mouseWheel(evt: Laya.Event): void {
+    private __mouseWheel(evt: FederatedWheelEvent): void {
         if (!this._mouseWheelEnabled)
             return;
-
-        let delta = Math.sign(evt.delta);
+        let delta = evt.deltaY * 0.025;
+        delta = Math.sign(delta);
         if (this._overlapSize.x > 0 && this._overlapSize.y == 0) {
             if (this._pageMode)
                 this.setPosX(this._xPos + this._pageSize.x * delta, false);

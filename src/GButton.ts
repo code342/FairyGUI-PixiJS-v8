@@ -1,3 +1,5 @@
+import { MouseEvents } from "./utils/LayaCompliant";
+
 export class GButton extends GComponent {
     protected _titleObject: GObject;
     protected _iconObject: GObject;
@@ -244,7 +246,7 @@ export class GButton extends GComponent {
             Laya.timer.once(100, this, this.setState, [GButton.DOWN], false);
             Laya.timer.once(200, this, this.setState, [GButton.UP], false);
         }
-        this.__click(Events.createEvent(Laya.Event.CLICK, this.displayObject));
+        this.__click(Events.createEvent(MouseEvents.Click, this.displayObject));
     }
 
     protected setState(val: string): void {
@@ -379,10 +381,10 @@ export class GButton extends GComponent {
         if (this._mode == ButtonMode.Common)
             this.setState(GButton.UP);
 
-        this.on(Laya.Event.ROLL_OVER, this.__rollover, this);
-        this.on(Laya.Event.ROLL_OUT, this.__rollout, this);
-        this.on(Laya.Event.MOUSE_DOWN, this.__mousedown, this);
-        this.on(Laya.Event.CLICK, this.__click, this);
+        this.on(MouseEvents.Over, this.__rollover, this);
+        this.on(MouseEvents.Out, this.__rollout, this);
+        this.on(MouseEvents.Down, this.__mousedown, this);
+        this.on(MouseEvents.Click, this.__click, this);
     }
 
     public setup_afterAdd(buffer: ByteBuffer, beginPos: number): void {
@@ -460,7 +462,7 @@ export class GButton extends GComponent {
         this._down = true;
         GRoot.inst.checkPopups(evt.target);
 
-        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__mouseup, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__mouseup, this);
 
         if (this._mode == ButtonMode.Common) {
             if (this.grayed && this._buttonController && this._buttonController.hasPage(GButton.DISABLED))
@@ -479,7 +481,7 @@ export class GButton extends GComponent {
 
     private __mouseup(): void {
         if (this._down) {
-            GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__mouseup, this);
+            GRoot.inst.stage.off(MouseEvents.Up, this.__mouseup, this);
             this._down = false;
 
             if (this._displayObject == null)

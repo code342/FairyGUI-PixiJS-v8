@@ -1,3 +1,6 @@
+import { GRoot } from "./GRoot";
+import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
+
 export class GComboBox extends GComponent {
     public dropdown: GComponent;
 
@@ -312,12 +315,12 @@ export class GComboBox extends GComponent {
             this.dropdown.addRelation(this._list, RelationType.Height);
             this.dropdown.removeRelation(this._list, RelationType.Width);
 
-            this.dropdown.displayObject.on(Laya.Event.UNDISPLAY, this.__popupWinClosed, this);
+            this.dropdown.displayObject.on(DisplayEvent.Removed, this.__popupWinClosed, this);
         }
 
-        this.on(Laya.Event.ROLL_OVER, this.__rollover, this);
-        this.on(Laya.Event.ROLL_OUT, this.__rollout, this);
-        this.on(Laya.Event.MOUSE_DOWN, this.__mousedown, this);
+        this.on(MouseEvents.Over, this.__rollover, this);
+        this.on(MouseEvents.Out, this.__rollout, this);
+        this.on(MouseEvents.Down, this.__mousedown, this);
     }
 
     public setup_afterAdd(buffer: ByteBuffer, beginPos: number): void {
@@ -450,7 +453,7 @@ export class GComboBox extends GComponent {
         this._down = true;
         GRoot.inst.checkPopups(evt.target);
 
-        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__mouseup, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__mouseup, this);
 
         if (this.dropdown)
             this.showDropdown();
@@ -459,7 +462,7 @@ export class GComboBox extends GComponent {
     private __mouseup(): void {
         if (this._down) {
             this._down = false;
-            GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__mouseup, this);
+            GRoot.inst.stage.off(MouseEvents.Up, this.__mouseup, this);
 
             if (this.dropdown && !this.dropdown.parent) {
                 if (this._over)
