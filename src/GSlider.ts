@@ -1,3 +1,5 @@
+import { GRoot } from "./GRoot";
+
 export class GSlider extends GComponent {
     private _min: number = 0;
     private _max: number = 0;
@@ -212,7 +214,8 @@ export class GSlider extends GComponent {
         this.canDrag = true;
         evt.stopPropagation();
 
-        this._clickPos = this.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        this._clickPos = this.globalToLocal(mousePoint.x, mousePoint.y);
         this._clickPercent = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
 
         Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
@@ -224,7 +227,8 @@ export class GSlider extends GComponent {
             return;
         }
 
-        var pt: Laya.Point = this.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY, s_vec2);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        var pt: Laya.Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
         var deltaX: number = pt.x - this._clickPos.x;
         var deltaY: number = pt.y - this._clickPos.y;
         if (this._reverse) {

@@ -1,3 +1,6 @@
+import { Point } from "pixi.js";
+import { GRoot } from "./GRoot";
+
 export class GScrollBar extends GComponent {
     private _grip: GObject;
     private _arrowButton1: GObject;
@@ -96,7 +99,8 @@ export class GScrollBar extends GComponent {
         Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
         Laya.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
 
-        this.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY, this._dragOffset);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        this.globalToLocal(mousePoint.x, mousePoint.y, this._dragOffset);
         this._dragOffset.x -= this._grip.x;
         this._dragOffset.y -= this._grip.y;
     }
@@ -105,7 +109,8 @@ export class GScrollBar extends GComponent {
         if (!this.onStage)
             return;
 
-        var pt: Laya.Point = this.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY, s_vec2);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        var pt: Laya.Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
         if (this._vertical) {
             var curY: number = pt.y - this._dragOffset.y;
             this._target.setPercY((curY - this._bar.y) / (this._bar.height - this._grip.height), false);
@@ -146,7 +151,8 @@ export class GScrollBar extends GComponent {
     }
 
     private __barMouseDown(evt: Laya.Event): void {
-        var pt: Laya.Point = this._grip.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY, s_vec2);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        var pt: Laya.Point = this._grip.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
         if (this._vertical) {
             if (pt.y < 0)
                 this._target.scrollUp(4);

@@ -1,3 +1,6 @@
+import { Point } from "pixi.js";
+import { GRoot } from "./GRoot";
+
 export class ScrollPane {
     private _owner: GComponent;
     private _container: Laya.Sprite;
@@ -986,12 +989,13 @@ export class ScrollPane {
         else
             this._dragged = false;
 
-        var pt: Laya.Point = this._owner.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY, s_vec2);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        var pt: Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
 
         this._containerPos.setTo(this._container.x, this._container.y);
         this._beginTouchPos.setTo(pt.x, pt.y);
         this._lastTouchPos.setTo(pt.x, pt.y);
-        this._lastTouchGlobalPos.setTo(Laya.stage.mouseX, Laya.stage.mouseY);
+        this._lastTouchGlobalPos.setTo(mousePoint.x, mousePoint.y);
         this._isHoldAreaDone = false;
         this._velocity.setTo(0, 0);
         this._velocityScale = 1;
@@ -1011,7 +1015,8 @@ export class ScrollPane {
 
         var sensitivity: number = UIConfig.touchScrollSensitivity;
 
-        var pt: Laya.Point = this._owner.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY, s_vec2);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        var pt: Laya.Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
 
         var diff: number, diff2: number;
         var sv: boolean, sh: boolean, st: boolean;
@@ -1137,15 +1142,15 @@ export class ScrollPane {
 
         /*速度计算使用的是本地位移，但在后续的惯性滚动判断中需要用到屏幕位移，所以这里要记录一个位移的比例。
         */
-        var deltaGlobalPositionX: number = this._lastTouchGlobalPos.x - Laya.stage.mouseX;
-        var deltaGlobalPositionY: number = this._lastTouchGlobalPos.y - Laya.stage.mouseY;
+        var deltaGlobalPositionX: number = this._lastTouchGlobalPos.x - mousePoint.x;
+        var deltaGlobalPositionY: number = this._lastTouchGlobalPos.y - mousePoint.y;
         if (deltaPositionX != 0)
             this._velocityScale = Math.abs(deltaGlobalPositionX / deltaPositionX);
         else if (deltaPositionY != 0)
             this._velocityScale = Math.abs(deltaGlobalPositionY / deltaPositionY);
 
         this._lastTouchPos.setTo(pt.x, pt.y);
-        this._lastTouchGlobalPos.setTo(Laya.stage.mouseX, Laya.stage.mouseY);
+        this._lastTouchGlobalPos.setTo(mousePoint.x, mousePoint.y);
         this._lastMoveTime = now;
 
         //同步更新pos值

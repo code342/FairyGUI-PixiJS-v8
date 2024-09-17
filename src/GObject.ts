@@ -1137,8 +1137,7 @@ export class GObject {
     private __begin(): void {
         if (!this._dragStartPos)
             this._dragStartPos = new Point();
-        this._dragStartPos.x = Laya.stage.mouseX;
-        this._dragStartPos.y = Laya.stage.mouseY;
+        this._dragStartPos.copyFrom(GRoot.inst.mousePosition);
         this._dragTesting = true;
 
         Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__moving, this);
@@ -1148,9 +1147,10 @@ export class GObject {
     private __moving(evt: Laya.Event): void {
         if (GObject.draggingObject != this && this._draggable && this._dragTesting) {
             var sensitivity: number = UIConfig.touchDragSensitivity;
+            let mousePoint:Point = GRoot.inst.mousePosition;
             if (this._dragStartPos
-                && Math.abs(this._dragStartPos.x - Laya.stage.mouseX) < sensitivity
-                && Math.abs(this._dragStartPos.y - Laya.stage.mouseY) < sensitivity)
+                && Math.abs(this._dragStartPos.x - mousePoint.x) < sensitivity
+                && Math.abs(this._dragStartPos.y - mousePoint.y) < sensitivity)
                 return;
 
             this._dragTesting = false;
@@ -1162,8 +1162,9 @@ export class GObject {
         }
 
         if (GObject.draggingObject == this) {
-            var xx: number = Laya.stage.mouseX - sGlobalDragStart.x + sGlobalRect.x;
-            var yy: number = Laya.stage.mouseY - sGlobalDragStart.y + sGlobalRect.y;
+            let mousePoint:Point = GRoot.inst.mousePosition;
+            var xx: number = mousePoint.x - sGlobalDragStart.x + sGlobalRect.x;
+            var yy: number = mousePoint.y - sGlobalDragStart.y + sGlobalRect.y;
 
             if (this._dragBounds) {
                 var rect: Rectangle = GRoot.inst.localToGlobalRect(this._dragBounds.x, this._dragBounds.y,

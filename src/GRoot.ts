@@ -1,5 +1,6 @@
 import { Application, Container, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
+import { GObject } from "./GObject";
 
 export class GRoot extends GComponent {
     public static contentScaleLevel: number = 0;
@@ -29,7 +30,7 @@ export class GRoot extends GComponent {
         this.opaque = false;
         this._popupStack = [];
         this._justClosedPopups = [];
-        this.displayObject.once(Laya.Event.DISPLAY, this, this.__addedToStage);
+        this.displayObject.once(Laya.Event.DISPLAY, this.__addedToStage, this);
     }
 
     public launch(app:Application){
@@ -184,7 +185,8 @@ export class GRoot extends GComponent {
             sizeH = target.height;
         }
         else {
-            pos = this.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY);
+            let mousePoint:Point = this.mousePosition;
+            pos = this.globalToLocal(mousePoint.x, mousePoint.y);
         }
         var xx: number, yy: number;
         xx = pos.x;
@@ -263,8 +265,9 @@ export class GRoot extends GComponent {
         var xx: number = 0;
         var yy: number = 0;
         if (position == null) {
-            xx = Laya.stage.mouseX + 10;
-            yy = Laya.stage.mouseY + 20;
+            let mousePoint:Point = this.mousePosition;
+            xx = mousePoint.x + 10;
+            yy = mousePoint.y + 20;
         }
         else {
             xx = position.x;

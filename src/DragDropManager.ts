@@ -1,3 +1,6 @@
+import { Point } from "pixi.js";
+import { GRoot } from "./GRoot";
+
 export class DragDropManager {
 
     private _agent: GLoader;
@@ -37,7 +40,8 @@ export class DragDropManager {
         this._sourceData = sourceData;
         this._agent.url = icon;
         GRoot.inst.addChild(this._agent);
-        var pt: Laya.Point = GRoot.inst.globalToLocal(Laya.stage.mouseX, Laya.stage.mouseY);
+        let mousePoint:Point = GRoot.inst.mousePosition;
+        var pt: Laya.Point = GRoot.inst.globalToLocal(mousePoint.x, mousePoint.y);
         this._agent.setXY(pt.x, pt.y);
         this._agent.startDrag(touchID);
     }
