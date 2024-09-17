@@ -460,7 +460,7 @@ export class GButton extends GComponent {
         this._down = true;
         GRoot.inst.checkPopups(evt.target);
 
-        Laya.stage.on(Laya.Event.MOUSE_UP, this.__mouseup, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__mouseup, this);
 
         if (this._mode == ButtonMode.Common) {
             if (this.grayed && this._buttonController && this._buttonController.hasPage(GButton.DISABLED))
@@ -479,7 +479,7 @@ export class GButton extends GComponent {
 
     private __mouseup(): void {
         if (this._down) {
-            Laya.stage.off(Laya.Event.MOUSE_UP, this.__mouseup, this);
+            GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__mouseup, this);
             this._down = false;
 
             if (this._displayObject == null)

@@ -218,8 +218,8 @@ export class GSlider extends GComponent {
         this._clickPos = this.globalToLocal(mousePoint.x, mousePoint.y);
         this._clickPercent = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
 
-        Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
     }
 
     private __gripMouseMove(evt: Laya.Event): void {
@@ -244,8 +244,8 @@ export class GSlider extends GComponent {
     }
 
     private __gripMouseUp(evt: Laya.Event): void {
-        Laya.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        Laya.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
     }
 
     private __barMouseDown(evt: Laya.Event): void {

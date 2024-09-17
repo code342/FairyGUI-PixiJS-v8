@@ -96,8 +96,8 @@ export class GScrollBar extends GComponent {
         this._gripDragging = true;
         this._target.updateScrollBarVisible();
 
-        Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
 
         let mousePoint:Point = GRoot.inst.mousePosition;
         this.globalToLocal(mousePoint.x, mousePoint.y, this._dragOffset);
@@ -125,8 +125,8 @@ export class GScrollBar extends GComponent {
         if (!this.onStage)
             return;
 
-        Laya.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
-        Laya.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
+        GRoot.inst.stage.off(Laya.Event.MOUSE_MOVE, this.__gripMouseMove, this);
+        GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__gripMouseUp, this);
 
         this._gripDragging = false;
         this._target.updateScrollBarVisible();

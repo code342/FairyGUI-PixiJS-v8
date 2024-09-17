@@ -1130,8 +1130,8 @@ export class GObject {
     }
 
     private reset(): void {
-        Laya.stage.off(Laya.Event.MOUSE_MOVE, this.__moving, this);
-        Laya.stage.off(Laya.Event.MOUSE_UP, this.__end, this);
+        GRoot.inst.stage.off(Laya.Event.MOUSE_MOVE, this.__moving, this);
+        GRoot.inst.stage.off(Laya.Event.MOUSE_UP, this.__end, this);
     }
 
     private __begin(): void {
@@ -1140,8 +1140,8 @@ export class GObject {
         this._dragStartPos.copyFrom(GRoot.inst.mousePosition);
         this._dragTesting = true;
 
-        Laya.stage.on(Laya.Event.MOUSE_MOVE, this.__moving, this);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this.__end, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_MOVE, this.__moving, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__end, this);
     }
 
     private __moving(evt: Laya.Event): void {

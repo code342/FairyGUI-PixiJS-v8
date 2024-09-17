@@ -1,6 +1,6 @@
 import { Application, Container, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
-import { GObject } from "./GObject";
+import { GObject, GObjectView } from "./GObject";
 
 export class GRoot extends GComponent {
     public static contentScaleLevel: number = 0;
@@ -351,8 +351,8 @@ export class GRoot extends GComponent {
     }
 
     private __addedToStage(): void {
-        Laya.stage.on(Laya.Event.MOUSE_DOWN, this.__stageMouseDown, this);
-        Laya.stage.on(Laya.Event.MOUSE_UP, this.__stageMouseUp, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_DOWN, this.__stageMouseDown, this);
+        GRoot.inst.stage.on(Laya.Event.MOUSE_UP, this.__stageMouseUp, this);
 
         this._modalLayer = new GGraph();
         this._modalLayer.setSize(this.width, this.height);
@@ -373,8 +373,9 @@ export class GRoot extends GComponent {
         if (this._popupStack.length > 0) {
             var mc: Laya.Node = clickTarget;
             while (mc != this.displayObject.stage && mc) {
-                if (mc["$owner"]) {
-                    var pindex: number = this._popupStack.indexOf(mc["$owner"]);
+                let owner = (mc as GObjectView).$owner;
+                if (owner) {
+                    var pindex: number = this._popupStack.indexOf(owner);
                     if (pindex != -1) {
                         for (var i: number = this._popupStack.length - 1; i > pindex; i--) {
                             var popup: GObject = this._popupStack.pop();
