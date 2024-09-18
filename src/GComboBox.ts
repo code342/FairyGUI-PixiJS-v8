@@ -1,5 +1,6 @@
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
+import { Timer } from "./utils/Timer";
 
 export class GComboBox extends GComponent {
     public dropdown: GComponent;
@@ -418,7 +419,7 @@ export class GComboBox extends GComponent {
     }
 
     private __clickItem(itemObject: GObject, evt: Laya.Event): void {
-        Laya.timer.callLater(this, this.__clickItem2, [this._list.getChildIndex(itemObject), evt])
+        Timer.shared.callLater(this, this.__clickItem2, [this._list.getChildIndex(itemObject), evt])
     }
 
     private __clickItem2(index: number, evt: Laya.Event): void {

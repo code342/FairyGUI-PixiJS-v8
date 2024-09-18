@@ -1,4 +1,5 @@
 import { MouseEvents } from "./utils/LayaCompliant";
+import { Timer } from "./utils/Timer";
 
 export class GButton extends GComponent {
     protected _titleObject: GObject;
@@ -243,8 +244,8 @@ export class GButton extends GComponent {
         if (downEffect == null) downEffect = true;
         if (downEffect && this._mode == ButtonMode.Common) {
             this.setState(GButton.OVER);
-            Laya.timer.once(100, this, this.setState, [GButton.DOWN], false);
-            Laya.timer.once(200, this, this.setState, [GButton.UP], false);
+            Timer.shared.once(100, this, this.setState, [GButton.DOWN], false);
+            Timer.shared.once(200, this, this.setState, [GButton.UP], false);
         }
         this.__click(Events.createEvent(MouseEvents.Click, this.displayObject));
     }

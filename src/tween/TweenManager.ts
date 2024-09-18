@@ -1,7 +1,9 @@
+import { Timer } from "../utils/Timer";
+
     export class TweenManager {
         public static createTween(): GTweener {
             if (!_inited) {
-                Laya.timer.frameLoop(1, null, TweenManager.update);
+                Timer.shared.frameLoop(1, null, TweenManager.update);
                 _inited = true;
             }
 
@@ -70,7 +72,7 @@
         }
 
         public static update(): void {
-            var dt: number = Laya.timer.delta / 1000;
+            var dt: number = Timer.shared.delta / 1000;
 
             var cnt: number = _totalActiveTweens;
             var freePosStart: number = -1;

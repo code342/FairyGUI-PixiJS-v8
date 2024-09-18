@@ -1,6 +1,7 @@
 import { FederatedWheelEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { MouseEvents } from "./utils/LayaCompliant";
+import { Timer } from "./utils/Timer";
 
 export class ScrollPane {
     private _owner: GComponent;
@@ -205,7 +206,7 @@ export class ScrollPane {
             ScrollPane.draggingPane = null;
         }
         if (this._tweening != 0)
-            Laya.timer.clear(this, this.tweenUpdate);
+            Timer.shared.clear(this, this.tweenUpdate);
 
         this._pageController = null;
 
@@ -905,7 +906,7 @@ export class ScrollPane {
             this._aniFlag = -1;
 
         this._needRefresh = true;
-        Laya.timer.callLater(this, this.refresh);
+        Timer.shared.callLater(this, this.refresh);
     }
 
     private refresh(): void {
@@ -913,7 +914,7 @@ export class ScrollPane {
             return;
         }
         this._needRefresh = false;
-        Laya.timer.clear(this, this.refresh);
+        Timer.shared.clear(this, this.refresh);
 
         if (this._pageMode || this._snapToItem) {
             sEndPos.setTo(-this._xPos, -this._yPos);
@@ -928,7 +929,7 @@ export class ScrollPane {
         if (this._needRefresh) //在onScroll事件里开发者可能修改位置，这里再刷新一次，避免闪烁
         {
             this._needRefresh = false;
-            Laya.timer.clear(this, this.refresh);
+            Timer.shared.clear(this, this.refresh);
 
             this.refresh2();
         }
@@ -1000,7 +1001,7 @@ export class ScrollPane {
         this._isHoldAreaDone = false;
         this._velocity.setTo(0, 0);
         this._velocityScale = 1;
-        this._lastMoveTime = Laya.timer.currTimer / 1000;
+        this._lastMoveTime = Timer.shared.currTimer / 1000;
 
         this._owner.displayObject.stage.on(MouseEvents.Move, this.__mouseMove, this);
         this._owner.displayObject.stage.on(MouseEvents.Up, this.__mouseUp, this);
@@ -1121,7 +1122,7 @@ export class ScrollPane {
 
         //更新速度
         var frameRate: number = Laya.stage.frameRate == Laya.Stage.FRAME_SLOW ? 30 : 60;
-        var now: number = Laya.timer.currTimer / 1000;
+        var now: number = Timer.shared.currTimer / 1000;
         var deltaTime: number = Math.max(now - this._lastMoveTime, 1 / frameRate);
         var deltaPositionX: number = pt.x - this._lastTouchPos.x;
         var deltaPositionY: number = pt.y - this._lastTouchPos.y;
@@ -1260,7 +1261,7 @@ export class ScrollPane {
             //更新速度
             if (!this._inertiaDisabled) {
                 var frameRate: number = Laya.stage.frameRate == Laya.Stage.FRAME_SLOW ? 30 : 60;
-                var elapsed: number = (Laya.timer.currTimer / 1000 - this._lastMoveTime) * frameRate - 1;
+                var elapsed: number = (Timer.shared.currTimer / 1000 - this._lastMoveTime) * frameRate - 1;
                 if (elapsed > 1) {
                     var factor: number = Math.pow(0.833, elapsed);
                     this._velocity.x = this._velocity.x * factor;
@@ -1605,7 +1606,7 @@ export class ScrollPane {
     private startTween(type: number): void {
         this._tweenTime.setTo(0, 0);
         this._tweening = type;
-        Laya.timer.frameLoop(1, this, this.tweenUpdate);
+        Timer.shared.frameLoop(1, this, this.tweenUpdate);
 
         this.updateScrollBarVisible();
     }
@@ -1618,7 +1619,7 @@ export class ScrollPane {
         }
 
         this._tweening = 0;
-        Laya.timer.clear(this, this.tweenUpdate);
+        Timer.shared.clear(this, this.tweenUpdate);
 
         this.updateScrollBarVisible();
 
@@ -1692,7 +1693,7 @@ export class ScrollPane {
 
         if (this._tweenChange.x == 0 && this._tweenChange.y == 0) {
             this._tweening = 0;
-            Laya.timer.clear(this, this.tweenUpdate);
+            Timer.shared.clear(this, this.tweenUpdate);
 
             this.loopCheckingCurrent();
             this.updateScrollBarPos();
@@ -1711,7 +1712,7 @@ export class ScrollPane {
     private runTween(axis: string): number {
         var newValue: number;
         if (this._tweenChange[axis] != 0) {
-            this._tweenTime[axis] += Laya.timer.delta / 1000;
+            this._tweenTime[axis] += Timer.shared.delta / 1000;
             if (this._tweenTime[axis] >= this._tweenDuration[axis]) {
                 newValue = this._tweenStart[axis] + this._tweenChange[axis];
                 this._tweenChange[axis] = 0;

@@ -1,3 +1,5 @@
+import { Timer } from "./utils/Timer";
+
 export class GGroup extends GObject {
     private _layout: number = 0;
     private _lineGap: number = 0;
@@ -107,7 +109,7 @@ export class GGroup extends GObject {
             if (!this._boundsChanged) {
                 this._boundsChanged = true;
                 if (this._layout != GroupLayoutType.None)
-                    Laya.timer.callLater(this, this.ensureBoundsCorrect);
+                    Timer.shared.callLater(this, this.ensureBoundsCorrect);
             }
         }
     }
@@ -143,7 +145,7 @@ export class GGroup extends GObject {
     }
 
     private updateBounds(): void {
-        Laya.timer.clear(this, this.ensureBoundsCorrect);
+        Timer.shared.clear(this, this.ensureBoundsCorrect);
 
         var cnt: number = this._parent.numChildren;
         var i: number;

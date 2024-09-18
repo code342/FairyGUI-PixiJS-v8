@@ -1,4 +1,5 @@
 import { MouseEvents } from "./utils/LayaCompliant";
+import { Timer } from "./utils/Timer";
 
 export class GList extends GComponent {
     public itemRenderer: Laya.Handler | ((index: number, item: GObject) => void);
@@ -1052,7 +1053,7 @@ export class GList extends GComponent {
             }
 
             if (this._virtualListChanged != 0)
-                Laya.timer.clear(this, this._refreshVirtualList);
+                Timer.shared.clear(this, this._refreshVirtualList);
 
             //立即刷新
             this._refreshVirtualList();
@@ -1093,7 +1094,7 @@ export class GList extends GComponent {
     private checkVirtualList(): void {
         if (this._virtualListChanged != 0) {
             this._refreshVirtualList();
-            Laya.timer.clear(this, this._refreshVirtualList);
+            Timer.shared.clear(this, this._refreshVirtualList);
         }
     }
 
@@ -1103,7 +1104,7 @@ export class GList extends GComponent {
         else if (this._virtualListChanged == 0)
             this._virtualListChanged = 1;
 
-        Laya.timer.callLater(this, this._refreshVirtualList);
+        Timer.shared.callLater(this, this._refreshVirtualList);
     }
 
     private _refreshVirtualList(): void {

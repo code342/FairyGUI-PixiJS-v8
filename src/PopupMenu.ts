@@ -1,4 +1,5 @@
 import { DisplayEvent } from "./utils/LayaCompliant";
+import { Timer } from "./utils/Timer";
 
 export class PopupMenu {
 
@@ -139,7 +140,7 @@ export class PopupMenu {
     }
 
     private __clickItem(itemObject: GObject): void {
-        Laya.timer.once(100, this, this.__clickItem2, [itemObject]);
+        Timer.shared.once(100, this, this.__clickItem2, [itemObject]);
     }
 
     private __clickItem2(itemObject: GObject): void {

@@ -1,3 +1,5 @@
+import { Timer } from "./utils/Timer";
+
 export class AsyncOperation {
     public callback: Laya.Handler | ((obj: GObject) => void);
 
@@ -32,7 +34,7 @@ export class AsyncOperation {
     }
 
     public cancel(): void {
-        Laya.timer.clear(this, this.run);
+        Timer.shared.clear(this, this.run);
         this._itemList.length = 0;
         if (this._objectPool.length > 0) {
             var cnt: number = this._objectPool.length;
@@ -52,7 +54,7 @@ export class AsyncOperation {
         this._itemList.push(di);
 
         this._index = 0;
-        Laya.timer.frameLoop(1, this, this.run);
+        Timer.shared.frameLoop(1, this, this.run);
     }
 
     private collectComponentChildren(item: PackageItem): number {
@@ -187,7 +189,7 @@ export class AsyncOperation {
                 return;
         }
 
-        Laya.timer.clear(this, this.run);
+        Timer.shared.clear(this, this.run);
         var result: GObject = this._objectPool[0];
         this._itemList.length = 0;
         this._objectPool.length = 0;

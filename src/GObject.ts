@@ -1,6 +1,7 @@
 import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter} from "pixi.js";
 import { GRoot } from "./GRoot";
 import { MouseEvents } from "./utils/LayaCompliant";
+import { Timer } from "./utils/Timer";
 
 
 export class GObject {
@@ -517,7 +518,7 @@ export class GObject {
     }
 
     private __rollOver(evt: Laya.Event): void {
-        Laya.timer.once(100, this, this.__doShowTooltips);
+        Timer.shared.once(100, this, this.__doShowTooltips);
     }
 
     private __doShowTooltips(): void {
@@ -527,7 +528,7 @@ export class GObject {
     }
 
     private __rollOut(evt: Laya.Event): void {
-        Laya.timer.clear(this, this.__doShowTooltips);
+        Timer.shared.clear(this, this.__doShowTooltips);
         this.root.hideTooltips();
     }
 

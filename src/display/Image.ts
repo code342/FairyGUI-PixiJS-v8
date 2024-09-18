@@ -1,3 +1,5 @@
+import { Timer } from "../utils/Timer";
+
 export class Image extends Laya.Sprite {
     protected _source: Laya.Texture;
     protected _scaleByTile?: boolean;
@@ -153,7 +155,7 @@ export class Image extends Laya.Sprite {
         if (!this._needRebuild) {
             this._needRebuild = flag;
 
-            Laya.timer.callLater(this, this.rebuild);
+            Timer.shared.callLater(this, this.rebuild);
         }
         else
             this._needRebuild |= flag;

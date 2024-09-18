@@ -1,5 +1,6 @@
 import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
+import { Timer } from "./utils/Timer";
 
 export class GComponent extends GObject {
     private _sortingChildCount: number = 0;
@@ -153,7 +154,7 @@ export class GComponent extends GObject {
                 this._container.removeChild(child.displayObject);
 
                 if (this._childrenRenderOrder == ChildrenRenderOrder.Arch)
-                    Laya.timer.callLater(this, this.buildNativeDisplayList);
+                    Timer.shared.callLater(this, this.buildNativeDisplayList);
             }
 
             if (dispose)
@@ -330,7 +331,7 @@ export class GComponent extends GObject {
                 this._container.setChildIndex(child.displayObject, displayIndex);
             }
             else {
-                Laya.timer.callLater(this, this.buildNativeDisplayList);
+                Timer.shared.callLater(this, this.buildNativeDisplayList);
             }
 
             this.setBoundsChangedFlag();
@@ -458,7 +459,7 @@ export class GComponent extends GObject {
                 else {
                     this._container.addChild(child.displayObject);
 
-                    Laya.timer.callLater(this, this.buildNativeDisplayList);
+                    Timer.shared.callLater(this, this.buildNativeDisplayList);
                 }
             }
         }
@@ -467,7 +468,7 @@ export class GComponent extends GObject {
                 this._container.removeChild(child.displayObject);
 
                 if (this._childrenRenderOrder == ChildrenRenderOrder.Arch)
-                    Laya.timer.callLater(this, this.buildNativeDisplayList);
+                    Timer.shared.callLater(this, this.buildNativeDisplayList);
             }
         }
     }
@@ -800,7 +801,7 @@ export class GComponent extends GObject {
         if (!this._boundsChanged) {
             this._boundsChanged = true;
 
-            Laya.timer.callLater(this, this.__render);
+            Timer.shared.callLater(this, this.__render);
         }
     }
 

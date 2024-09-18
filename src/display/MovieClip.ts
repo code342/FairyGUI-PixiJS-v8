@@ -1,4 +1,5 @@
 import { DisplayEvent } from "../utils/LayaCompliant";
+import { Timer } from "../utils/Timer";
 
 export interface Frame {
     addDelay: number;
@@ -192,7 +193,7 @@ export class MovieClip extends Image {
         if (!this._playing || this._frameCount == 0 || this._status == 3)
             return;
 
-        var dt: number = Laya.timer.delta;
+        var dt: number = Timer.shared.delta;
         if (dt > 100)
             dt = 100;
         if (this.timeScale != 1)
@@ -287,17 +288,17 @@ export class MovieClip extends Image {
 
     private checkTimer(): void {
         if (this._playing && this._frameCount > 0 && this.stage != null)
-            Laya.timer.frameLoop(1, this, this.update);
+            Timer.shared.frameLoop(1, this, this.update);
         else
-            Laya.timer.clear(this, this.update);
+            Timer.shared.clear(this, this.update);
     }
 
     private __addToStage(): void {
         if (this._playing && this._frameCount > 0)
-            Laya.timer.frameLoop(1, this, this.update);
+            Timer.shared.frameLoop(1, this, this.update);
     }
 
     private __removeFromStage(): void {
-        Laya.timer.clear(this, this.update);
+        Timer.shared.clear(this, this.update);
     }
 }
