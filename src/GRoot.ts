@@ -1,4 +1,4 @@
-import { Application, Container, Point } from "pixi.js";
+import { Application, Container, FederatedPointerEvent, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
 import { GObject, GObjectView } from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
@@ -399,7 +399,7 @@ export class GRoot extends GComponent {
         }
     }
 
-    private __stageMouseDown(evt: Laya.Event): void {
+    private __stageMouseDown(evt: FederatedPointerEvent): void {
         if (this._tooltipWin)
             this.hideTooltips();
 

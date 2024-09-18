@@ -1,3 +1,4 @@
+import { FederatedPointerEvent } from "pixi.js";
 import { MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 
@@ -459,7 +460,7 @@ export class GButton extends GComponent {
         this.setState(this._selected ? GButton.DOWN : GButton.UP);
     }
 
-    private __mousedown(evt: Laya.Event): void {
+    private __mousedown(evt: FederatedPointerEvent): void {
         this._down = true;
         GRoot.inst.checkPopups(evt.target);
 
@@ -499,7 +500,7 @@ export class GButton extends GComponent {
         }
     }
 
-    private __click(evt: Laya.Event): void {
+    private __click(evt: FederatedPointerEvent): void {
         if (this._sound) {
             var pi: PackageItem = UIPackage.getItemByURL(this._sound);
             if (pi)

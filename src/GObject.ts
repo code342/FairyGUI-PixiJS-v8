@@ -1,6 +1,6 @@
-import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter} from "pixi.js";
+import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter, FederatedPointerEvent} from "pixi.js";
 import { GRoot } from "./GRoot";
-import { MouseEvents } from "./utils/LayaCompliant";
+import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 
 
@@ -517,7 +517,7 @@ export class GObject {
         }
     }
 
-    private __rollOver(evt: Laya.Event): void {
+    private __rollOver(evt: FederatedPointerEvent): void {
         Timer.shared.once(100, this, this.__doShowTooltips);
     }
 
@@ -527,7 +527,7 @@ export class GObject {
             this.root.showTooltips(this._tooltips);
     }
 
-    private __rollOut(evt: Laya.Event): void {
+    private __rollOut(evt: FederatedPointerEvent): void {
         Timer.shared.clear(this, this.__doShowTooltips);
         this.root.hideTooltips();
     }
@@ -803,6 +803,10 @@ export class GObject {
 
     public off(type: string, listener: (...args: any) => void, thisObject: any): void {
         this._displayObject.off(type, listener, thisObject)
+    }
+
+    public emit(type: string, ...args: any[]): void {
+        this._displayObject.emit(type, ...args);
     }
 
     public get draggable(): boolean {
@@ -1109,7 +1113,7 @@ export class GObject {
             tmp.stopDrag();
             GObject.draggingObject = null;
 
-            Events.dispatch(Events.DRAG_END, tmp._displayObject, { touchId: touchID });
+            tmp.emit(DisplayEvent.DragEnd, {touchId: touchID });
         }
 
         sGlobalDragStart.copyFrom(GRoot.inst.mousePosition);
@@ -1146,7 +1150,7 @@ export class GObject {
         GRoot.inst.stage.on(MouseEvents.Up, this.__end, this);
     }
 
-    private __moving(evt: Laya.Event): void {
+    private __moving(evt: FederatedPointerEvent): void {
         if (GObject.draggingObject != this && this._draggable && this._dragTesting) {
             var sensitivity: number = UIConfig.touchDragSensitivity;
             let mousePoint:Point = GRoot.inst.mousePosition;
@@ -1158,7 +1162,7 @@ export class GObject {
             this._dragTesting = false;
 
             sDraggingQuery = true;
-            Events.dispatch(Events.DRAG_START, this._displayObject, evt);
+            this.emit(DisplayEvent.DragStart, evt)
             if (sDraggingQuery)
                 this.dragBegin();
         }
@@ -1193,16 +1197,16 @@ export class GObject {
             this.setXY(Math.round(pt.x), Math.round(pt.y));
             sUpdateInDragging = false;
 
-            Events.dispatch(Events.DRAG_MOVE, this._displayObject, evt);
+            this.emit(DisplayEvent.DragMove, evt);
         }
     }
 
-    private __end(evt: Laya.Event): void {
+    private __end(evt: FederatedPointerEvent): void {
         if (GObject.draggingObject == this) {
             GObject.draggingObject = null;
             this.reset();
 
-            Events.dispatch(Events.DRAG_END, this._displayObject, evt);
+            this.emit(DisplayEvent.DragEnd, evt);
         }
         else if (this._dragTesting) {
             this._dragTesting = false;

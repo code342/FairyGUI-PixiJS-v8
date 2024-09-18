@@ -1,5 +1,8 @@
 import { Point } from "pixi.js";
 import { GRoot } from "./GRoot";
+import { GObject } from "./GObject";
+import { GLoader } from "./GLoader";
+import { DisplayEvent } from "./utils/LayaCompliant";
 
 export class DragDropManager {
 
@@ -22,7 +25,7 @@ export class DragDropManager {
         this._agent.align = "center";
         this._agent.verticalAlign = "middle";
         this._agent.sortingOrder = 1000000;
-        this._agent.on(Events.DRAG_END, this.__dragEnd, this);
+        this._agent.on(DisplayEvent.DragEnd, this.__dragEnd, this);
     }
 
     public get dragAgent(): GObject {

@@ -1,3 +1,4 @@
+import { FederatedPointerEvent } from "pixi.js";
 import { MouseEvents } from "./utils/LayaCompliant";
 
 export class GTree extends GList {
@@ -315,7 +316,7 @@ export class GTree extends GList {
         }
     }
 
-    private __cellMouseDown(evt: Laya.Event): void {
+    private __cellMouseDown(evt: FederatedPointerEvent): void {
         var node: GTreeNode = GObject.cast(evt.currentTarget)._treeNode;
         this._expandedStatusInEvt = node.expanded;
     }
@@ -325,7 +326,7 @@ export class GTree extends GList {
         node.expanded = cc.selectedIndex == 1;
     }
 
-    protected dispatchItemEvent(item: GObject, evt: Laya.Event): void {
+    protected dispatchItemEvent(item: GObject, evt: FederatedPointerEvent): void {
         if (this._clickToExpand != 0) {
             var node: GTreeNode = item._treeNode;
             if (node && node.isFolder && this._expandedStatusInEvt == node.expanded) {

@@ -1,3 +1,4 @@
+import { FederatedPointerEvent } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { MouseEvents } from "./utils/LayaCompliant";
 
@@ -92,7 +93,7 @@ export class GSlider extends GComponent {
         this.updateWithPercent((this._value - this._min) / (this._max - this._min));
     }
 
-    private updateWithPercent(percent: number, evt?: Laya.Event): void {
+    private updateWithPercent(percent: number, evt?: FederatedPointerEvent): void {
         percent = ToolSet.clamp01(percent);
         if (evt) {
             var newValue: number = ToolSet.clamp(this._min + (this._max - this._min) * percent, this._min, this._max);
@@ -211,7 +212,7 @@ export class GSlider extends GComponent {
         this.update();
     }
 
-    private __gripMouseDown(evt: Laya.Event): void {
+    private __gripMouseDown(evt: FederatedPointerEvent): void {
         this.canDrag = true;
         evt.stopPropagation();
 
@@ -223,7 +224,7 @@ export class GSlider extends GComponent {
         GRoot.inst.stage.on(MouseEvents.Up, this.__gripMouseUp, this);
     }
 
-    private __gripMouseMove(evt: Laya.Event): void {
+    private __gripMouseMove(evt: FederatedPointerEvent): void {
         if (!this.canDrag) {
             return;
         }
@@ -244,12 +245,12 @@ export class GSlider extends GComponent {
         this.updateWithPercent(percent, evt);
     }
 
-    private __gripMouseUp(evt: Laya.Event): void {
+    private __gripMouseUp(evt: FederatedPointerEvent): void {
         GRoot.inst.stage.off(MouseEvents.Move, this.__gripMouseMove, this);
         GRoot.inst.stage.off(MouseEvents.Up, this.__gripMouseUp, this);
     }
 
-    private __barMouseDown(evt: Laya.Event): void {
+    private __barMouseDown(evt: FederatedPointerEvent): void {
         if (!this.changeOnClick)
             return;
 

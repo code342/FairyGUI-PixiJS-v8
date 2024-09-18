@@ -27,4 +27,7 @@ export class MouseEvents {
 export class DisplayEvent {
     public static Added = "added";
     public static Removed = "removed";
+    public static DragStart = 'DragStart';
+    public static DragEnd = 'DragEnd';
+    public static DragMove = 'DragMove';
 }

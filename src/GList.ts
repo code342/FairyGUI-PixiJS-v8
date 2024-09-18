@@ -1,3 +1,4 @@
+import { FederatedPointerEvent } from "pixi.js";
 import { MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 
@@ -628,7 +629,7 @@ export class GList extends GComponent {
         }
     }
 
-    private __clickItem(evt: Laya.Event): void {
+    private __clickItem(evt: FederatedPointerEvent): void {
         if (this._scrollPane && this._scrollPane.isDragged)
             return;
 
@@ -641,11 +642,11 @@ export class GList extends GComponent {
         this.dispatchItemEvent(item, Events.createEvent(Events.CLICK_ITEM, this.displayObject, evt));
     }
 
-    protected dispatchItemEvent(item: GObject, evt: Laya.Event): void {
+    protected dispatchItemEvent(item: GObject, evt: FederatedPointerEvent): void {
         this.displayObject.event(Events.CLICK_ITEM, [item, evt]);
     }
 
-    private setSelectionOnEvent(item: GObject, evt: Laya.Event): void {
+    private setSelectionOnEvent(item: GObject, evt: FederatedPointerEvent): void {
         if (!(item instanceof GButton) || this._selectionMode == ListSelectionMode.None)
             return;
 
@@ -1206,7 +1207,7 @@ export class GList extends GComponent {
         this.handleScroll(true);
     }
 
-    private __scrolled(evt: Laya.Event): void {
+    private __scrolled(evt: FederatedPointerEvent): void {
         this.handleScroll(false);
     }
 

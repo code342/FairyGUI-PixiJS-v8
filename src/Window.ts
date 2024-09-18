@@ -1,4 +1,6 @@
+import { FederatedPointerEvent } from "pixi.js";
 import { GComponent } from "./GComponent";
+import { GObject } from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 
 export class Window extends GComponent {
@@ -80,7 +82,7 @@ export class Window extends GComponent {
         if (this._dragArea != value) {
             if (this._dragArea) {
                 this._dragArea.draggable = false;
-                this._dragArea.off(Events.DRAG_START, this.__dragStart, this);
+                this._dragArea.off(DisplayEvent.DragStart, this.__dragStart, this);
             }
 
             this._dragArea = value;
@@ -88,7 +90,7 @@ export class Window extends GComponent {
                 if (this._dragArea instanceof GGraph)
                     this._dragArea.asGraph.drawRect(0, null, null);
                 this._dragArea.draggable = true;
-                this._dragArea.on(Events.DRAG_START, this.__dragStart, this);
+                this._dragArea.on(DisplayEvent.DragStart, this.__dragStart, this);
             }
         }
     }
@@ -286,7 +288,7 @@ export class Window extends GComponent {
             this.bringToFront();
     }
 
-    private __dragStart(evt: Laya.Event): void {
+    private __dragStart(evt: FederatedPointerEvent): void {
         GObject.cast(evt.currentTarget).stopDrag();
 
         this.startDrag();

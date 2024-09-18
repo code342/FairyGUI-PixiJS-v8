@@ -1,3 +1,4 @@
+import { FederatedPointerEvent } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -418,11 +419,11 @@ export class GComboBox extends GComponent {
             this.setState(GButton.UP);
     }
 
-    private __clickItem(itemObject: GObject, evt: Laya.Event): void {
+    private __clickItem(itemObject: GObject, evt: FederatedPointerEvent): void {
         Timer.shared.callLater(this, this.__clickItem2, [this._list.getChildIndex(itemObject), evt])
     }
 
-    private __clickItem2(index: number, evt: Laya.Event): void {
+    private __clickItem2(index: number, evt: FederatedPointerEvent): void {
         if (this.dropdown.parent instanceof GRoot)
             this.dropdown.parent.hidePopup();
 
@@ -447,7 +448,7 @@ export class GComboBox extends GComponent {
         this.setState(GButton.UP);
     }
 
-    private __mousedown(evt: Laya.Event): void {
+    private __mousedown(evt:FederatedPointerEvent): void {
         if (evt.target instanceof Laya.Input)
             return;
 

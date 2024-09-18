@@ -1,4 +1,4 @@
-import { Point } from "pixi.js";
+import { FederatedPointerEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { MouseEvents } from "./utils/LayaCompliant";
 
@@ -91,7 +91,7 @@ export class GScrollBar extends GComponent {
         this.on(MouseEvents.Down, this.__barMouseDown, this);
     }
 
-    private __gripMouseDown(evt: Laya.Event): void {
+    private __gripMouseDown(evt: FederatedPointerEvent): void {
         evt.stopPropagation();
 
         this._gripDragging = true;
@@ -122,7 +122,7 @@ export class GScrollBar extends GComponent {
         }
     }
 
-    private __gripMouseUp(evt: Laya.Event): void {
+    private __gripMouseUp(evt: FederatedPointerEvent): void {
         if (!this.onStage)
             return;
 
@@ -133,7 +133,7 @@ export class GScrollBar extends GComponent {
         this._target.updateScrollBarVisible();
     }
 
-    private __arrowButton1Click(evt: Laya.Event): void {
+    private __arrowButton1Click(evt: FederatedPointerEvent): void {
         evt.stopPropagation();
 
         if (this._vertical)
@@ -142,7 +142,7 @@ export class GScrollBar extends GComponent {
             this._target.scrollLeft();
     }
 
-    private __arrowButton2Click(evt: Laya.Event): void {
+    private __arrowButton2Click(evt: FederatedPointerEvent): void {
         evt.stopPropagation();
 
         if (this._vertical)
@@ -151,7 +151,7 @@ export class GScrollBar extends GComponent {
             this._target.scrollRight();
     }
 
-    private __barMouseDown(evt: Laya.Event): void {
+    private __barMouseDown(evt: FederatedPointerEvent): void {
         let mousePoint:Point = GRoot.inst.mousePosition;
         var pt: Laya.Point = this._grip.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
         if (this._vertical) {

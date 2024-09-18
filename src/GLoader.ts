@@ -1,3 +1,5 @@
+import { GObject } from "./GObject";
+
 export class GLoader extends GObject {
     private _url: string;
     private _align: string;
