@@ -310,7 +310,7 @@ export class GComboBox extends GComponent {
                 Laya.Log.print(this.resourceURL + ": 下拉框的弹出元件里必须包含名为list的列表");
                 return;
             }
-            this._list.on(Events.CLICK_ITEM, this.__clickItem, this);
+            this._list.on(DisplayEvent.ClickItem, this.__clickItem, this);
 
             this._list.addRelation(this.dropdown, RelationType.Width);
             this._list.removeRelation(this.dropdown, RelationType.Height);

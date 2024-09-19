@@ -19,7 +19,7 @@ export class PopupMenu {
         this._list.addRelation(this._contentPane, RelationType.Width);
         this._list.removeRelation(this._contentPane, RelationType.Height);
         this._contentPane.addRelation(this._list, RelationType.Height);
-        this._list.on(Events.CLICK_ITEM, this.__clickItem, this);
+        this._list.on(DisplayEvent.ClickItem, this.__clickItem, this);
     }
 
     public dispose(): void {

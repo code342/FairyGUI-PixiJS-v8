@@ -34,4 +34,6 @@ export class DisplayEvent {
     public static StateChanged = "stateChanged";
     public static SizeChanged = "sizeChanged";
     public static PositionChanged = "positionChanged";
+
+    public static ClickItem = "clickItem";
 }
