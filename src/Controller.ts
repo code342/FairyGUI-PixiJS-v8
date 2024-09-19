@@ -1,6 +1,9 @@
+import { EventEmitter } from "pixi.js";
+import { DisplayEvent } from "./utils/LayaCompliant";
+
 var _nextPageId: number = 0;
 
-export class Controller extends Laya.EventDispatcher {
+export class Controller extends EventEmitter {
     private _selectedIndex: number;
     private _previousIndex: number;
     private _pageIds: string[];
@@ -39,8 +42,7 @@ export class Controller extends Laya.EventDispatcher {
             this._selectedIndex = value;
             this.parent.applyController(this);
 
-            this.event(Events.STATE_CHANGED, this);
-
+            this.emit(DisplayEvent.StageChanged, this);
             this.changing = false;
         }
     }

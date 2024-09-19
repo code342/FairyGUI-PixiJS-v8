@@ -3,7 +3,6 @@ export class Relations {
     private _items: RelationItem[];
 
     public handling: GObject;
-    public sizeDirty?: boolean;
 
     constructor(owner: GObject) {
         this._owner = owner;
@@ -112,7 +111,6 @@ export class Relations {
         if (this._items.length == 0)
             return;
 
-        this.sizeDirty = false;
         var length: number = this._items.length;
         for (var i: number = 0; i < length; i++) {
             var item: RelationItem = this._items[i];

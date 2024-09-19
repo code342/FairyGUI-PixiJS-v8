@@ -2,6 +2,7 @@ import { FederatedPointerEvent } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
+import { GComponent } from "./GComponent";
 
 export class GComboBox extends GComponent {
     public dropdown: GComponent;
@@ -429,7 +430,7 @@ export class GComboBox extends GComponent {
 
         this._selectedIndex = -1;
         this.selectedIndex = index;
-        Events.dispatch(Events.STATE_CHANGED, this.displayObject, evt);
+        this.emit(DisplayEvent.StageChanged, evt)
     }
 
     private __rollover(): void {

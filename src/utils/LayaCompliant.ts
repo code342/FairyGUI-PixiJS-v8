@@ -30,4 +30,8 @@ export class DisplayEvent {
     public static DragStart = 'DragStart';
     public static DragEnd = 'DragEnd';
     public static DragMove = 'DragMove';
+
+    public static StageChanged = "stageChanged";
+    public static SizeChanged = "sizeChanged";
+    public static PositionChanged = "positionChanged";
 }

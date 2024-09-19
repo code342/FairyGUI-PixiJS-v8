@@ -1,5 +1,5 @@
 import { FederatedPointerEvent } from "pixi.js";
-import { MouseEvents } from "./utils/LayaCompliant";
+import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 
 export class GTree extends GList {
     public treeNodeRender: Laya.Handler | ((node: GTreeNode, obj: GComponent) => void);
@@ -125,7 +125,7 @@ export class GTree extends GList {
 
         cc = child.getController("expanded");
         if (cc) {
-            cc.on(Events.STATE_CHANGED, this.__expandedStateChanged, this);
+            cc.on(DisplayEvent.StageChanged, this.__expandedStateChanged, this);
             cc.selectedIndex = node.expanded ? 1 : 0;
         }
 

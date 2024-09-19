@@ -118,7 +118,7 @@ export class GObject {
                 this._parent.setBoundsChangedFlag();
                 if (this._group)
                     this._group.setBoundsChangedFlag(true);
-                this.displayObject.event(Events.XY_CHANGED);
+                this.emit(DisplayEvent.PositionChanged);
             }
 
             if (GObject.draggingObject == this && !sUpdateInDragging)
@@ -175,8 +175,6 @@ export class GObject {
 
     public get width(): number {
         this.ensureSizeCorrect();
-        if (this._relations.sizeDirty)
-            this._relations.ensureRelationsSizeCorrect();
         return this._width;
     }
 
@@ -186,8 +184,6 @@ export class GObject {
 
     public get height(): number {
         this.ensureSizeCorrect();
-        if (this._relations.sizeDirty)
-            this._relations.ensureRelationsSizeCorrect();
         return this._height;
     }
 
@@ -235,7 +231,7 @@ export class GObject {
                     this._group.setBoundsChangedFlag();
             }
 
-            this.displayObject.event(Events.SIZE_CHANGED);
+            this.emit(DisplayEvent.SizeChanged);
         }
     }
 

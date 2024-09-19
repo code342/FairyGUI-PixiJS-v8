@@ -1,6 +1,7 @@
 import { FederatedPointerEvent } from "pixi.js";
-import { MouseEvents } from "./utils/LayaCompliant";
+import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
+import { GComponent } from "./GComponent";
 
 export class GButton extends GComponent {
     protected _titleObject: GObject;
@@ -512,13 +513,13 @@ export class GButton extends GComponent {
         if (this._mode == ButtonMode.Check) {
             if (this._changeStateOnClick) {
                 this.selected = !this._selected;
-                Events.dispatch(Events.STATE_CHANGED, this.displayObject, evt);
+                this.emit(DisplayEvent.StageChanged, evt)
             }
         }
         else if (this._mode == ButtonMode.Radio) {
             if (this._changeStateOnClick && !this._selected) {
                 this.selected = true;
-                Events.dispatch(Events.STATE_CHANGED, this.displayObject, evt);
+                this.emit(DisplayEvent.StageChanged, evt)
             }
         }
         else {
