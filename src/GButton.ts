@@ -2,6 +2,7 @@ import { FederatedPointerEvent } from "pixi.js";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
+import { GObject } from "./GObject";
 
 export class GButton extends GComponent {
     protected _titleObject: GObject;
@@ -249,7 +250,10 @@ export class GButton extends GComponent {
             Timer.shared.once(100, this, this.setState, [GButton.DOWN], false);
             Timer.shared.once(200, this, this.setState, [GButton.UP], false);
         }
-        this.__click(Events.createEvent(MouseEvents.Click, this.displayObject));
+
+       // let evt = new FederatedPointerEvent(null);
+       // evt.target = evt.currentTarget = this.displayObject;
+        this.__click(null);
     }
 
     protected setState(val: string): void {
