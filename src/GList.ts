@@ -1007,7 +1007,7 @@ export class GList extends GComponent {
                     this._scrollPane._loop = 1;
             }
 
-            this.on(Events.SCROLL, this.__scrolled, this);
+            this.on(DisplayEvent.Scroll, this.__scrolled, this);
             this.setVirtualListChangedFlag(true);
         }
     }

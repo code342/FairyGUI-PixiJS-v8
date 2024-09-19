@@ -1,6 +1,6 @@
 import { FederatedWheelEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
-import { MouseEvents } from "./utils/LayaCompliant";
+import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 
 export class ScrollPane {
@@ -925,7 +925,7 @@ export class ScrollPane {
 
         this.refresh2();
 
-        Events.dispatch(Events.SCROLL, this._owner.displayObject);
+        this._owner.emit(DisplayEvent.Scroll);
         if (this._needRefresh) //在onScroll事件里开发者可能修改位置，这里再刷新一次，避免闪烁
         {
             this._needRefresh = false;
@@ -1181,7 +1181,7 @@ export class ScrollPane {
         if (this._pageMode)
             this.updatePageController();
 
-        Events.dispatch(Events.SCROLL, this._owner.displayObject);
+        this._owner.emit(DisplayEvent.Scroll);
     }
 
     private __mouseUp(): void {
@@ -1230,12 +1230,12 @@ export class ScrollPane {
             this._tweenChange.setTo(sEndPos.x - this._tweenStart.x, sEndPos.y - this._tweenStart.y);
             if (this._tweenChange.x < -UIConfig.touchDragSensitivity || this._tweenChange.y < -UIConfig.touchDragSensitivity) {
                 this._refreshEventDispatching = true;
-                Events.dispatch(Events.PULL_DOWN_RELEASE, this._owner.displayObject);
+                this._owner.emit(DisplayEvent.PullDownRelease);
                 this._refreshEventDispatching = false;
             }
             else if (this._tweenChange.x > UIConfig.touchDragSensitivity || this._tweenChange.y > UIConfig.touchDragSensitivity) {
                 this._refreshEventDispatching = true;
-                Events.dispatch(Events.PULL_UP_RELEASE, this._owner.displayObject);
+                this._owner.emit(DisplayEvent.PullUpRelease);
                 this._refreshEventDispatching = false;
             }
 
@@ -1615,7 +1615,7 @@ export class ScrollPane {
         if (this._tweening == 1) //取消类型为1的tween需立刻设置到终点
         {
             this._container.pos(this._tweenStart.x + this._tweenChange.x, this._tweenStart.y + this._tweenChange.y);
-            Events.dispatch(Events.SCROLL, this._owner.displayObject);
+            this._owner.emit(DisplayEvent.Scroll);
         }
 
         this._tweening = 0;
@@ -1623,7 +1623,7 @@ export class ScrollPane {
 
         this.updateScrollBarVisible();
 
-        Events.dispatch(Events.SCROLL_END, this._owner.displayObject);
+        this._owner.emit(DisplayEvent.ScrollEnd);
     }
 
     private checkRefreshBar(): void {
@@ -1699,13 +1699,14 @@ export class ScrollPane {
             this.updateScrollBarPos();
             this.updateScrollBarVisible();
 
-            Events.dispatch(Events.SCROLL, this._owner.displayObject);
-            Events.dispatch(Events.SCROLL_END, this._owner.displayObject);
+            this._owner.emit(DisplayEvent.Scroll);
+
+            this._owner.emit(DisplayEvent.ScrollEnd);
 
         }
         else {
             this.updateScrollBarPos();
-            Events.dispatch(Events.SCROLL, this._owner.displayObject);
+            this._owner.emit(DisplayEvent.Scroll);
         }
     }
 

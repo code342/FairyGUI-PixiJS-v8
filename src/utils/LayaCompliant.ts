@@ -37,4 +37,9 @@ export class DisplayEvent {
     public static PositionChanged = "positionChanged";
 
     public static ClickItem = "clickItem";
+
+    public static Scroll = "scroll";
+    public static ScrollEnd = "scrollEnd";
+    public static PullDownRelease = "pullDownRelease";
+    public static PullUpRelease = "pullUpRelease";
 }
