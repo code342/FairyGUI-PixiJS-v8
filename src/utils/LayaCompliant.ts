@@ -31,7 +31,7 @@ export class DisplayEvent {
     public static DragEnd = 'DragEnd';
     public static DragMove = 'DragMove';
 
-    public static StageChanged = "stageChanged";
+    public static StateChanged = "stateChanged";
     public static SizeChanged = "sizeChanged";
     public static PositionChanged = "positionChanged";
 }

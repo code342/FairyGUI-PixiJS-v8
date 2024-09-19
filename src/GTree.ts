@@ -125,7 +125,7 @@ export class GTree extends GList {
 
         cc = child.getController("expanded");
         if (cc) {
-            cc.on(DisplayEvent.StageChanged, this.__expandedStateChanged, this);
+            cc.on(DisplayEvent.StateChanged, this.__expandedStateChanged, this);
             cc.selectedIndex = node.expanded ? 1 : 0;
         }
 

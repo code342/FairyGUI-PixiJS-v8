@@ -430,7 +430,7 @@ export class GComboBox extends GComponent {
 
         this._selectedIndex = -1;
         this.selectedIndex = index;
-        this.emit(DisplayEvent.StageChanged, evt)
+        this.emit(DisplayEvent.StateChanged, evt)
     }
 
     private __rollover(): void {

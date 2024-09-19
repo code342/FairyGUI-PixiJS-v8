@@ -1,6 +1,8 @@
 import { FederatedPointerEvent } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
+import { GComponent } from "./GComponent";
+import { GObject } from "./GObject";
 
 export class GSlider extends GComponent {
     private _min: number = 0;
@@ -104,7 +106,7 @@ export class GSlider extends GComponent {
 
             if (newValue != this._value) {
                 this._value = newValue;
-                this.emit(DisplayEvent.StageChanged, evt)
+                this.emit(DisplayEvent.StateChanged, evt)
             }
         }
 

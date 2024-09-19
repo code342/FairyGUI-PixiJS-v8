@@ -513,13 +513,13 @@ export class GButton extends GComponent {
         if (this._mode == ButtonMode.Check) {
             if (this._changeStateOnClick) {
                 this.selected = !this._selected;
-                this.emit(DisplayEvent.StageChanged, evt)
+                this.emit(DisplayEvent.StateChanged, evt)
             }
         }
         else if (this._mode == ButtonMode.Radio) {
             if (this._changeStateOnClick && !this._selected) {
                 this.selected = true;
-                this.emit(DisplayEvent.StageChanged, evt)
+                this.emit(DisplayEvent.StateChanged, evt)
             }
         }
         else {

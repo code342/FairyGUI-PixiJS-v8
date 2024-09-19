@@ -42,7 +42,7 @@ export class Controller extends EventEmitter {
             this._selectedIndex = value;
             this.parent.applyController(this);
 
-            this.emit(DisplayEvent.StageChanged, this);
+            this.emit(DisplayEvent.StateChanged, this);
             this.changing = false;
         }
     }
