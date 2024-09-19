@@ -68,9 +68,9 @@ export class DragDropManager {
 
         var obj: GObject = GObject.cast(evt.target);
         while (obj) {
-            if (obj.displayObject.hasListener(Events.DROP)) {
+            if (obj.hasListener(DisplayEvent.DragDrop)) {
                 obj.requestFocus();
-                obj.displayObject.event(Events.DROP, [sourceData, Events.createEvent(Events.DROP, obj.displayObject, evt)]);
+                obj.emit(DisplayEvent.DragDrop, [sourceData, evt]);
                 return;
             }
 

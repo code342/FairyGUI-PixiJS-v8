@@ -783,8 +783,9 @@ export class GObject {
         this.off(MouseEvents.Click, listener, thisObj);
     }
 
-    public hasClickListener(): boolean {
-        return this._displayObject.listenerCount(MouseEvents.Click) > 0;
+
+    public hasListener(type: string): boolean {
+        return this._displayObject.listenerCount(type) > 0;
     }
 
     public on(type: string, listener: (...args: any) => void, thisObject: any, args?: any[]): void {
