@@ -1,3 +1,4 @@
+import { Point } from "pixi.js";
 import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -20,7 +21,7 @@ export class GComponent extends GObject {
     public _transitions: Transition[];
     public _container: Laya.Sprite;
     public _scrollPane?: ScrollPane;
-    public _alignOffset: Laya.Point;
+    public _alignOffset: Point;
 
     constructor() {
         super();
@@ -28,7 +29,7 @@ export class GComponent extends GObject {
         this._controllers = [];
         this._transitions = [];
         this._margin = new Margin();
-        this._alignOffset = new Laya.Point();
+        this._alignOffset = new Point();
         this._opaque = false;
         this._childrenRenderOrder = 0;
         this._apexIndex = 0;
@@ -896,16 +897,16 @@ export class GComponent extends GObject {
             this.height = value + this._margin.top + this._margin.bottom;
     }
 
-    public getSnappingPosition(xValue: number, yValue: number, result?: Laya.Point): Laya.Point {
+    public getSnappingPosition(xValue: number, yValue: number, result?: Point): Point {
         return this.getSnappingPositionWithDir(xValue, yValue, 0, 0, result);
     }
 
     /**
      * dir正数表示右移或者下移，负数表示左移或者上移
      */
-    public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: Laya.Point): Laya.Point {
+    public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: Point): Point {
         if (!result)
-            result = new Laya.Point();
+            result = new Point();
 
         var cnt: number = this._children.length;
         if (cnt == 0) {

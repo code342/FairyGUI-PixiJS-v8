@@ -2,6 +2,7 @@ import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter, Federated
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
+import { PackageItem } from "./PackageItem";
 
 
 export class GObject {
