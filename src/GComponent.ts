@@ -1,4 +1,4 @@
-import { Point } from "pixi.js";
+import { Container, Point, Rectangle } from "pixi.js";
 import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -615,18 +615,25 @@ export class GComponent extends GObject {
             this._opaque = value;
             if (this._opaque) {
                 if (!this._displayObject.hitArea)
-                    this._displayObject.hitArea = new Laya.Rectangle();
+                    this._displayObject.hitArea = new Rectangle();
 
-                if (this._displayObject.hitArea instanceof Laya.Rectangle)
-                    this._displayObject.hitArea.setTo(0, 0, this._width, this._height);
-
-                this._displayObject.mouseThrough = false;
+                if (this._displayObject.hitArea instanceof Rectangle)
+                {
+                    let rect:Rectangle = <Rectangle>this._displayObject.hitArea;
+                    rect.x = 0;
+                    rect.y = 0;
+                    rect.width = this._width;
+                    rect.height = this._height;
+                }
+                //非透明的时候，要检测鼠标事件，不能穿透，
+                //this._displayObject.mouseThrough = false;
+                this._displayObject.eventMode = "static";
             }
-            else {
-                if (this._displayObject.hitArea instanceof Laya.Rectangle)
+            else {//透明的话直接穿透，不检测鼠标事件
+                if (this._displayObject.hitArea instanceof Rectangle)
                     this._displayObject.hitArea = null;
 
-                this._displayObject.mouseThrough = true;
+                this._displayObject.eventMode = "passive";
             }
         }
     }
@@ -675,32 +682,15 @@ export class GComponent extends GObject {
         this.setMask(value, false);
     }
 
-    public setMask(value: Laya.Sprite, reversed: boolean): void {
-        if (this._mask && this._mask != value) {
-            if (this._mask.blendMode == "destination-out")
-                this._mask.blendMode = null;
-        }
-
+    /**
+     * 设置遮罩
+     * @param value 
+     * @param reversed 
+     * TODO:反向遮罩，遮罩点击测试hitArea
+     */
+    public setMask(value: Container, reversed: boolean): void {
         this._mask = value;
-        if (!this._mask) {
-            this._displayObject.mask = null;
-            if (this._displayObject.hitArea instanceof ChildHitArea)
-                this._displayObject.hitArea = null;
-            return;
-        }
-
-        if (this._mask.hitArea) {
-            this._displayObject.hitArea = new ChildHitArea(this._mask, reversed);
-            this._displayObject.mouseThrough = false;
-            this._displayObject.hitTestPrior = true;
-        }
-        if (reversed) {
-            this._displayObject.mask = null;
-            this._displayObject.cacheAs = "bitmap";
-            this._mask.blendMode = "destination-out";
-        }
-        else
-            this._displayObject.mask = this._mask;
+        this._displayObject.mask = this._mask;
     }
 
     public get baseUserData(): string {
@@ -717,15 +707,15 @@ export class GComponent extends GObject {
             if (this.sourceHeight != 0)
                 hitTest.scaleY = this._height / this.sourceHeight;
         }
-        else if (this._displayObject.hitArea instanceof Laya.Rectangle) {
+        else if (this._displayObject.hitArea instanceof Rectangle) {
             this._displayObject.hitArea.setTo(0, 0, this._width, this._height);
         }
     }
 
     protected updateMask(): void {
-        var rect: Laya.Rectangle = this._displayObject.scrollRect;
+        var rect: Rectangle = this._displayObject.scrollRect;
         if (!rect)
-            rect = new Laya.Rectangle();
+            rect = new Rectangle();
 
         rect.x = this._margin.left;
         rect.y = this._margin.top;
@@ -1173,8 +1163,10 @@ export class GComponent extends GObject {
 
         if (hitArea) {
             this._displayObject.hitArea = hitArea;
-            this._displayObject.mouseThrough = false;
-            this._displayObject.hitTestPrior = true;
+           // this._displayObject.mouseThrough = false;
+           // this._displayObject.hitTestPrior = true;
+            this._displayObject.eventMode = "static";
+            this._displayObject.interactiveChildren = false;
         }
 
         buffer.seek(0, 5);

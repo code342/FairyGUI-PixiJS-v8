@@ -385,8 +385,9 @@ export class GObject {
                 //Touch is not supported by GImage/GMovieClip/GTextField
                 return;
 
-            if (this._displayObject)
-                this._displayObject.interactive = this._touchable;
+            if (this._displayObject){
+                this._displayObject.eventMode = this._touchable ? "static" : "none";
+            }
         }
     }
 

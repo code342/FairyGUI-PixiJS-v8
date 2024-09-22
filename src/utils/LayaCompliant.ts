@@ -1,4 +1,4 @@
-import { isMobile } from "pixi.js";
+import { IHitArea, isMobile } from "pixi.js";
 
 export class LayaCompliant {
 
@@ -42,4 +42,10 @@ export class DisplayEvent {
     public static ScrollEnd = "scrollEnd";
     public static PullDownRelease = "pullDownRelease";
     public static PullUpRelease = "pullUpRelease";
+}
+
+export class HitArea implements IHitArea {
+    contains(x: number, y: number): boolean {
+        return false;
+    }
 }
