@@ -1,4 +1,4 @@
-import { FederatedWheelEvent, Point } from "pixi.js";
+import { Container, FederatedWheelEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -6,7 +6,7 @@ import { Timer } from "./utils/Timer";
 export class ScrollPane {
     private _owner: GComponent;
     private _container: Laya.Sprite;
-    private _maskContainer: Laya.Sprite;
+    private _maskContainer: Container;
     private _alignContainer?: Laya.Sprite;
 
     private _scrollType: number;
@@ -71,7 +71,7 @@ export class ScrollPane {
     constructor(owner: GComponent) {
         this._owner = owner;
 
-        this._maskContainer = new Laya.Sprite();
+        this._maskContainer = new Container();
         this._owner.displayObject.addChild(this._maskContainer);
 
         this._container = this._owner._container;

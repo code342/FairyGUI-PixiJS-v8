@@ -1,4 +1,4 @@
-import { Container, Point, Rectangle } from "pixi.js";
+import { Container, Graphics, Point, Rectangle } from "pixi.js";
 import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -7,7 +7,7 @@ export class GComponent extends GObject {
     private _sortingChildCount: number = 0;
     private _opaque: boolean;
     private _applyingController?: Controller;
-    private _mask?: Laya.Sprite;
+    private _mask?: Container;
 
     protected _margin: Margin;
     protected _trackBounds: boolean;
@@ -19,10 +19,11 @@ export class GComponent extends GObject {
     public _children: GObject[];
     public _controllers: Controller[];
     public _transitions: Transition[];
-    public _container: Laya.Sprite;
+    public _container: Container;
     public _scrollPane?: ScrollPane;
     public _alignOffset: Point;
-
+    public _scrollRect: Rectangle;
+    public _scrollMask: Graphics;
     constructor() {
         super();
         this._children = [];
@@ -37,8 +38,7 @@ export class GComponent extends GObject {
 
     protected createDisplayObject(): void {
         super.createDisplayObject();
-        this._displayObject.mouseEnabled = true;
-        this._displayObject.mouseThrough = true;
+        this._displayObject.eventMode = "passive";
         this._container = this._displayObject;
     }
 
@@ -72,7 +72,7 @@ export class GComponent extends GObject {
         super.dispose();
     }
 
-    public get displayListContainer(): Laya.Sprite {
+    public get displayListContainer(): Container {
         return this._container;
     }
 
@@ -581,7 +581,7 @@ export class GComponent extends GObject {
     }
 
     public isChildInView(child: GObject): boolean {
-        if (this._displayObject.scrollRect) {
+        if (this._scrollRect) {
             return child.x + child.width >= 0 && child.x <= this.width
                 && child.y + child.height >= 0 && child.y <= this.height;
         }
@@ -626,7 +626,6 @@ export class GComponent extends GObject {
                     rect.height = this._height;
                 }
                 //非透明的时候，要检测鼠标事件，不能穿透，
-                //this._displayObject.mouseThrough = false;
                 this._displayObject.eventMode = "static";
             }
             else {//透明的话直接穿透，不检测鼠标事件
@@ -644,7 +643,7 @@ export class GComponent extends GObject {
 
     public set margin(value: Margin) {
         this._margin.copy(value);
-        if (this._displayObject.scrollRect) {
+        if (this._scrollRect) {
             this._container.pos(this._margin.left + this._alignOffset.x, this._margin.top + this._alignOffset.y);
         }
         this.handleSizeChanged();
@@ -674,11 +673,11 @@ export class GComponent extends GObject {
         }
     }
 
-    public get mask(): Laya.Sprite {
+    public get mask(): Container {
         return this._mask;
     }
 
-    public set mask(value: Laya.Sprite) {
+    public set mask(value: Container) {
         this.setMask(value, false);
     }
 
@@ -686,7 +685,7 @@ export class GComponent extends GObject {
      * 设置遮罩
      * @param value 
      * @param reversed 
-     * TODO:反向遮罩，遮罩点击测试hitArea
+     * TODO:反向遮罩，遮罩点击测试区域hitArea
      */
     public setMask(value: Container, reversed: boolean): void {
         this._mask = value;
@@ -713,7 +712,7 @@ export class GComponent extends GObject {
     }
 
     protected updateMask(): void {
-        var rect: Rectangle = this._displayObject.scrollRect;
+        var rect: Rectangle = this._scrollRect;
         if (!rect)
             rect = new Rectangle();
 
@@ -722,12 +721,43 @@ export class GComponent extends GObject {
         rect.width = this._width - this._margin.right;
         rect.height = this._height - this._margin.bottom;
 
-        this._displayObject.scrollRect = rect;
+        this.scrollRect = rect;
+    }
+
+    public get scrollRect(): Rectangle {
+        return this._scrollRect;
+    }
+
+    public set scrollRect(value: Rectangle) {
+       // if(value && value.equals(this._scrollRect))
+       //     return;
+
+        this._scrollRect = value;
+
+        //无效的rectangle, 清理遮罩
+        if(!value || value.width == 0 || value.height == 0) {
+            if(this._scrollMask) {
+                this._scrollMask.removeFromParent();
+                if(this._displayObject.mask == this._scrollMask) {
+                    this._displayObject.mask = null;
+                }
+            }
+            return;
+        }
+
+        //设置遮罩
+        if(!this._scrollMask) {
+            this._scrollMask = new Graphics();
+            this._scrollMask.eventMode = "none";
+        }
+        this._displayObject.addChild(this._scrollMask);
+        this._displayObject.mask = this._scrollMask;
+        this._scrollMask.clear().rect(value.x, value.y, value.width, value.height).fill();
     }
 
     protected setupScroll(buffer: ByteBuffer): void {
         if (this._displayObject == this._container) {
-            this._container = new Laya.Sprite();
+            this._container = new Container();
             this._displayObject.addChild(this._container);
         }
         this._scrollPane = new ScrollPane(this);
@@ -737,18 +767,18 @@ export class GComponent extends GObject {
     protected setupOverflow(overflow: number): void {
         if (overflow == OverflowType.Hidden) {
             if (this._displayObject == this._container) {
-                this._container = new Laya.Sprite();
+                this._container = new Container();
                 this._displayObject.addChild(this._container);
             }
             this.updateMask();
-            this._container.pos(this._margin.left, this._margin.top);
+            this._container.position.set(this._margin.left, this._margin.top);
         }
         else if (this._margin.left != 0 || this._margin.top != 0) {
             if (this._displayObject == this._container) {
-                this._container = new Laya.Sprite();
+                this._container = new Container();
                 this._displayObject.addChild(this._container);
             }
-            this._container.pos(this._margin.left, this._margin.top);
+            this._container.position.set(this._margin.left, this._margin.top);
         }
     }
 
@@ -757,7 +787,7 @@ export class GComponent extends GObject {
 
         if (this._scrollPane)
             this._scrollPane.onOwnerSizeChanged();
-        else if (this._displayObject.scrollRect)
+        else if (this._scrollRect)
             this.updateMask();
 
         if (this._displayObject.hitArea)
@@ -1161,12 +1191,14 @@ export class GComponent extends GObject {
             hitArea = new ChildHitArea(this.getChildAt(i2).displayObject);
         }
 
+        /*
+        *注意：如果没点击中父节点的hitArea,hitPruneFn会跳过所有子节点的hitTest，导致子节点收不到点击事件
+        *      所以设置hitArea的时候要能覆盖子节点
+        *TODO：如果有hitArea，hitTest的时候，要优先检测_displayObject，不是其子节点
+        */
         if (hitArea) {
             this._displayObject.hitArea = hitArea;
-           // this._displayObject.mouseThrough = false;
-           // this._displayObject.hitTestPrior = true;
             this._displayObject.eventMode = "static";
-            this._displayObject.interactiveChildren = false;
         }
 
         buffer.seek(0, 5);
