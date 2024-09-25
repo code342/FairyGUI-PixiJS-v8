@@ -340,9 +340,9 @@ export class GComboBox extends GComponent {
         var iv: number;
         var nextPos: number;
         var str: string;
-        var itemCount: number = buffer.getInt16();
+        var itemCount: number = buffer.readInt16();
         for (i = 0; i < itemCount; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             this._items[i] = buffer.readS();
@@ -380,7 +380,7 @@ export class GComboBox extends GComponent {
             this._visibleItemCount = iv;
         this._popupDirection = buffer.readByte();
 
-        iv = buffer.getInt16();
+        iv = buffer.readInt16();
         if (iv >= 0)
             this._selectionController = this.parent.getControllerAt(iv);
     }

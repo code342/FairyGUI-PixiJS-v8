@@ -363,9 +363,9 @@ export class GTree extends GList {
         var level: number;
         var prevLevel: number = 0;
 
-        cnt = buffer.getInt16();
+        cnt = buffer.readInt16();
         for (i = 0; i < cnt; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             str = buffer.readS();

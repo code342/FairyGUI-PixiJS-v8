@@ -312,12 +312,12 @@ export class UIPackage {
         }
 
         buffer.seek(indexTablePos, 0);
-        cnt = buffer.getInt16();
+        cnt = buffer.readInt16();
         for (i = 0; i < cnt; i++)
             this._dependencies.push({ id: buffer.readS(), name: buffer.readS() });
 
         if (ver2) {
-            cnt = buffer.getInt16();
+            cnt = buffer.readInt16();
             if (cnt > 0) {
                 this._branches = buffer.readSArray(cnt);
                 if (UIPackage._branch)
@@ -704,7 +704,7 @@ export class UIPackage {
 
         buffer.seek(0, 1);
 
-        var frameCount: number = buffer.getInt16();
+        var frameCount: number = buffer.readInt16();
         item.frames = [];
 
         var spriteId: string;
@@ -713,7 +713,7 @@ export class UIPackage {
         var fy: number;
 
         for (var i: number = 0; i < frameCount; i++) {
-            var nextPos: number = buffer.getInt16();
+            var nextPos: number = buffer.readInt16();
             nextPos += buffer.pos;
 
             fx = buffer.getInt32();
@@ -764,7 +764,7 @@ export class UIPackage {
         let dict = font.dict;
         var cnt: number = buffer.getInt32();
         for (let i = 0; i < cnt; i++) {
-            let nextPos = buffer.getInt16();
+            let nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             let ch = buffer.getUint16();

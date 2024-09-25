@@ -424,7 +424,7 @@ export class GButton extends GComponent {
         iv = buffer.getInt32();
         if (iv != 0)
             this.titleFontSize = iv;
-        iv = buffer.getInt16();
+        iv = buffer.readInt16();
         if (iv >= 0)
             this._relatedController = this.parent.getControllerAt(iv);
         this._relatedPageId = buffer.readS();

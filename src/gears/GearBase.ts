@@ -46,12 +46,12 @@ export class GearBase {
     }
 
     public setup(buffer: ByteBuffer): void {
-        this._controller = this._owner.parent.getControllerAt(buffer.getInt16());
+        this._controller = this._owner.parent.getControllerAt(buffer.readInt16());
         this.init();
 
         var i: number;
         var page: string;
-        var cnt: number = buffer.getInt16();
+        var cnt: number = buffer.readInt16();
 
         if (this instanceof GearDisplay) {
             this.pages = buffer.readSArray(cnt);

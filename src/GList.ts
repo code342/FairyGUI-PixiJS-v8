@@ -2257,13 +2257,13 @@ export class GList extends GComponent {
         this._align = i1 == 0 ? "left" : (i1 == 1 ? "center" : "right");
         i1 = buffer.readByte();
         this._verticalAlign = i1 == 0 ? "top" : (i1 == 1 ? "middle" : "bottom");
-        this._lineGap = buffer.getInt16();
-        this._columnGap = buffer.getInt16();
-        this._lineCount = buffer.getInt16();
-        this._columnCount = buffer.getInt16();
+        this._lineGap = buffer.readInt16();
+        this._columnGap = buffer.readInt16();
+        this._lineCount = buffer.readInt16();
+        this._columnCount = buffer.readInt16();
         this._autoResizeItem = buffer.readBool();
         this._childrenRenderOrder = buffer.readByte();
-        this._apexIndex = buffer.getInt16();
+        this._apexIndex = buffer.readInt16();
 
         if (buffer.readBool()) {
             this._margin.top = buffer.getInt32();
@@ -2302,9 +2302,9 @@ export class GList extends GComponent {
         var nextPos: number;
         var str: string;
 
-        cnt = buffer.getInt16();
+        cnt = buffer.readInt16();
         for (i = 0; i < cnt; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             str = buffer.readS();
@@ -2349,7 +2349,7 @@ export class GList extends GComponent {
         var i: number;
 
         if (obj instanceof GComponent) {
-            cnt = buffer.getInt16();
+            cnt = buffer.readInt16();
             for (i = 0; i < cnt; i++) {
                 var cc: Controller = obj.getController(buffer.readS());
                 str = buffer.readS();
@@ -2358,10 +2358,10 @@ export class GList extends GComponent {
             }
 
             if (buffer.version >= 2) {
-                cnt = buffer.getInt16();
+                cnt = buffer.readInt16();
                 for (i = 0; i < cnt; i++) {
                     var target: string = buffer.readS();
-                    var propertyId: number = buffer.getInt16();
+                    var propertyId: number = buffer.readInt16();
                     var value: String = buffer.readS();
                     var obj2: GObject = obj.getChildByPath(target);
                     if (obj2)
@@ -2376,7 +2376,7 @@ export class GList extends GComponent {
 
         buffer.seek(beginPos, 6);
 
-        var i: number = buffer.getInt16();
+        var i: number = buffer.readInt16();
         if (i != -1)
             this._selectionController = this._parent.getControllerAt(i);
     }

@@ -229,7 +229,7 @@ export class Controller extends EventEmitter {
 
         var i: number;
         var nextPos: number;
-        var cnt: number = buffer.getInt16();
+        var cnt: number = buffer.readInt16();
 
         for (i = 0; i < cnt; i++) {
             this._pageIds.push(buffer.readS());
@@ -241,7 +241,7 @@ export class Controller extends EventEmitter {
             var homePageType: number = buffer.getByte();
             switch (homePageType) {
                 case 1:
-                    homePageIndex = buffer.getInt16();
+                    homePageIndex = buffer.readInt16();
                     break;
 
                 case 2:
@@ -260,13 +260,13 @@ export class Controller extends EventEmitter {
 
         buffer.seek(beginPos, 2);
 
-        cnt = buffer.getInt16();
+        cnt = buffer.readInt16();
         if (cnt > 0) {
             if (!this._actions)
                 this._actions = [];
 
             for (i = 0; i < cnt; i++) {
-                nextPos = buffer.getInt16();
+                nextPos = buffer.readInt16();
                 nextPos += buffer.pos;
 
                 var action: ControllerAction = ControllerAction.createAction(buffer.readByte());

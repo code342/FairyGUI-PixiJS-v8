@@ -38,12 +38,12 @@ export class ControllerAction {
         var cnt: number;
         var i: number;
 
-        cnt = buffer.getInt16();
+        cnt = buffer.readInt16();
         this.fromPage = [];
         for (i = 0; i < cnt; i++)
             this.fromPage[i] = buffer.readS();
 
-        cnt = buffer.getInt16();
+        cnt = buffer.readInt16();
         this.toPage = [];
         for (i = 0; i < cnt; i++)
             this.toPage[i] = buffer.readS();

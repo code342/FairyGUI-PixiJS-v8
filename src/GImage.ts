@@ -1,5 +1,6 @@
 import { GObject, IGObjectView } from "./GObject";
 import { Image } from "./display/Image";
+import { ByteBuffer } from "./utils/ByteBuffer";
 export class GImage extends GObject {
     private _image: Image;
     private _flip: number = 0;

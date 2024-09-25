@@ -277,14 +277,14 @@ export class GTextField extends GObject {
         var iv: number;
 
         this.font = buffer.readS();
-        this.fontSize = buffer.getInt16();
+        this.fontSize = buffer.readInt16();
         this.color = buffer.readColorS();
         iv = buffer.readByte();
         this.align = iv == 0 ? "left" : (iv == 1 ? "center" : "right");
         iv = buffer.readByte();
         this.valign = iv == 0 ? "top" : (iv == 1 ? "middle" : "bottom");
-        this.leading = buffer.getInt16();
-        this.letterSpacing = buffer.getInt16();
+        this.leading = buffer.readInt16();
+        this.letterSpacing = buffer.readInt16();
         this.ubbEnabled = buffer.readBool();
         this.autoSize = buffer.readByte();
         this.underline = buffer.readBool();

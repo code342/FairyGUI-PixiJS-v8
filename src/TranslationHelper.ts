@@ -54,9 +54,9 @@ export class TranslationHelper {
 
         buffer.seek(0, 2);
 
-        let childCount: number = buffer.getInt16();
+        let childCount: number = buffer.readInt16();
         for (let i = 0; i < childCount; i++) {
-            dataLen = buffer.getInt16();
+            dataLen = buffer.readInt16();
             curPos = buffer.pos;
 
             buffer.seek(curPos, 0);
@@ -78,15 +78,15 @@ export class TranslationHelper {
 
             buffer.seek(curPos, 2);
 
-            let gearCnt: number = buffer.getInt16();
+            let gearCnt: number = buffer.readInt16();
             for (let j = 0; j < gearCnt; j++) {
-                nextPos = buffer.getInt16();
+                nextPos = buffer.readInt16();
                 nextPos += buffer.pos;
 
                 if (buffer.readByte() == 6) //gearText
                 {
                     buffer.skip(2);//controller
-                    valueCnt = buffer.getInt16();
+                    valueCnt = buffer.readInt16();
                     for (let k = 0; k < valueCnt; k++) {
                         page = buffer.readS();
                         if (page != null) {
@@ -218,9 +218,9 @@ export class TranslationHelper {
                 case ObjectType.ComboBox:
                     {
                         if (buffer.seek(curPos, 6) && buffer.readByte() == type) {
-                            itemCount = buffer.getInt16();
+                            itemCount = buffer.readInt16();
                             for (let j = 0; j < itemCount; j++) {
-                                nextPos = buffer.getInt16();
+                                nextPos = buffer.readInt16();
                                 nextPos += buffer.pos;
 
                                 if ((value = compStrings[elementId + "-" + j]) != null)

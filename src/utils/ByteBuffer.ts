@@ -3,7 +3,7 @@ export class ByteBuffer {
     private _dataView: DataView;
     private _u8ByteArray: Uint8Array;
     private _pos: number = 0;
-    private _length: number = 0;
+    public length: number = 0;
 
     constructor(data: any, offset?: number, length?: number, isLittle:boolean=false) {
         offset = offset || 0;
@@ -12,7 +12,7 @@ export class ByteBuffer {
 
         this._u8ByteArray = new Uint8Array(data, offset, length);
         this._dataView = new DataView(this._u8ByteArray.buffer, offset, length);
-        this._length = length;
+        this.length = length;
         
         this.littleEndian = isLittle;
     }
@@ -20,13 +20,10 @@ export class ByteBuffer {
 
     get buffer(): ArrayBuffer {
         var rstBuffer: ArrayBuffer = this._dataView.buffer;
-        if (rstBuffer.byteLength === this._length) return rstBuffer;
-        return rstBuffer.slice(0, this._length);
+        if (rstBuffer.byteLength === this.length) return rstBuffer;
+        return rstBuffer.slice(0, this.length);
     }
 
-    get length(): number {
-        return this._length;
-    }
 
     get pos(): number {
         return this._pos;
@@ -37,22 +34,21 @@ export class ByteBuffer {
     }
 
     get bytesAvailable(): number {
-        return this._length - this._pos;
+        return this.length - this._pos;
     }
 
     clear(): void {
         this._pos = 0;
-        this._length = 0;
+        this.length = 0;
     }    
 
-    //////////////////////////////////////////////////////////
     readString(): string {
         return this._rUTF(this.readUint16());
     }
 
     readFloat32Array(start: number, len: number): any {
         var end: number = start + len;
-        end = (end > this._length) ? this._length : end;
+        end = (end > this.length) ? this.length : end;
         var v: any = new Float32Array(this._dataView.buffer.slice(start, end));
         this._pos = end;
         return v;
@@ -60,7 +56,7 @@ export class ByteBuffer {
 
     readUint8Array(start: number, len: number): Uint8Array {
         var end: number = start + len;
-        end = (end > this._length) ? this._length : end;
+        end = (end > this.length) ? this.length : end;
         var v: any = new Uint8Array(this._dataView.buffer.slice(start, end));
         this._pos = end;
         return v;
@@ -68,7 +64,7 @@ export class ByteBuffer {
 
     readInt16Array(start: number, len: number): any {
         var end: number = start + len;
-        end = (end > this._length) ? this._length : end;
+        end = (end > this.length) ? this.length : end;
         var v: any = new Int16Array(this._dataView.buffer.slice(start, end));
         this._pos = end;
         return v;
@@ -76,14 +72,14 @@ export class ByteBuffer {
 
 
     readFloat32(): number {
-        if (this._pos + 4 > this._length) throw "getFloat32 error - Out of bounds";
+        if (this._pos + 4 > this.length) throw "getFloat32 error - Out of bounds";
         var v: number = this._dataView.getFloat32(this._pos, this.littleEndian);
         this._pos += 4;
         return v;
     }
 
     readFloat64(): number {
-        if (this._pos + 8 > this._length) throw "getFloat64 error - Out of bounds";
+        if (this._pos + 8 > this.length) throw "getFloat64 error - Out of bounds";
         var v: number = this._dataView.getFloat64(this._pos, this.littleEndian);
         this._pos += 8;
         return v;
@@ -91,28 +87,28 @@ export class ByteBuffer {
 
 
     readInt32(): number {
-        if (this._pos + 4 > this._length) throw "getInt32 error - Out of bounds";
+        if (this._pos + 4 > this.length) throw "getInt32 error - Out of bounds";
         var float: number = this._dataView.getInt32(this._pos, this.littleEndian);
         this._pos += 4;
         return float;
     }
 
     readUint32(): number {
-        if (this._pos + 4 > this._length) throw "getUint32 error - Out of bounds";
+        if (this._pos + 4 > this.length) throw "getUint32 error - Out of bounds";
         var v: number = this._dataView.getUint32(this._pos, this.littleEndian);
         this._pos += 4;
         return v;
     }
 
     readInt16(): number {
-        if (this._pos + 2 > this._length) throw "getInt16 error - Out of bounds";
+        if (this._pos + 2 > this.length) throw "getInt16 error - Out of bounds";
         var us: number = this._dataView.getInt16(this._pos, this.littleEndian);
         this._pos += 2;
         return us;
     }
 
     readUint16(): number {
-        if (this._pos + 2 > this._length) throw "getUint16 error - Out of bounds";
+        if (this._pos + 2 > this.length) throw "getUint16 error - Out of bounds";
         var us: number = this._dataView.getUint16(this._pos, this.littleEndian);
         this._pos += 2;
         return us;
@@ -120,7 +116,7 @@ export class ByteBuffer {
 
 
     readUint8(): number {
-        if (this._pos + 1 > this._length) throw "getUint8 error - Out of bounds";
+        if (this._pos + 1 > this.length) throw "getUint8 error - Out of bounds";
         return this._u8ByteArray[this._pos++];
     }
 
@@ -222,7 +218,7 @@ export class ByteBuffer {
 
 
     readByte(): number {
-        if (this._pos + 1 > this._length) throw "readByte error - Out of bounds";
+        if (this._pos + 1 > this.length) throw "readByte error - Out of bounds";
         return this._dataView.getInt8(this._pos++);
     }
 }

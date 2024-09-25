@@ -1057,9 +1057,9 @@ export class GComponent extends GObject {
 
         buffer.seek(0, 1);
 
-        var controllerCount: number = buffer.getInt16();
+        var controllerCount: number = buffer.readInt16();
         for (i = 0; i < controllerCount; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             var controller: Controller = new Controller();
@@ -1073,9 +1073,9 @@ export class GComponent extends GObject {
         buffer.seek(0, 2);
 
         var child: GObject;
-        var childCount: number = buffer.getInt16();
+        var childCount: number = buffer.readInt16();
         for (i = 0; i < childCount; i++) {
-            dataLen = buffer.getInt16();
+            dataLen = buffer.readInt16();
             curPos = buffer.pos;
 
             if (objectPool)
@@ -1121,7 +1121,7 @@ export class GComponent extends GObject {
         buffer.skip(2);
 
         for (i = 0; i < childCount; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             buffer.seek(buffer.pos, 3);
@@ -1134,7 +1134,7 @@ export class GComponent extends GObject {
         buffer.skip(2);
 
         for (i = 0; i < childCount; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             child = this._children[i];
@@ -1148,7 +1148,7 @@ export class GComponent extends GObject {
 
         buffer.skip(2); //customData
         this.opaque = buffer.readBool();
-        var maskId: number = buffer.getInt16();
+        var maskId: number = buffer.readInt16();
         if (maskId != -1) {
             this.setMask(this.getChildAt(maskId).displayObject, buffer.readBool());
         }
@@ -1179,9 +1179,9 @@ export class GComponent extends GObject {
 
         buffer.seek(0, 5);
 
-        var transitionCount: number = buffer.getInt16();
+        var transitionCount: number = buffer.readInt16();
         for (i = 0; i < transitionCount; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             var trans: Transition = new Transition(this);
@@ -1225,14 +1225,14 @@ export class GComponent extends GObject {
 
         buffer.seek(beginPos, 4);
 
-        var pageController: number = buffer.getInt16();
+        var pageController: number = buffer.readInt16();
         if (pageController != -1 && this._scrollPane)
             this._scrollPane.pageController = this._parent.getControllerAt(pageController);
 
         var cnt: number;
         var i: number;
 
-        cnt = buffer.getInt16();
+        cnt = buffer.readInt16();
         for (i = 0; i < cnt; i++) {
             var cc: Controller = this.getController(buffer.readS());
             var pageId: string = buffer.readS();
@@ -1241,10 +1241,10 @@ export class GComponent extends GObject {
         }
 
         if (buffer.version >= 2) {
-            cnt = buffer.getInt16();
+            cnt = buffer.readInt16();
             for (i = 0; i < cnt; i++) {
                 var target: string = buffer.readS();
-                var propertyId: number = buffer.getInt16();
+                var propertyId: number = buffer.readInt16();
                 var value: String = buffer.readS();
                 var obj: GObject = this.getChildByPath(target);
                 if (obj)

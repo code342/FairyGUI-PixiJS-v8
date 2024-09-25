@@ -69,9 +69,9 @@ export class AsyncOperation {
         var curPos: number;
         var pkg: UIPackage;
 
-        var dcnt: number = buffer.getInt16();
+        var dcnt: number = buffer.readInt16();
         for (i = 0; i < dcnt; i++) {
-            dataLen = buffer.getInt16();
+            dataLen = buffer.readInt16();
             curPos = buffer.pos;
 
             buffer.seek(curPos, 0);
@@ -117,10 +117,10 @@ export class AsyncOperation {
         var pi: PackageItem;
         var di: DisplayListItem;
         var defaultItem: string = buffer.readS();
-        var itemCount: number = buffer.getInt16();
+        var itemCount: number = buffer.readInt16();
 
         for (i = 0; i < itemCount; i++) {
-            nextPos = buffer.getInt16();
+            nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             url = buffer.readS();

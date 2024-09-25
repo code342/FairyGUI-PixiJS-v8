@@ -1,3 +1,5 @@
+import { ByteBuffer } from "./utils/ByteBuffer";
+
 export class Relations {
     private _owner: GObject;
     private _items: RelationItem[];
@@ -126,7 +128,7 @@ export class Relations {
         var cnt: number = buffer.readByte();
         var target: GObject;
         for (var i: number = 0; i < cnt; i++) {
-            var targetIndex: number = buffer.getInt16();
+            var targetIndex: number = buffer.readInt16();
             if (targetIndex == -1)
                 target = this._owner.parent;
             else if (parentToChild)

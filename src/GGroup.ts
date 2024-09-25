@@ -436,7 +436,7 @@ export class GGroup extends GObject {
         if (buffer.version >= 2) {
             this._excludeInvisibles = buffer.readBool();
             this._autoSizeDisabled = buffer.readBool();
-            this._mainGridIndex = buffer.getInt16();
+            this._mainGridIndex = buffer.readInt16();
         }
     }
 

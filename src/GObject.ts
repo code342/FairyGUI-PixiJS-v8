@@ -1079,15 +1079,15 @@ export class GObject {
         if (str != null)
             this.tooltips = str;
 
-        var groupId: number = buffer.getInt16();
+        var groupId: number = buffer.readInt16();
         if (groupId >= 0)
             this.group = <GGroup>this.parent.getChildAt(groupId);
 
         buffer.seek(beginPos, 2);
 
-        var cnt: number = buffer.getInt16();
+        var cnt: number = buffer.readInt16();
         for (var i: number = 0; i < cnt; i++) {
-            var nextPos: number = buffer.getInt16();
+            var nextPos: number = buffer.readInt16();
             nextPos += buffer.pos;
 
             var gear: GearBase = this.getGear(buffer.readByte());

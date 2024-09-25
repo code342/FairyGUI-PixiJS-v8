@@ -1044,9 +1044,9 @@ export class Transition {
         this._autoPlayTimes = buffer.getInt32();
         this._autoPlayDelay = buffer.getFloat32();
 
-        var cnt: number = buffer.getInt16();
+        var cnt: number = buffer.readInt16();
         for (var i: number = 0; i < cnt; i++) {
-            var dataLen: number = buffer.getInt16();
+            var dataLen: number = buffer.readInt16();
             var curPos: number = buffer.pos;
 
             buffer.seek(curPos, 0);
@@ -1055,7 +1055,7 @@ export class Transition {
             this._items[i] = item;
 
             item.time = buffer.getFloat32();
-            var targetId: number = buffer.getInt16();
+            var targetId: number = buffer.readInt16();
             if (targetId < 0)
                 item.targetId = "";
             else

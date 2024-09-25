@@ -280,16 +280,16 @@ export class GGraph extends GObject {
             }
 
             if (this._type == 3) {
-                cnt = buffer.getInt16();
+                cnt = buffer.readInt16();
                 this._polygonPoints = [];
                 this._polygonPoints.length = cnt;
                 for (i = 0; i < cnt; i++)
                     this._polygonPoints[i] = buffer.getFloat32();
             }
             else if (this._type == 4) {
-                this._sides = buffer.getInt16();
+                this._sides = buffer.readInt16();
                 this._startAngle = buffer.getFloat32();
-                cnt = buffer.getInt16();
+                cnt = buffer.readInt16();
                 if (cnt > 0) {
                     this._distances = [];
                     for (i = 0; i < cnt; i++)
