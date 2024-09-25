@@ -1,12 +1,14 @@
-import { Container, FederatedWheelEvent, Point } from "pixi.js";
+import { Container, FederatedWheelEvent, Point, Rectangle } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
+import { ScrollRectComp } from "./display/ScrollRectComp";
 
 export class ScrollPane {
     private _owner: GComponent;
     private _container: Laya.Sprite;
     private _maskContainer: Container;
+    private _scrollRect: ScrollRectComp;
     private _alignContainer?: Laya.Sprite;
 
     private _scrollType: number;
@@ -142,7 +144,9 @@ export class ScrollPane {
         else
             this._bouncebackEffect = UIConfig.defaultScrollBounceEffect;
         if ((flags & 256) != 0) this._inertiaDisabled = true;
-        if ((flags & 512) == 0) this._maskContainer.scrollRect = new Laya.Rectangle();
+        if ((flags & 512) == 0){
+            this._scrollRect = new ScrollRectComp();    
+        }
         if ((flags & 1024) != 0) this._floating = true;
         if ((flags & 2048) != 0) this._dontClipMargin = true;
 
@@ -832,8 +836,11 @@ export class ScrollPane {
 
         this.updateScrollBarVisible();
 
-        var rect: Laya.Rectangle = this._maskContainer.scrollRect;
-        if (rect) {
+        if(this._scrollRect) {
+            var rect: Rectangle = this._scrollRect.rect;
+            if(rect==null) {
+                rect = new Rectangle();
+            }
             rect.width = this._viewSize.x;
             rect.height = this._viewSize.y;
             if (this._vScrollNone && this._vtScrollBar)
@@ -844,8 +851,9 @@ export class ScrollPane {
                 rect.width += (this._owner.margin.left + this._owner.margin.right);
                 rect.height += (this._owner.margin.top + this._owner.margin.bottom);
             }
-            this._maskContainer.scrollRect = rect;
+            this._scrollRect.clip(this._maskContainer, rect);
         }
+
 
         if (this._scrollType == ScrollType.Horizontal || this._scrollType == ScrollType.Both)
             this._overlapSize.x = Math.ceil(Math.max(0, this._contentSize.x - this._viewSize.x));

@@ -1,4 +1,4 @@
-import { GObject, GObjectView } from "./GObject";
+import { GObject, IGObjectView } from "./GObject";
 
 export class GTextField extends GObject {
     protected _text: string;
@@ -20,7 +20,7 @@ export class GTextField extends GObject {
 
     protected createDisplayObject(): void {
         this._displayObject = new Laya.Text();
-        (this._displayObject as GObjectView).$owner = this;
+        (this._displayObject as IGObjectView).$owner = this;
         this._displayObject.padding = labelPadding;
         this._displayObject.mouseEnabled = false;
         this._autoSize = AutoSizeType.Both;

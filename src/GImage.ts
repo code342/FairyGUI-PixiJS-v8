@@ -1,5 +1,5 @@
-import { GObject, GObjectView } from "./GObject";
-
+import { GObject, IGObjectView } from "./GObject";
+import { Image } from "./display/Image";
 export class GImage extends GObject {
     private _image: Image;
     private _flip: number = 0;
@@ -76,8 +76,8 @@ export class GImage extends GObject {
 
     protected createDisplayObject(): void {
         this._displayObject = this._image = new Image();
-        this.image.mouseEnabled = false;
-        (this._displayObject as GObjectView).$owner = this;
+        this.image.eventMode = 'none';
+        (this._displayObject as IGObjectView).$owner = this;
     }
 
     public constructFromResource(): void {

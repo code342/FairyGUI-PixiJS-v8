@@ -1,6 +1,7 @@
+import { Sprite } from "pixi.js";
 import { Timer } from "../utils/Timer";
 
-export class Image extends Laya.Sprite {
+export class Image extends Sprite {
     protected _source: Laya.Texture;
     protected _scaleByTile?: boolean;
     protected _scale9Grid?: Laya.Rectangle;

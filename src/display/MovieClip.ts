@@ -1,6 +1,6 @@
 import { DisplayEvent } from "../utils/LayaCompliant";
 import { Timer } from "../utils/Timer";
-
+import { Image } from "./Image";
 export interface Frame {
     addDelay: number;
     texture?: Laya.Texture;

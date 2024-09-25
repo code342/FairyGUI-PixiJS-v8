@@ -1,4 +1,4 @@
-import { FederatedPointerEvent } from "pixi.js";
+import { Container, FederatedPointerEvent } from "pixi.js";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
@@ -54,7 +54,7 @@ export class GList extends GComponent {
         this._align = "left";
         this._verticalAlign = "top";
 
-        this._container = new Laya.Sprite();
+        this._container = new Container();
         this._displayObject.addChild(this._container);
     }
 

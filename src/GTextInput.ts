@@ -1,4 +1,4 @@
-import { GObjectView } from "./GObject";
+import { IGObjectView } from "./GObject";
 import { GTextField } from "./GTextField";
 
 export class GTextInput extends GTextField {
@@ -10,7 +10,7 @@ export class GTextInput extends GTextField {
 
     protected createDisplayObject(): void {
         this._displayObject = new Laya.Input();
-        (this._displayObject as GObjectView).$owner = this;
+        (this._displayObject as IGObjectView).$owner = this;
     }
 
     public get nativeInput(): Laya.Input {

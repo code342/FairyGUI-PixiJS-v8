@@ -2,6 +2,7 @@ import { Container, Graphics, Point, Rectangle } from "pixi.js";
 import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
+import { ScrollRectComp } from "./display/ScrollRectComp";
 
 export class GComponent extends GObject {
     private _sortingChildCount: number = 0;
@@ -22,8 +23,7 @@ export class GComponent extends GObject {
     public _container: Container;
     public _scrollPane?: ScrollPane;
     public _alignOffset: Point;
-    public _scrollRect: Rectangle;
-    public _scrollMask: Graphics;
+    private _scrollRect: ScrollRectComp;
     constructor() {
         super();
         this._children = [];
@@ -711,8 +711,13 @@ export class GComponent extends GObject {
         }
     }
 
+    protected createScrollRect(): void {
+        this._scrollRect = new ScrollRectComp();
+        this.updateMask();
+    }
+
     protected updateMask(): void {
-        var rect: Rectangle = this._scrollRect;
+        var rect: Rectangle = this._scrollRect.rect;
         if (!rect)
             rect = new Rectangle();
 
@@ -721,39 +726,9 @@ export class GComponent extends GObject {
         rect.width = this._width - this._margin.right;
         rect.height = this._height - this._margin.bottom;
 
-        this.scrollRect = rect;
+        this._scrollRect.clip(this._displayObject, rect);
     }
-
-    public get scrollRect(): Rectangle {
-        return this._scrollRect;
-    }
-
-    public set scrollRect(value: Rectangle) {
-       // if(value && value.equals(this._scrollRect))
-       //     return;
-
-        this._scrollRect = value;
-
-        //无效的rectangle, 清理遮罩
-        if(!value || value.width == 0 || value.height == 0) {
-            if(this._scrollMask) {
-                this._scrollMask.removeFromParent();
-                if(this._displayObject.mask == this._scrollMask) {
-                    this._displayObject.mask = null;
-                }
-            }
-            return;
-        }
-
-        //设置遮罩
-        if(!this._scrollMask) {
-            this._scrollMask = new Graphics();
-            this._scrollMask.eventMode = "none";
-        }
-        this._displayObject.addChild(this._scrollMask);
-        this._displayObject.mask = this._scrollMask;
-        this._scrollMask.clear().rect(value.x, value.y, value.width, value.height).fill();
-    }
+ 
 
     protected setupScroll(buffer: ByteBuffer): void {
         if (this._displayObject == this._container) {
@@ -770,7 +745,7 @@ export class GComponent extends GObject {
                 this._container = new Container();
                 this._displayObject.addChild(this._container);
             }
-            this.updateMask();
+            this.createScrollRect();
             this._container.position.set(this._margin.left, this._margin.top);
         }
         else if (this._margin.left != 0 || this._margin.top != 0) {

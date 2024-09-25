@@ -916,7 +916,7 @@ export class GObject {
 
     protected createDisplayObject(): void {
         this._displayObject = new Container();
-        (this._displayObject as GObjectView).$owner = this;
+        (this._displayObject as IGObjectView).$owner = this;
     }
 
     protected handleXYChanged(): void {
@@ -1215,7 +1215,7 @@ export class GObject {
     //-------------------------------------------------------------------
 
     public static cast(sprite: Container): GObject {
-        return (sprite as GObjectView).$owner;
+        return (sprite as IGObjectView).$owner;
     }
 }
 
@@ -1227,7 +1227,7 @@ export const BlendMode: { [key: number]: string } = {
 
 
 
-export interface GObjectView extends Container {
+export interface IGObjectView extends Container {
     $owner: GObject;
 }
 
