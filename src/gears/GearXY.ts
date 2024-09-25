@@ -33,8 +33,8 @@ export class GearXY extends GearBase {
             gv = this._default;
         else
             this._storage[pageId] = gv = {};
-        gv.x = buffer.getInt32();
-        gv.y = buffer.getInt32();
+        gv.x = buffer.readInt32();
+        gv.y = buffer.readInt32();
     }
 
     public addExtStatus(pageId: string, buffer: ByteBuffer): void {

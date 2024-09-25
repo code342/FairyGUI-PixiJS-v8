@@ -32,8 +32,8 @@ export class GearSize extends GearBase {
         else
             this._storage[pageId] = gv = {};
 
-        gv.width = buffer.getInt32();
-        gv.height = buffer.getInt32();
+        gv.width = buffer.readInt32();
+        gv.height = buffer.readInt32();
         gv.scaleX = buffer.getFloat32();
         gv.scaleY = buffer.getFloat32();
     }

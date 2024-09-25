@@ -517,7 +517,7 @@ export class GLoader extends GObject {
         this._autoSize = buffer.readBool();
         this._showErrorSign = buffer.readBool();
         this._content.playing = buffer.readBool();
-        this._content.frame = buffer.getInt32();
+        this._content.frame = buffer.readInt32();
 
         if (buffer.readBool())
             this.color = buffer.readColorS();

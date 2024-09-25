@@ -15,9 +15,9 @@ export class GearFontSize extends GearBase {
 
     protected addStatus(pageId: string, buffer: ByteBuffer): void {
         if (pageId == null)
-            this._default = buffer.getInt32();
+            this._default = buffer.readInt32();
         else
-            this._storage[pageId] = buffer.getInt32();
+            this._storage[pageId] = buffer.readInt32();
     }
 
     public apply(): void {

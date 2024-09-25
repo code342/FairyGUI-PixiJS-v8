@@ -375,7 +375,7 @@ export class GComboBox extends GComponent {
 
         if (buffer.readBool())
             this.titleColor = buffer.readColorS();
-        iv = buffer.getInt32();
+        iv = buffer.readInt32();
         if (iv > 0)
             this._visibleItemCount = iv;
         this._popupDirection = buffer.readByte();

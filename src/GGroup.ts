@@ -431,8 +431,8 @@ export class GGroup extends GObject {
         buffer.seek(beginPos, 5);
 
         this._layout = buffer.readByte();
-        this._lineGap = buffer.getInt32();
-        this._columnGap = buffer.getInt32();
+        this._lineGap = buffer.readInt32();
+        this._columnGap = buffer.readInt32();
         if (buffer.version >= 2) {
             this._excludeInvisibles = buffer.readBool();
             this._autoSizeDisabled = buffer.readBool();

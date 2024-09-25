@@ -197,10 +197,10 @@ export class GProgressBar extends GComponent {
             return;
         }
 
-        this._value = buffer.getInt32();
-        this._max = buffer.getInt32();
+        this._value = buffer.readInt32();
+        this._max = buffer.readInt32();
         if (buffer.version >= 2)
-            this._min = buffer.getInt32();
+            this._min = buffer.readInt32();
 
         this.update(this._value);
     }

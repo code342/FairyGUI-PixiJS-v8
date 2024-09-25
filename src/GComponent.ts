@@ -1013,18 +1013,18 @@ export class GComponent extends GObject {
 
         this._underConstruct = true;
 
-        this.sourceWidth = buffer.getInt32();
-        this.sourceHeight = buffer.getInt32();
+        this.sourceWidth = buffer.readInt32();
+        this.sourceHeight = buffer.readInt32();
         this.initWidth = this.sourceWidth;
         this.initHeight = this.sourceHeight;
 
         this.setSize(this.sourceWidth, this.sourceHeight);
 
         if (buffer.readBool()) {
-            this.minWidth = buffer.getInt32();
-            this.maxWidth = buffer.getInt32();
-            this.minHeight = buffer.getInt32();
-            this.maxHeight = buffer.getInt32();
+            this.minWidth = buffer.readInt32();
+            this.maxWidth = buffer.readInt32();
+            this.minHeight = buffer.readInt32();
+            this.maxHeight = buffer.readInt32();
         }
 
         if (buffer.readBool()) {
@@ -1034,10 +1034,10 @@ export class GComponent extends GObject {
         }
 
         if (buffer.readBool()) {
-            this._margin.top = buffer.getInt32();
-            this._margin.bottom = buffer.getInt32();
-            this._margin.left = buffer.getInt32();
-            this._margin.right = buffer.getInt32();
+            this._margin.top = buffer.readInt32();
+            this._margin.bottom = buffer.readInt32();
+            this._margin.left = buffer.readInt32();
+            this._margin.right = buffer.readInt32();
         }
 
         var overflow: number = buffer.readByte();
@@ -1154,8 +1154,8 @@ export class GComponent extends GObject {
         }
 
         var hitTestId: string = buffer.readS();
-        i1 = buffer.getInt32();
-        i2 = buffer.getInt32();
+        i1 = buffer.readInt32();
+        i2 = buffer.readInt32();
         var hitArea: Laya.HitArea;
 
         if (hitTestId) {

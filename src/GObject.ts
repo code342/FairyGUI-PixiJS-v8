@@ -1008,21 +1008,21 @@ export class GObject {
 
         this._id = buffer.readS();
         this._name = buffer.readS();
-        f1 = buffer.getInt32();
-        f2 = buffer.getInt32();
+        f1 = buffer.readInt32();
+        f2 = buffer.readInt32();
         this.setXY(f1, f2);
 
         if (buffer.readBool()) {
-            this.initWidth = buffer.getInt32();
-            this.initHeight = buffer.getInt32();
+            this.initWidth = buffer.readInt32();
+            this.initHeight = buffer.readInt32();
             this.setSize(this.initWidth, this.initHeight, true);
         }
 
         if (buffer.readBool()) {
-            this.minWidth = buffer.getInt32();
-            this.maxWidth = buffer.getInt32();
-            this.minHeight = buffer.getInt32();
-            this.maxHeight = buffer.getInt32();
+            this.minWidth = buffer.readInt32();
+            this.maxWidth = buffer.readInt32();
+            this.minHeight = buffer.readInt32();
+            this.maxHeight = buffer.readInt32();
         }
 
         if (buffer.readBool()) {

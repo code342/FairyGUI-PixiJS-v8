@@ -34,7 +34,7 @@ export class PlayTransitionAction extends ControllerAction {
         super.setup(buffer);
 
         this.transitionName = buffer.readS();
-        this.playTimes = buffer.getInt32();
+        this.playTimes = buffer.readInt32();
         this.delay = buffer.getFloat32();
         this.stopOnExit = buffer.readBool();
     }

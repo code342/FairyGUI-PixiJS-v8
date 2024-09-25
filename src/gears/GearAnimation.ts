@@ -28,7 +28,7 @@ export class GearAnimation extends GearBase {
         else
             this._storage[pageId] = gv = {};
         gv.playing = buffer.readBool();
-        gv.frame = buffer.getInt32();
+        gv.frame = buffer.readInt32();
     }
 
     public apply(): void {

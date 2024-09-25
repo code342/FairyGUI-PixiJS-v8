@@ -270,7 +270,7 @@ export class GGraph extends GObject {
             var i: number;
             var cnt: number;
 
-            this._lineSize = buffer.getInt32();
+            this._lineSize = buffer.readInt32();
             this._lineColor = buffer.readColorS(true);
             this._fillColor = buffer.readColorS(true);
             if (buffer.readBool()) {

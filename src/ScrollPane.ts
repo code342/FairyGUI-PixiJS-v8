@@ -114,13 +114,13 @@ export class ScrollPane {
     public setup(buffer: ByteBuffer): void {
         this._scrollType = buffer.readByte();
         var scrollBarDisplay: number = buffer.readByte();
-        var flags: number = buffer.getInt32();
+        var flags: number = buffer.readInt32();
 
         if (buffer.readBool()) {
-            this._scrollBarMargin.top = buffer.getInt32();
-            this._scrollBarMargin.bottom = buffer.getInt32();
-            this._scrollBarMargin.left = buffer.getInt32();
-            this._scrollBarMargin.right = buffer.getInt32();
+            this._scrollBarMargin.top = buffer.readInt32();
+            this._scrollBarMargin.bottom = buffer.readInt32();
+            this._scrollBarMargin.left = buffer.readInt32();
+            this._scrollBarMargin.right = buffer.readInt32();
         }
 
         var vtScrollBarRes: string = buffer.readS();

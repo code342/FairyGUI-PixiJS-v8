@@ -163,7 +163,7 @@ export class GLabel extends GComponent {
             this.icon = str;
         if (buffer.readBool())
             this.titleColor = buffer.readColorS();
-        var iv: number = buffer.getInt32();
+        var iv: number = buffer.readInt32();
         if (iv != 0)
             this.titleFontSize = iv;
 
@@ -178,10 +178,10 @@ export class GLabel extends GComponent {
                 if (str != null)
                     input.restrict = str;
 
-                iv = buffer.getInt32();
+                iv = buffer.readInt32();
                 if (iv != 0)
                     input.maxLength = iv;
-                iv = buffer.getInt32();
+                iv = buffer.readInt32();
                 if (iv != 0) {
                     if (iv == 4)
                         input.keyboardType = Laya.Input.TYPE_NUMBER;

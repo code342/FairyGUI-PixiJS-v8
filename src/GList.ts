@@ -2266,10 +2266,10 @@ export class GList extends GComponent {
         this._apexIndex = buffer.readInt16();
 
         if (buffer.readBool()) {
-            this._margin.top = buffer.getInt32();
-            this._margin.bottom = buffer.getInt32();
-            this._margin.left = buffer.getInt32();
-            this._margin.right = buffer.getInt32();
+            this._margin.top = buffer.readInt32();
+            this._margin.bottom = buffer.readInt32();
+            this._margin.left = buffer.readInt32();
+            this._margin.right = buffer.readInt32();
         }
 
         var overflow: number = buffer.readByte();

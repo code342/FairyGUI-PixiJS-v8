@@ -421,7 +421,7 @@ export class GButton extends GComponent {
             this.selectedIcon = str;
         if (buffer.readBool())
             this.titleColor = buffer.readColorS();
-        iv = buffer.getInt32();
+        iv = buffer.readInt32();
         if (iv != 0)
             this.titleFontSize = iv;
         iv = buffer.readInt16();

@@ -349,7 +349,7 @@ export class GTree extends GList {
 
         buffer.seek(beginPos, 9);
 
-        this._indent = buffer.getInt32();
+        this._indent = buffer.readInt32();
         this._clickToExpand = buffer.getUint8();
     }
 

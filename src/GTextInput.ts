@@ -91,10 +91,10 @@ export class GTextInput extends GTextField {
         if (str != null)
             this._displayObject.restrict = str;
 
-        var iv: number = buffer.getInt32();
+        var iv: number = buffer.readInt32();
         if (iv != 0)
             this._displayObject.maxChars = iv;
-        iv = buffer.getInt32();
+        iv = buffer.readInt32();
         if (iv != 0) {
             if (iv == 4)
                 this.keyboardType = Laya.Input.TYPE_NUMBER;

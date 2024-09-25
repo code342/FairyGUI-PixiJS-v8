@@ -135,7 +135,7 @@ export class GMovieClip extends GObject {
         if (buffer.readBool())
             this.color = buffer.readColorS();
         buffer.readByte(); //flip
-        this._movieClip.frame = buffer.getInt32();
+        this._movieClip.frame = buffer.readInt32();
         this._movieClip.playing = buffer.readBool();
     }
 }

@@ -1039,9 +1039,9 @@ export class Transition {
 
     public setup(buffer: ByteBuffer): void {
         this.name = buffer.readS();
-        this._options = buffer.getInt32();
+        this._options = buffer.readInt32();
         this._autoPlay = buffer.readBool();
-        this._autoPlayTimes = buffer.getInt32();
+        this._autoPlayTimes = buffer.readInt32();
         this._autoPlayDelay = buffer.getFloat32();
 
         var cnt: number = buffer.readInt16();
@@ -1070,7 +1070,7 @@ export class Transition {
                 if (item.time + item.tweenConfig.duration > this._totalDuration)
                     this._totalDuration = item.time + item.tweenConfig.duration;
                 item.tweenConfig.easeType = buffer.readByte();
-                item.tweenConfig.repeat = buffer.getInt32();
+                item.tweenConfig.repeat = buffer.readInt32();
                 item.tweenConfig.yoyo = buffer.readBool();
                 item.tweenConfig.endLabel = buffer.readS();
 
@@ -1083,7 +1083,7 @@ export class Transition {
                 this.decodeValue(item, buffer, item.tweenConfig.endValue);
 
                 if (buffer.version >= 2) {
-                    var pathLen: number = buffer.getInt32();
+                    var pathLen: number = buffer.readInt32();
                     if (pathLen > 0) {
                         item.tweenConfig.path = new GPath();
                         var pts: Array<GPathPoint> = new Array<GPathPoint>();
@@ -1156,7 +1156,7 @@ export class Transition {
 
             case ActionType.Animation:
                 value.playing = buffer.readBool();
-                value.frame = buffer.getInt32();
+                value.frame = buffer.readInt32();
                 break;
 
             case ActionType.Visible:
@@ -1170,7 +1170,7 @@ export class Transition {
 
             case ActionType.Transition:
                 value.transName = buffer.readS();
-                value.playTimes = buffer.getInt32();
+                value.playTimes = buffer.readInt32();
                 break;
 
             case ActionType.Shake:

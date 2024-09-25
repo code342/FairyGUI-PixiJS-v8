@@ -269,7 +269,7 @@ export class UIPackage {
         if (buffer.getUint32() != 0x46475549)
             throw new Error("FairyGUI: old package format found in '" + this._resKey + "'");
 
-        buffer.version = buffer.getInt32();
+        buffer.version = buffer.readInt32();
         var compressed: boolean = buffer.readBool();
         this._id = buffer.readUTFString();
         this._name = buffer.readUTFString();
@@ -296,7 +296,7 @@ export class UIPackage {
 
         buffer.seek(indexTablePos, 4);
 
-        cnt = buffer.getInt32();
+        cnt = buffer.readInt32();
         var stringTable: string[] = [];
         for (i = 0; i < cnt; i++)
             stringTable[i] = buffer.readUTFString();
@@ -337,7 +337,7 @@ export class UIPackage {
 
         cnt = buffer.getUint16();
         for (i = 0; i < cnt; i++) {
-            nextPos = buffer.getInt32();
+            nextPos = buffer.readInt32();
             nextPos += buffer.pos;
 
             pi = new PackageItem();
@@ -350,8 +350,8 @@ export class UIPackage {
             if (str)
                 pi.file = str;
             buffer.readBool();//exported
-            pi.width = buffer.getInt32();
-            pi.height = buffer.getInt32();
+            pi.width = buffer.readInt32();
+            pi.height = buffer.readInt32();
 
             switch (pi.type) {
                 case PackageItemType.Image:
@@ -360,12 +360,12 @@ export class UIPackage {
                         var scaleOption: number = buffer.readByte();
                         if (scaleOption == 1) {
                             pi.scale9Grid = new Laya.Rectangle();
-                            pi.scale9Grid.x = buffer.getInt32();
-                            pi.scale9Grid.y = buffer.getInt32();
-                            pi.scale9Grid.width = buffer.getInt32();
-                            pi.scale9Grid.height = buffer.getInt32();
+                            pi.scale9Grid.x = buffer.readInt32();
+                            pi.scale9Grid.y = buffer.readInt32();
+                            pi.scale9Grid.width = buffer.readInt32();
+                            pi.scale9Grid.height = buffer.readInt32();
 
-                            pi.tileGridIndice = buffer.getInt32();
+                            pi.tileGridIndice = buffer.readInt32();
                         }
                         else if (scaleOption == 2)
                             pi.scaleByTile = true;
@@ -458,16 +458,16 @@ export class UIPackage {
 
             let sprite: AtlasSprite = { atlas: pi, rect: new Laya.Rectangle(), offset: new Laya.Point(), originalSize: new Laya.Point() };
             sprite.atlas = pi;
-            sprite.rect.x = buffer.getInt32();
-            sprite.rect.y = buffer.getInt32();
-            sprite.rect.width = buffer.getInt32();
-            sprite.rect.height = buffer.getInt32();
+            sprite.rect.x = buffer.readInt32();
+            sprite.rect.y = buffer.readInt32();
+            sprite.rect.width = buffer.readInt32();
+            sprite.rect.height = buffer.readInt32();
             sprite.rotated = buffer.readBool();
             if (ver2 && buffer.readBool()) {
-                sprite.offset.x = buffer.getInt32();
-                sprite.offset.y = buffer.getInt32();
-                sprite.originalSize.x = buffer.getInt32();
-                sprite.originalSize.y = buffer.getInt32();
+                sprite.offset.x = buffer.readInt32();
+                sprite.offset.y = buffer.readInt32();
+                sprite.originalSize.x = buffer.readInt32();
+                sprite.originalSize.y = buffer.readInt32();
             }
             else {
                 sprite.originalSize.x = sprite.rect.width;
@@ -481,7 +481,7 @@ export class UIPackage {
         if (buffer.seek(indexTablePos, 3)) {
             cnt = buffer.getUint16();
             for (i = 0; i < cnt; i++) {
-                nextPos = buffer.getInt32();
+                nextPos = buffer.readInt32();
                 nextPos += buffer.pos;
 
                 pi = this._itemsById[buffer.readS()];
@@ -698,9 +698,9 @@ export class UIPackage {
 
         buffer.seek(0, 0);
 
-        item.interval = buffer.getInt32();
+        item.interval = buffer.readInt32();
         item.swing = buffer.readBool();
-        item.repeatDelay = buffer.getInt32();
+        item.repeatDelay = buffer.readInt32();
 
         buffer.seek(0, 1);
 
@@ -716,11 +716,11 @@ export class UIPackage {
             var nextPos: number = buffer.readInt16();
             nextPos += buffer.pos;
 
-            fx = buffer.getInt32();
-            fy = buffer.getInt32();
-            buffer.getInt32(); //width
-            buffer.getInt32(); //height
-            let frame: Frame = { addDelay: buffer.getInt32() };
+            fx = buffer.readInt32();
+            fy = buffer.readInt32();
+            buffer.readInt32(); //width
+            buffer.readInt32(); //height
+            let frame: Frame = { addDelay: buffer.readInt32() };
             spriteId = buffer.readS();
 
             if (spriteId != null && (sprite = this._sprites[spriteId]) != null) {
@@ -749,9 +749,9 @@ export class UIPackage {
         font.tint = buffer.readBool();
         font.autoScaleSize = buffer.readBool();
         buffer.readBool(); //has channel
-        font.fontSize = Math.max(buffer.getInt32(), 1);
-        let xadvance = buffer.getInt32();
-        let lineHeight = buffer.getInt32();
+        font.fontSize = Math.max(buffer.readInt32(), 1);
+        let xadvance = buffer.readInt32();
+        let lineHeight = buffer.readInt32();
         font.lineHeight = Math.max(lineHeight, font.fontSize);
 
         let mainTexture: Laya.Texture = null;
@@ -762,7 +762,7 @@ export class UIPackage {
         buffer.seek(0, 1);
 
         let dict = font.dict;
-        var cnt: number = buffer.getInt32();
+        var cnt: number = buffer.readInt32();
         for (let i = 0; i < cnt; i++) {
             let nextPos = buffer.readInt16();
             nextPos += buffer.pos;
@@ -772,13 +772,13 @@ export class UIPackage {
             dict[ch] = bg;
 
             let img: string = buffer.readS();
-            let bx: number = buffer.getInt32();
-            let by: number = buffer.getInt32();
-            bg.x = buffer.getInt32();
-            bg.y = buffer.getInt32();
-            bg.width = buffer.getInt32();
-            bg.height = buffer.getInt32();
-            bg.advance = buffer.getInt32();
+            let bx: number = buffer.readInt32();
+            let by: number = buffer.readInt32();
+            bg.x = buffer.readInt32();
+            bg.y = buffer.readInt32();
+            bg.width = buffer.readInt32();
+            bg.height = buffer.readInt32();
+            bg.advance = buffer.readInt32();
             buffer.readByte(); //channel
 
             if (ttf) {

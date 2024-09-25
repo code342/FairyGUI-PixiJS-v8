@@ -419,7 +419,7 @@ export class GLoader3D extends GObject {
         this._animationName = buffer.readS();
         this._skinName = buffer.readS();
         this._playing = buffer.readBool();
-        this._frame = buffer.getInt32();
+        this._frame = buffer.readInt32();
         this._loop = buffer.readBool();
 
         if (buffer.readBool())

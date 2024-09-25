@@ -43,10 +43,10 @@ export class PixelHitTestData {
     }
 
     public load(ba: Laya.Byte): void {
-        ba.getInt32();
-        this.pixelWidth = ba.getInt32();
+        ba.readInt32();
+        this.pixelWidth = ba.readInt32();
         this.scale = 1 / ba.readByte();
-        var len: number = ba.getInt32();
+        var len: number = ba.readInt32();
         this.pixels = [];
         for (var i: number = 0; i < len; i++) {
             var j: number = ba.readByte();
