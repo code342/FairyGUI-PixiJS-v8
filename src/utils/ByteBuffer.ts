@@ -4,7 +4,8 @@ export class ByteBuffer {
     private _u8ByteArray: Uint8Array;
     private _pos: number = 0;
     public length: number = 0;
-
+    public stringTable: string[];
+    public version: number;
     constructor(data: any, offset?: number, length?: number, isLittle:boolean=false) {
         offset = offset || 0;
         if (length == null || length == -1)
@@ -166,7 +167,7 @@ export class ByteBuffer {
 
     readCustomString(len: number): string {
         var v: string = "", ulen: number = 0, c: number, c2: number, f: Function = String.fromCharCode;
-        var u: any = this._u8ByteArray, i: number = 0;
+        var u: any = this._u8ByteArray;
         while (len > 0) {
             c = u[this._pos];
             if (c < 0x80) {
@@ -220,6 +221,116 @@ export class ByteBuffer {
     readByte(): number {
         if (this._pos + 1 > this.length) throw "readByte error - Out of bounds";
         return this._dataView.getInt8(this._pos++);
+    }
+
+
+    //////////////////////////////////////////////////////////
+    public skip(count: number): void {
+        this.pos += count;
+    }
+
+    public readBool(): boolean {
+        return this.readUint8() == 1;
+    }
+
+    public readS(): string {
+        var index: number = this.readUint16();
+        if (index == 65534) //null
+            return null;
+        else if (index == 65533)
+            return ""
+        else
+            return this.stringTable[index];
+    }
+
+    public readSArray(cnt: number): Array<string> {
+        var ret: Array<string> = new Array<string>(cnt);
+        for (var i: number = 0; i < cnt; i++)
+            ret[i] = this.readS();
+
+        return ret;
+    }
+
+    public writeS(value: string): void {
+        var index: number = this.readUint16();
+        if (index != 65534 && index != 65533)
+            this.stringTable[index] = value;
+    }
+
+    public readColor(hasAlpha?: boolean): number {
+        var r: number = this.readUint8();
+        var g: number = this.readUint8();
+        var b: number = this.readUint8();
+        var a: number = this.readUint8();
+
+        return (hasAlpha ? (a << 24) : 0) + (r << 16) + (g << 8) + b;
+    }
+
+    public readColorS(hasAlpha?: boolean): string {
+        var r: number = this.readUint8();
+        var g: number = this.readUint8();
+        var b: number = this.readUint8();
+        var a: number = this.readUint8();
+
+        if (hasAlpha && a != 255)
+            return "rgba(" + r + "," + g + "," + b + "," + (a / 255) + ")";
+        else {
+            var sr: string = r.toString(16);
+            var sg: string = g.toString(16);
+            var sb: string = b.toString(16);
+            if (sr.length == 1)
+                sr = "0" + sr;
+            if (sg.length == 1)
+                sg = "0" + sg;
+            if (sb.length == 1)
+                sb = "0" + sb;
+            return "#" + sr + sg + sb;
+        }
+    }
+
+    public readChar(): string {
+        var i: number = this.readUint16();
+        return String.fromCharCode(i);
+    }
+
+    public readBuffer(): ByteBuffer {
+        var count: number = this.readUint32();
+        var ba: ByteBuffer = new ByteBuffer(this.buffer, this._pos, count);
+        this.pos += count;
+        ba.stringTable = this.stringTable;
+        ba.version = this.version;
+        return ba;
+    }
+
+    public seek(indexTablePos: number, blockIndex: number): boolean {
+        var tmp: number = this._pos;
+        this.pos = indexTablePos;
+        var segCount: number = this.readUint8();
+        if (blockIndex < segCount) {
+            var useShort: boolean = this.readUint8() == 1;
+            var newPos: number;
+            if (useShort) {
+                this.pos += 2 * blockIndex;
+                newPos = this.readUint16();
+            }
+            else {
+                this.pos += 4 * blockIndex;
+                newPos = this.readUint32();
+            }
+
+            if (newPos > 0) {
+                this.pos = indexTablePos + newPos;
+                return true;
+            }
+            else {
+                this.pos = tmp;
+                return false;
+            }
+        }
+        else {
+            this.pos = tmp;
+            return false;
+        }
     }
 }
 

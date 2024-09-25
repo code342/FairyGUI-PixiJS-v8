@@ -266,7 +266,7 @@ export class UIPackage {
     }
 
     private loadPackage(buffer: ByteBuffer): void {
-        if (buffer.getUint32() != 0x46475549)
+        if (buffer.readUint32() != 0x46475549)
             throw new Error("FairyGUI: old package format found in '" + this._resKey + "'");
 
         buffer.version = buffer.readInt32();
@@ -307,7 +307,7 @@ export class UIPackage {
             for (let i = 0; i < cnt; i++) {
                 let index = buffer.readUint16();
                 let len = buffer.readInt32();
-                stringTable[index] = buffer.getCustomString(len);
+                stringTable[index] = buffer.readCustomString(len);
             }
         }
 
