@@ -350,7 +350,7 @@ export class GTree extends GList {
         buffer.seek(beginPos, 9);
 
         this._indent = buffer.readInt32();
-        this._clickToExpand = buffer.getUint8();
+        this._clickToExpand = buffer.readUint8();
     }
 
     protected readItems(buffer: ByteBuffer): void {
@@ -378,7 +378,7 @@ export class GTree extends GList {
             }
 
             isFolder = buffer.readBool();
-            level = buffer.getUint8();
+            level = buffer.readUint8();
 
             var node: GTreeNode = new GTreeNode(isFolder, str);
             node.expanded = true;

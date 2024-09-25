@@ -238,7 +238,7 @@ export class Controller extends EventEmitter {
 
         var homePageIndex: number = 0;
         if (buffer.version >= 2) {
-            var homePageType: number = buffer.getByte();
+            var homePageType: number = buffer.readByte();
             switch (homePageType) {
                 case 1:
                     homePageIndex = buffer.readInt16();

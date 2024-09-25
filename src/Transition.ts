@@ -1089,7 +1089,7 @@ export class Transition {
                         var pts: Array<GPathPoint> = new Array<GPathPoint>();
 
                         for (var j: number = 0; j < pathLen; j++) {
-                            var curveType: number = buffer.getUint8();
+                            var curveType: number = buffer.readUint8();
                             switch (curveType) {
                                 case CurveType.Bezier:
                                     pts.push(GPathPoint.newBezierPoint(buffer.readFloat32(), buffer.readFloat32(),

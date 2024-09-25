@@ -335,7 +335,7 @@ export class UIPackage {
         let shortPath = pos == -1 ? "" : path.substring(0, pos + 1);
         path = path + "_";
 
-        cnt = buffer.getUint16();
+        cnt = buffer.readUint16();
         for (i = 0; i < cnt; i++) {
             nextPos = buffer.readInt32();
             nextPos += buffer.pos;
@@ -425,7 +425,7 @@ export class UIPackage {
                 if (str)
                     pi.name = str + "/" + pi.name;
 
-                var branchCnt: number = buffer.getUint8();
+                var branchCnt: number = buffer.readUint8();
                 if (branchCnt > 0) {
                     if (branchIncluded)
                         pi.branches = buffer.readSArray(branchCnt);
@@ -433,7 +433,7 @@ export class UIPackage {
                         this._itemsById[buffer.readS()] = pi;
                 }
 
-                var highResCnt: number = buffer.getUint8();
+                var highResCnt: number = buffer.readUint8();
                 if (highResCnt > 0)
                     pi.highResolution = buffer.readSArray(highResCnt);
             }
@@ -448,9 +448,9 @@ export class UIPackage {
 
         buffer.seek(indexTablePos, 2);
 
-        cnt = buffer.getUint16();
+        cnt = buffer.readUint16();
         for (i = 0; i < cnt; i++) {
-            nextPos = buffer.getUint16();
+            nextPos = buffer.readUint16();
             nextPos += buffer.pos;
 
             var itemId: string = buffer.readS();
@@ -479,7 +479,7 @@ export class UIPackage {
         }
 
         if (buffer.seek(indexTablePos, 3)) {
-            cnt = buffer.getUint16();
+            cnt = buffer.readUint16();
             for (i = 0; i < cnt; i++) {
                 nextPos = buffer.readInt32();
                 nextPos += buffer.pos;
@@ -767,7 +767,7 @@ export class UIPackage {
             let nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
-            let ch = buffer.getUint16();
+            let ch = buffer.readUint16();
             let bg: Laya.BMGlyph = {};
             dict[ch] = bg;
 

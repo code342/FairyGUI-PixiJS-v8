@@ -109,12 +109,12 @@ export class TranslationHelper {
 
                 buffer.skip(2); //pageController
 
-                buffer.skip(4 * buffer.getUint16());
+                buffer.skip(4 * buffer.readUint16());
 
-                let cpCount: number = buffer.getUint16();
+                let cpCount: number = buffer.readUint16();
                 for (let k: number = 0; k < cpCount; k++) {
                     let target: string = buffer.readS();
-                    let propertyId: number = buffer.getUint16();
+                    let propertyId: number = buffer.readUint16();
                     if (propertyId == 0 && (value = compStrings[elementId + "-cp-" + target]) != null)
                         buffer.writeS(value);
                     else
@@ -143,9 +143,9 @@ export class TranslationHelper {
                     {
                         buffer.seek(curPos, 8);
                         buffer.skip(2);
-                        itemCount = buffer.getUint16();
+                        itemCount = buffer.readUint16();
                         for (let j = 0; j < itemCount; j++) {
-                            nextPos = buffer.getUint16();
+                            nextPos = buffer.readUint16();
                             nextPos += buffer.pos;
 
                             buffer.skip(2); //url
@@ -166,12 +166,12 @@ export class TranslationHelper {
 
                             if (buffer.version >= 2) {
                                 buffer.skip(6);
-                                buffer.skip(buffer.getUint16() * 4);//controllers
+                                buffer.skip(buffer.readUint16() * 4);//controllers
 
-                                let cpCount: number = buffer.getUint16();
+                                let cpCount: number = buffer.readUint16();
                                 for (let k: number = 0; k < cpCount; k++) {
                                     let target: string = buffer.readS();
-                                    let propertyId: number = buffer.getUint16();
+                                    let propertyId: number = buffer.readUint16();
                                     if (propertyId == 0 && (value = compStrings[elementId + "-" + j + "-" + target]) != null)
                                         buffer.writeS(value);
                                     else
