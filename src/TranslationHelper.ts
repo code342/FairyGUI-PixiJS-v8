@@ -1,38 +1,10 @@
+import { ObjectType } from "./FieldTypes";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class TranslationHelper {
     public static strings: Record<string, Record<string, string>>;
 
     constructor() {
-    }
-
-    public static loadFromXML(source: string): void {
-        let strings = {};
-        TranslationHelper.strings = strings;
-
-        let xml = new Laya.XML(source);
-        let resNode = xml.getNode("resources");
-        let nodes = resNode.elements();
-        let length1: number = nodes.length;
-        for (let i1 = 0; i1 < length1; i1++) {
-            let cxml = nodes[i1];
-            if (cxml.name == "string") {
-                let key = cxml.getAttrString("name");
-                let text = cxml.text;
-                let i = key.indexOf("-");
-                if (i == -1)
-                    continue;
-
-                let key2 = key.substring(0, i);
-                let key3 = key.substring(i + 1);
-                let col = strings[key2];
-                if (!col) {
-                    col = {};
-                    strings[key2] = col;
-                }
-                col[key3] = text;
-            }
-        }
     }
 
     public static translateComponent(item: PackageItem): void {

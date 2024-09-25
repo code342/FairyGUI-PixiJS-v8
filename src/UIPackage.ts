@@ -1,3 +1,4 @@
+import { TranslationHelper } from "./TranslationHelper";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 type PackageDependency = { id: string, name: string };
@@ -259,10 +260,6 @@ export class UIPackage {
         var pkgName: string = url.substring(pos1 + 2, pos2);
         var srcName: string = url.substring(pos2 + 1);
         return UIPackage.getItemURL(pkgName, srcName);
-    }
-
-    public static setStringsSource(source: string): void {
-        TranslationHelper.loadFromXML(source);
     }
 
     private loadPackage(buffer: ByteBuffer): void {

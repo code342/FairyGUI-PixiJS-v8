@@ -4,6 +4,7 @@ import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { ScrollRectComp } from "./display/ScrollRectComp";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { TranslationHelper } from "./TranslationHelper";
 
 export class GComponent extends GObject {
     private _sortingChildCount: number = 0;
