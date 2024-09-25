@@ -1,3 +1,5 @@
+import { PackageItem } from "./PackageItem";
+
 export class AssetProxy {
 
     loader = Laya.loader;

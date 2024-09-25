@@ -1,4 +1,5 @@
 import { GObject, IGObjectView } from "./GObject";
+import { PackageItem } from "./PackageItem";
 import { Image } from "./display/Image";
 import { ByteBuffer } from "./utils/ByteBuffer";
 export class GImage extends GObject {

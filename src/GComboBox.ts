@@ -4,6 +4,8 @@ import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { UIConfig } from "./UIConfig";
+import { GObject } from "./GObject";
 
 export class GComboBox extends GComponent {
     public dropdown: GComponent;

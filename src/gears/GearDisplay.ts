@@ -1,3 +1,4 @@
+import { GObject } from "../GObject";
 
 export class GearDisplay extends GearBase {
     public pages: string[];

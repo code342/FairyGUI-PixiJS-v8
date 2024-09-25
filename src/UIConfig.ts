@@ -1,3 +1,5 @@
+import { ScrollBarDisplayType } from "./FieldTypes";
+
 export class UIConfig {
   constructor() {
   }

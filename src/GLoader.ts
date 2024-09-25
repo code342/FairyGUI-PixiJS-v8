@@ -1,4 +1,6 @@
 import { GObject } from "./GObject";
+import { PackageItem } from "./PackageItem";
+import { UIConfig } from "./UIConfig";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 

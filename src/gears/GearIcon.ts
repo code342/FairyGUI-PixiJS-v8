@@ -1,3 +1,4 @@
+import { GObject } from "../GObject";
 import { ByteBuffer } from "../utils/ByteBuffer";
 
 export class GearIcon extends GearBase {

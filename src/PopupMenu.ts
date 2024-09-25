@@ -1,3 +1,5 @@
+import { GObject } from "./GObject";
+import { UIConfig } from "./UIConfig";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 

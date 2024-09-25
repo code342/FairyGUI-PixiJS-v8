@@ -1,3 +1,6 @@
+import { GObject } from "./GObject";
+import { PackageItem } from "./PackageItem";
+import { UIPackage } from "./UIPackage";
 
 export class UIObjectFactory {
     public static extensions: Record<string, new () => GComponent> = {};

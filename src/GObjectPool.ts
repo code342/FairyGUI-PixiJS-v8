@@ -1,3 +1,5 @@
+import { GObject } from "./GObject";
+
 export class GObjectPool {
     private _pool: Record<string, Array<GObject>>;
     private _count: number = 0;

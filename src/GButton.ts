@@ -4,6 +4,8 @@ import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { UIConfig } from "./UIConfig";
+import { PackageItem } from "./PackageItem";
 
 export class GButton extends GComponent {
     protected _titleObject: GObject;

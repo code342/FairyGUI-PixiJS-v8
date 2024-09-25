@@ -3,6 +3,8 @@ import { GComponent } from "./GComponent";
 import { GObject, IGObjectView } from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { ToolSet } from "./utils/ToolSet";
+import { UIConfig } from "./UIConfig";
+import { UIPackage } from "./UIPackage";
 
 export class GRoot extends GComponent {
     public static contentScaleLevel: number = 0;
@@ -93,9 +95,9 @@ export class GRoot extends GComponent {
     }
 
     public showModalWait(msg?: string): void {
-        if (fgui.UIConfig.globalModalWaiting != null) {
+        if (UIConfig.globalModalWaiting != null) {
             if (this._modalWaitPane == null)
-                this._modalWaitPane = UIPackage.createObjectFromURL(fgui.UIConfig.globalModalWaiting);
+                this._modalWaitPane = UIPackage.createObjectFromURL(UIConfig.globalModalWaiting);
             this._modalWaitPane.setSize(this.width, this.height);
             this._modalWaitPane.addRelation(this, RelationType.Size);
 

@@ -5,6 +5,11 @@ import { Timer } from "./utils/Timer";
 import { ScrollRectComp } from "./display/ScrollRectComp";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
+import { ScrollBarDisplayType, ScrollType } from "./FieldTypes";
+import { UIConfig } from "./UIConfig";
+import { UIPackage } from "./UIPackage";
+import { GComponent } from "./GComponent";
+import { GObject } from "./GObject";
 
 export class ScrollPane {
     private _owner: GComponent;

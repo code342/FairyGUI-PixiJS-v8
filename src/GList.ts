@@ -4,6 +4,7 @@ import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { UIConfig } from "./UIConfig";
 
 export class GList extends GComponent {
     public itemRenderer: Laya.Handler | ((index: number, item: GObject) => void);

@@ -1,4 +1,6 @@
-import { TranslationHelper } from "./TranslationHelper";
+import { GObject } from "./GObject";
+import { PackageItem } from "./PackageItem";
+import { UIConfig } from "./UIConfig";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 type PackageDependency = { id: string, name: string };

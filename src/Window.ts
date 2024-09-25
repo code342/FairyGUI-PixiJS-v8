@@ -2,6 +2,8 @@ import { FederatedPointerEvent } from "pixi.js";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
+import { UIConfig } from "./UIConfig";
+import { UIPackage } from "./UIPackage";
 
 export class Window extends GComponent {
     private _contentPane: GComponent;
@@ -162,9 +164,9 @@ export class Window extends GComponent {
         if (requestingCmd != null)
             this._requestingCmd = requestingCmd;
 
-        if (fgui.UIConfig.windowModalWaiting) {
+        if (UIConfig.windowModalWaiting) {
             if (!this._modalWaitPane)
-                this._modalWaitPane = UIPackage.createObjectFromURL(fgui.UIConfig.windowModalWaiting);
+                this._modalWaitPane = UIPackage.createObjectFromURL(UIConfig.windowModalWaiting);
 
             this.layoutModalWaitPane();
 

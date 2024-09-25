@@ -1,3 +1,4 @@
+import { GObject } from "../GObject";
 import { Timer } from "../utils/Timer";
 
     export class TweenManager {

@@ -1,3 +1,5 @@
+import { GObject } from "../GObject";
+import { UIPackage } from "../UIPackage";
 import { ByteBuffer } from "../utils/ByteBuffer";
 
 interface Value {
