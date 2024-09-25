@@ -414,8 +414,8 @@ export class UIPackage {
                     {
                         pi.file = shortPath + pi.file;
                         pi.skeletonAnchor = new Laya.Point();
-                        pi.skeletonAnchor.x = buffer.getFloat32();
-                        pi.skeletonAnchor.y = buffer.getFloat32();
+                        pi.skeletonAnchor.x = buffer.readFloat32();
+                        pi.skeletonAnchor.y = buffer.readFloat32();
                         break;
                     }
             }

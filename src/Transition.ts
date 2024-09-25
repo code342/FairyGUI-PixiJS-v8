@@ -1042,7 +1042,7 @@ export class Transition {
         this._options = buffer.readInt32();
         this._autoPlay = buffer.readBool();
         this._autoPlayTimes = buffer.readInt32();
-        this._autoPlayDelay = buffer.getFloat32();
+        this._autoPlayDelay = buffer.readFloat32();
 
         var cnt: number = buffer.readInt16();
         for (var i: number = 0; i < cnt; i++) {
@@ -1054,7 +1054,7 @@ export class Transition {
             var item: Item = new Item(buffer.readByte());
             this._items[i] = item;
 
-            item.time = buffer.getFloat32();
+            item.time = buffer.readFloat32();
             var targetId: number = buffer.readInt16();
             if (targetId < 0)
                 item.targetId = "";
@@ -1066,7 +1066,7 @@ export class Transition {
                 buffer.seek(curPos, 1);
 
                 item.tweenConfig = new TweenConfig();
-                item.tweenConfig.duration = buffer.getFloat32();
+                item.tweenConfig.duration = buffer.readFloat32();
                 if (item.time + item.tweenConfig.duration > this._totalDuration)
                     this._totalDuration = item.time + item.tweenConfig.duration;
                 item.tweenConfig.easeType = buffer.readByte();
@@ -1092,18 +1092,18 @@ export class Transition {
                             var curveType: number = buffer.getUint8();
                             switch (curveType) {
                                 case CurveType.Bezier:
-                                    pts.push(GPathPoint.newBezierPoint(buffer.getFloat32(), buffer.getFloat32(),
-                                        buffer.getFloat32(), buffer.getFloat32()));
+                                    pts.push(GPathPoint.newBezierPoint(buffer.readFloat32(), buffer.readFloat32(),
+                                        buffer.readFloat32(), buffer.readFloat32()));
                                     break;
 
                                 case CurveType.CubicBezier:
-                                    pts.push(GPathPoint.newCubicBezierPoint(buffer.getFloat32(), buffer.getFloat32(),
-                                        buffer.getFloat32(), buffer.getFloat32(),
-                                        buffer.getFloat32(), buffer.getFloat32()));
+                                    pts.push(GPathPoint.newCubicBezierPoint(buffer.readFloat32(), buffer.readFloat32(),
+                                        buffer.readFloat32(), buffer.readFloat32(),
+                                        buffer.readFloat32(), buffer.readFloat32()));
                                     break;
 
                                 default:
-                                    pts.push(GPathPoint.newPoint(buffer.getFloat32(), buffer.getFloat32(), curveType));
+                                    pts.push(GPathPoint.newPoint(buffer.readFloat32(), buffer.readFloat32(), curveType));
                                     break;
                             }
                         }
@@ -1133,8 +1133,8 @@ export class Transition {
             case ActionType.Skew:
                 value.b1 = buffer.readBool();
                 value.b2 = buffer.readBool();
-                value.f1 = buffer.getFloat32();
-                value.f2 = buffer.getFloat32();
+                value.f1 = buffer.readFloat32();
+                value.f2 = buffer.readFloat32();
 
                 if (buffer.version >= 2 && item.type == ActionType.XY)
                     value.b3 = buffer.readBool(); //percent
@@ -1142,12 +1142,12 @@ export class Transition {
 
             case ActionType.Alpha:
             case ActionType.Rotation:
-                value.f1 = buffer.getFloat32();
+                value.f1 = buffer.readFloat32();
                 break;
 
             case ActionType.Scale:
-                value.f1 = buffer.getFloat32();
-                value.f2 = buffer.getFloat32();
+                value.f1 = buffer.readFloat32();
+                value.f2 = buffer.readFloat32();
                 break;
 
             case ActionType.Color:
@@ -1165,7 +1165,7 @@ export class Transition {
 
             case ActionType.Sound:
                 value.sound = buffer.readS();
-                value.volume = buffer.getFloat32();
+                value.volume = buffer.readFloat32();
                 break;
 
             case ActionType.Transition:
@@ -1174,15 +1174,15 @@ export class Transition {
                 break;
 
             case ActionType.Shake:
-                value.amplitude = buffer.getFloat32();
-                value.duration = buffer.getFloat32();
+                value.amplitude = buffer.readFloat32();
+                value.duration = buffer.readFloat32();
                 break;
 
             case ActionType.ColorFilter:
-                value.f1 = buffer.getFloat32();
-                value.f2 = buffer.getFloat32();
-                value.f3 = buffer.getFloat32();
-                value.f4 = buffer.getFloat32();
+                value.f1 = buffer.readFloat32();
+                value.f2 = buffer.readFloat32();
+                value.f3 = buffer.readFloat32();
+                value.f4 = buffer.readFloat32();
                 break;
 
             case ActionType.Text:

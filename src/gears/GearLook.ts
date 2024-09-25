@@ -31,8 +31,8 @@ export class GearLook extends GearBase {
             gv = this._default;
         else
             this._storage[pageId] = gv = {};
-        gv.alpha = buffer.getFloat32();
-        gv.rotation = buffer.getFloat32();
+        gv.alpha = buffer.readFloat32();
+        gv.rotation = buffer.readFloat32();
         gv.grayed = buffer.readBool();
         gv.touchable = buffer.readBool();
     }

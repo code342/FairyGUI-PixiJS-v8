@@ -1028,8 +1028,8 @@ export class GComponent extends GObject {
         }
 
         if (buffer.readBool()) {
-            f1 = buffer.getFloat32();
-            f2 = buffer.getFloat32();
+            f1 = buffer.readFloat32();
+            f2 = buffer.readFloat32();
             this.internalSetPivot(f1, f2, buffer.readBool());
         }
 

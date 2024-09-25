@@ -526,7 +526,7 @@ export class GLoader extends GObject {
         if (this._content.fillMethod != 0) {
             this._content.fillOrigin = buffer.readByte();
             this._content.fillClockwise = buffer.readBool();
-            this._content.fillAmount = buffer.getFloat32();
+            this._content.fillAmount = buffer.readFloat32();
         }
 
         if (buffer.version >= 7)

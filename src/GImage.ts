@@ -137,7 +137,7 @@ export class GImage extends GObject {
         if (this.image.fillMethod != 0) {
             this.image.fillOrigin = buffer.readByte();
             this.image.fillClockwise = buffer.readBool();
-            this.image.fillAmount = buffer.getFloat32();
+            this.image.fillAmount = buffer.readFloat32();
         }
     }
 }

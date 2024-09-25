@@ -372,9 +372,9 @@ export class GButton extends GComponent {
         var str: string = buffer.readS();
         if (str)
             this._sound = str;
-        this._soundVolumeScale = buffer.getFloat32();
+        this._soundVolumeScale = buffer.readFloat32();
         this._downEffect = buffer.readByte();
-        this._downEffectValue = buffer.getFloat32();
+        this._downEffectValue = buffer.readFloat32();
         if (this._downEffect == 2)
             this.setPivot(0.5, 0.5, this.pivotAsAnchor);
 
@@ -433,7 +433,7 @@ export class GButton extends GComponent {
         if (str != null)
             this._sound = str;
         if (buffer.readBool())
-            this._soundVolumeScale = buffer.getFloat32();
+            this._soundVolumeScale = buffer.readFloat32();
 
         this.selected = buffer.readBool();
     }

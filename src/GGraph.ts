@@ -276,7 +276,7 @@ export class GGraph extends GObject {
             if (buffer.readBool()) {
                 this._cornerRadius = [];
                 for (i = 0; i < 4; i++)
-                    this._cornerRadius[i] = buffer.getFloat32();
+                    this._cornerRadius[i] = buffer.readFloat32();
             }
 
             if (this._type == 3) {
@@ -284,16 +284,16 @@ export class GGraph extends GObject {
                 this._polygonPoints = [];
                 this._polygonPoints.length = cnt;
                 for (i = 0; i < cnt; i++)
-                    this._polygonPoints[i] = buffer.getFloat32();
+                    this._polygonPoints[i] = buffer.readFloat32();
             }
             else if (this._type == 4) {
                 this._sides = buffer.readInt16();
-                this._startAngle = buffer.getFloat32();
+                this._startAngle = buffer.readFloat32();
                 cnt = buffer.readInt16();
                 if (cnt > 0) {
                     this._distances = [];
                     for (i = 0; i < cnt; i++)
-                        this._distances[i] = buffer.getFloat32();
+                        this._distances[i] = buffer.readFloat32();
                 }
             }
 

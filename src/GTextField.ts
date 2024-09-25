@@ -293,7 +293,7 @@ export class GTextField extends GObject {
         this.singleLine = buffer.readBool();
         if (buffer.readBool()) {
             this.strokeColor = buffer.readColorS();
-            this.stroke = buffer.getFloat32() + 1;
+            this.stroke = buffer.readFloat32() + 1;
         }
 
         if (buffer.readBool()) //shadow

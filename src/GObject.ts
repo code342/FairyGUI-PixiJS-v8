@@ -1026,28 +1026,28 @@ export class GObject {
         }
 
         if (buffer.readBool()) {
-            f1 = buffer.getFloat32();
-            f2 = buffer.getFloat32();
+            f1 = buffer.readFloat32();
+            f2 = buffer.readFloat32();
             this.setScale(f1, f2);
         }
 
         if (buffer.readBool()) {
-            f1 = buffer.getFloat32();
-            f2 = buffer.getFloat32();
+            f1 = buffer.readFloat32();
+            f2 = buffer.readFloat32();
             this.setSkew(f1, f2);
         }
 
         if (buffer.readBool()) {
-            f1 = buffer.getFloat32();
-            f2 = buffer.getFloat32();
+            f1 = buffer.readFloat32();
+            f2 = buffer.readFloat32();
             this.setPivot(f1, f2, buffer.readBool());
         }
 
-        f1 = buffer.getFloat32();
+        f1 = buffer.readFloat32();
         if (f1 != 1)
             this.alpha = f1;
 
-        f1 = buffer.getFloat32();
+        f1 = buffer.readFloat32();
         if (f1 != 0)
             this.rotation = f1;
 
@@ -1064,7 +1064,7 @@ export class GObject {
         var filter: number = buffer.readByte();
         if (filter == 1) {
             ToolSet.setColorFilter(this._displayObject,
-                [buffer.getFloat32(), buffer.getFloat32(), buffer.getFloat32(), buffer.getFloat32()]);
+                [buffer.readFloat32(), buffer.readFloat32(), buffer.readFloat32(), buffer.readFloat32()]);
         }
 
         var str: string = buffer.readS();

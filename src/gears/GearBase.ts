@@ -75,8 +75,8 @@ export class GearBase {
         if (buffer.readBool()) {
             this._tweenConfig = new GearTweenConfig();
             this._tweenConfig.easeType = buffer.readByte();
-            this._tweenConfig.duration = buffer.getFloat32();
-            this._tweenConfig.delay = buffer.getFloat32();
+            this._tweenConfig.duration = buffer.readFloat32();
+            this._tweenConfig.delay = buffer.readFloat32();
         }
 
         if (buffer.version >= 2) {

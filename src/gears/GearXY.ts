@@ -43,8 +43,8 @@ export class GearXY extends GearBase {
             gv = this._default;
         else
             gv = this._storage[pageId];
-        gv.px = buffer.getFloat32();
-        gv.py = buffer.getFloat32();
+        gv.px = buffer.readFloat32();
+        gv.py = buffer.readFloat32();
     }
 
     public apply(): void {

@@ -34,8 +34,8 @@ export class GearSize extends GearBase {
 
         gv.width = buffer.readInt32();
         gv.height = buffer.readInt32();
-        gv.scaleX = buffer.getFloat32();
-        gv.scaleY = buffer.getFloat32();
+        gv.scaleX = buffer.readFloat32();
+        gv.scaleY = buffer.readFloat32();
     }
 
     public apply(): void {
