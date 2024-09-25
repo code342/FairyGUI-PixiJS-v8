@@ -4,7 +4,7 @@ export class ByteBuffer {
     private _u8ByteArray: Uint8Array;
     private _pos: number = 0;
     public length: number = 0;
-    public stringTable: string[];
+    public stringTable: Array<string>;
     public version: number;
     constructor(data: any, offset?: number, length?: number, isLittle:boolean=false) {
         offset = offset || 0;
@@ -47,42 +47,11 @@ export class ByteBuffer {
         return this._rUTF(this.readUint16());
     }
 
-    readFloat32Array(start: number, len: number): any {
-        var end: number = start + len;
-        end = (end > this.length) ? this.length : end;
-        var v: any = new Float32Array(this._dataView.buffer.slice(start, end));
-        this._pos = end;
-        return v;
-    }
-
-    readUint8Array(start: number, len: number): Uint8Array {
-        var end: number = start + len;
-        end = (end > this.length) ? this.length : end;
-        var v: any = new Uint8Array(this._dataView.buffer.slice(start, end));
-        this._pos = end;
-        return v;
-    }
-
-    readInt16Array(start: number, len: number): any {
-        var end: number = start + len;
-        end = (end > this.length) ? this.length : end;
-        var v: any = new Int16Array(this._dataView.buffer.slice(start, end));
-        this._pos = end;
-        return v;
-    }
-
 
     readFloat32(): number {
         if (this._pos + 4 > this.length) throw "getFloat32 error - Out of bounds";
         var v: number = this._dataView.getFloat32(this._pos, this.littleEndian);
         this._pos += 4;
-        return v;
-    }
-
-    readFloat64(): number {
-        if (this._pos + 8 > this.length) throw "getFloat64 error - Out of bounds";
-        var v: number = this._dataView.getFloat64(this._pos, this.littleEndian);
-        this._pos += 8;
         return v;
     }
 
@@ -129,7 +98,7 @@ export class ByteBuffer {
      * @return 读取的字符串。
      */
     private _rUTF(len: number): string {
-        var v: string = "", max: number = this._pos + len, c: number, c2: number, c3: number, f: Function = String.fromCharCode;
+        var max: number = this._pos + len, c: number, c2: number, c3: number, f: Function = String.fromCharCode;
         var u: any = this._u8ByteArray, i: number = 0;
         var strs: any[] = [];
         var n: number = 0;
@@ -196,19 +165,6 @@ export class ByteBuffer {
     }
 
 
-    readUTFString32(): string {
-        return this.readUTFBytes(this.readUint32());
-    }
-
-
-    readArrayBuffer(length: number): ArrayBuffer {
-        var rst: ArrayBuffer;
-        rst = this._u8ByteArray.buffer.slice(this._pos, this._pos + length);
-        this._pos = this._pos + length
-        return rst;
-    }
-
-
     readUTFBytes(len: number = -1): string {
         if (len === 0) return "";
         var lastBytes: number = this.bytesAvailable;
@@ -224,7 +180,6 @@ export class ByteBuffer {
     }
 
 
-    //////////////////////////////////////////////////////////
     public skip(count: number): void {
         this.pos += count;
     }
