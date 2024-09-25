@@ -1,3 +1,5 @@
+import { ToolSet } from "../utils/ToolSet";
+
     export class GPath {
         private _segments: Array<Segment>;
         private _points: Array<Laya.Point>;

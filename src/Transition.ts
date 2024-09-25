@@ -1,4 +1,5 @@
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { ToolSet } from "./utils/ToolSet";
 
 export class Transition {
     public name: string;

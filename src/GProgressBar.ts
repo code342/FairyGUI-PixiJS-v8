@@ -1,4 +1,5 @@
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { ToolSet } from "./utils/ToolSet";
 
 export class GProgressBar extends GComponent {
     private _min: number = 0;

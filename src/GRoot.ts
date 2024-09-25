@@ -2,6 +2,7 @@ import { Application, Container, FederatedPointerEvent, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
 import { GObject, IGObjectView } from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
+import { ToolSet } from "./utils/ToolSet";
 
 export class GRoot extends GComponent {
     public static contentScaleLevel: number = 0;

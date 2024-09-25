@@ -4,6 +4,7 @@ import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { ToolSet } from "./utils/ToolSet";
 
 export class GSlider extends GComponent {
     private _min: number = 0;

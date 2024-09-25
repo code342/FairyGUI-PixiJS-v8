@@ -1,4 +1,6 @@
+import { Point, Rectangle } from "pixi.js";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { GRoot } from "./GRoot";
 
 export class PackageItem {
     public owner: UIPackage;
@@ -19,7 +21,7 @@ export class PackageItem {
     public branches?: Array<string>;
 
     //image
-    public scale9Grid?: Laya.Rectangle;
+    public scale9Grid?: Rectangle;
     public scaleByTile?: boolean;
     public tileGridIndice?: number;
     public smoothing?: boolean;
@@ -40,7 +42,7 @@ export class PackageItem {
 
     //skeleton
     public templet?: Laya.Templet | Laya.SpineTemplet;
-    public skeletonAnchor?: Laya.Point;
+    public skeletonAnchor?: Point;
 
     constructor() {
     }

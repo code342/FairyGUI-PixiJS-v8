@@ -1,4 +1,5 @@
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { ToolSet } from "./utils/ToolSet";
 
 export enum GGGraphType {
     Empty = 0,

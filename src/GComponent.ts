@@ -5,6 +5,9 @@ import { Timer } from "./utils/Timer";
 import { ScrollRectComp } from "./display/ScrollRectComp";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { TranslationHelper } from "./TranslationHelper";
+import { PackageItem } from "./PackageItem";
+import { ChildrenRenderOrder } from "./FieldTypes";
+import { ToolSet } from "./utils/ToolSet";
 
 export class GComponent extends GObject {
     private _sortingChildCount: number = 0;
@@ -183,14 +186,14 @@ export class GComponent extends GObject {
             this.removeChildAt(beginIndex, dispose);
     }
 
-    public getChildAt<T extends GObject>(index: number, classType?: new () => T): T {
+    public getChildAt<T extends GObject>(index: number): T {
         if (index >= 0 && index < this._children.length)
             return <T>this._children[index];
         else
             throw new Error("Invalid child index");
     }
 
-    public getChild<T extends GObject>(name: string, classType?: new () => T): T {
+    public getChild<T extends GObject>(name: string): T {
         var cnt: number = this._children.length;
         for (var i: number = 0; i < cnt; ++i) {
             if (this._children[i].name == name)
@@ -200,7 +203,7 @@ export class GComponent extends GObject {
         return null;
     }
 
-    public getChildByPath<T extends GObject>(path: String, classType?: new () => T): T {
+    public getChildByPath<T extends GObject>(path: String): T {
         var arr: string[] = path.split(".");
         var cnt: number = arr.length;
         var gcom: GComponent = this;

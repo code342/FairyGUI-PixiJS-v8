@@ -1,4 +1,5 @@
 import { ObjectType } from "./FieldTypes";
+import { PackageItem } from "./PackageItem";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class TranslationHelper {
