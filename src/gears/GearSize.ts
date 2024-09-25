@@ -1,3 +1,4 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
 
 interface Value {
     width?: number;

@@ -1,3 +1,4 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
 
 export class ControllerAction {
     public fromPage: string[];

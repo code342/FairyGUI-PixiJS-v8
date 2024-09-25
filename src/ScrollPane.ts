@@ -3,6 +3,7 @@ import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { ScrollRectComp } from "./display/ScrollRectComp";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class ScrollPane {
     private _owner: GComponent;

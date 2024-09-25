@@ -1,5 +1,6 @@
 import { IGObjectView } from "./GObject";
 import { GTextField } from "./GTextField";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GTextInput extends GTextField {
     declare _displayObject: Laya.Input;

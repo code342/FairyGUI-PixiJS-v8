@@ -1,3 +1,5 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
+
 export class GearFontSize extends GearBase {
     private _storage: Record<string, number>;
     private _default: number = 0;

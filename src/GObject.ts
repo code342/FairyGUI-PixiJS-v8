@@ -3,6 +3,7 @@ import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { PackageItem } from "./PackageItem";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 
 export class GObject {

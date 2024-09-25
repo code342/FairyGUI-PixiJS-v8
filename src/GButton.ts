@@ -3,6 +3,7 @@ import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GButton extends GComponent {
     protected _titleObject: GObject;

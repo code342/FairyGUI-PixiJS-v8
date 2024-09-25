@@ -1,6 +1,7 @@
 import { FederatedPointerEvent } from "pixi.js";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { GObject } from "./GObject";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GTree extends GList {
     public treeNodeRender: Laya.Handler | ((node: GTreeNode, obj: GComponent) => void);

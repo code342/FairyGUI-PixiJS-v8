@@ -1,4 +1,5 @@
 import { GObject, IGObjectView } from "./GObject";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GTextField extends GObject {
     protected _text: string;

@@ -1,5 +1,6 @@
 import { EventEmitter } from "pixi.js";
 import { DisplayEvent } from "./utils/LayaCompliant";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 var _nextPageId: number = 0;
 

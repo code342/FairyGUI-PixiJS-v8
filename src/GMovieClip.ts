@@ -1,5 +1,6 @@
 import { MovieClip } from "./display/MovieClip";
 import { GObject, IGObjectView } from "./GObject";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GMovieClip extends GObject {
     private _movieClip: MovieClip;

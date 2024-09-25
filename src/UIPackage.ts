@@ -1,3 +1,5 @@
+import { ByteBuffer } from "./utils/ByteBuffer";
+
 type PackageDependency = { id: string, name: string };
 
 export class UIPackage {

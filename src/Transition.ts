@@ -1,3 +1,5 @@
+import { ByteBuffer } from "./utils/ByteBuffer";
+
 export class Transition {
     public name: string;
 

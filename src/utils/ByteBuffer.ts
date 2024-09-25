@@ -1,11 +1,9 @@
 export class ByteBuffer {
     public littleEndian: boolean = false;
-    private _allocated: number = 8;
     private _dataView: DataView;
     private _u8ByteArray: Uint8Array;
     private _pos: number = 0;
     private _length: number = 0;
-
 
     constructor(data: any, offset?: number, length?: number, isLittle:boolean=false) {
         offset = offset || 0;
@@ -26,13 +24,6 @@ export class ByteBuffer {
         return rstBuffer.slice(0, this._length);
     }
 
-
-    set length(value: number) {
-        if (this._allocated < value) this._resizeBuffer(this._allocated = Math.floor(Math.max(value, this._allocated * 2)));
-        else if (this._allocated > value) this._resizeBuffer(this._allocated = value);
-        this._length = value;
-    }
-
     get length(): number {
         return this._length;
     }
@@ -51,23 +42,8 @@ export class ByteBuffer {
 
     clear(): void {
         this._pos = 0;
-        this.length = 0;
+        this._length = 0;
     }    
-
-    /**@private */
-    private _resizeBuffer(len: number): void {
-        try {
-            var newByteView: any = new Uint8Array(len);
-            if (this._u8ByteArray != null) {
-                if (this._u8ByteArray.length <= len) newByteView.set(this._u8ByteArray);
-                else newByteView.set(this._u8ByteArray.subarray(0, len));
-            }
-            this._u8ByteArray = newByteView;
-            this._dataView = new DataView(newByteView.buffer);
-        } catch (err) {
-            throw "Invalid typed array length:" + len;
-        }
-    }
 
     //////////////////////////////////////////////////////////
     readString(): string {
@@ -248,155 +224,6 @@ export class ByteBuffer {
     readByte(): number {
         if (this._pos + 1 > this._length) throw "readByte error - Out of bounds";
         return this._dataView.getInt8(this._pos++);
-    }
-
-
-    /**
-     * @internal
-     * @en Ensures that the available length of this byte stream is at least the value specified by the lengthToEnsure parameter.
-     * @param lengthToEnsure The length to ensure is available in the byte stream.
-     */
-    _ensureWrite(lengthToEnsure: number): void {
-        if (this._length < lengthToEnsure) this._length = lengthToEnsure;
-        if (this._allocated < lengthToEnsure) this.length = lengthToEnsure;
-    }
-
-
-    writeByte(value: number): void {
-        this._ensureWrite(this._pos + 1);
-        this._dataView.setInt8(this._pos, value);
-        this._pos += 1;
-    }
-
-
-   writeUint16(value: number): void {
-        this._ensureWrite(this._pos + 2);
-        this._dataView.setUint16(this._pos, value, this.littleEndian);
-        this._pos += 2;
-    }
-
-    writeInt16(value: number): void {
-        this._ensureWrite(this._pos + 2);
-        this._dataView.setInt16(this._pos, value, this.littleEndian);
-        this._pos += 2;
-    }
-
-    writeInt32(value: number): void {
-        this._ensureWrite(this._pos + 4);
-        this._dataView.setInt32(this._pos, value, this.littleEndian);
-        this._pos += 4;
-    }
-
-    writeUint32(value: number): void {
-        this._ensureWrite(this._pos + 4);
-        this._dataView.setUint32(this._pos, value, this.littleEndian);
-        this._pos += 4;
-    }
-
-    writeUint8(value: number): void {
-        this._ensureWrite(this._pos + 1);
-        this._dataView.setUint8(this._pos, value);
-        this._pos++;
-    }
-
-    writeFloat32(value: number): void {
-        this._ensureWrite(this._pos + 4);
-        this._dataView.setFloat32(this._pos, value, this.littleEndian);
-        this._pos += 4;
-    }
-
-    writeFloat64(value: number): void {
-        this._ensureWrite(this._pos + 8);
-        this._dataView.setFloat64(this._pos, value, this.littleEndian);
-        this._pos += 8;
-    }
-
-    /**
-     * @en Writes a UTF-8 string to the byte stream. Similar to the writeUTF() method, but writeUTFBytes() does not prefix the string with a 16-bit length word.
-     * The corresponding reading method is getUTFBytes.
-     * @param value The string to write.
-     * @zh 将 UTF-8 字符串写入字节流。类似于 writeUTF() 方法，但 writeUTFBytes() 不使用 16 位长度的字节为字符串添加前缀。
-     * 对应的读取方法为： getUTFBytes 。
-     * @param value 要写入的字符串。
-     */
-    writeUTFBytes(value: string): void {
-        // utf8-decode
-        value = value + "";
-        for (var i: number = 0, sz: number = value.length; i < sz; i++) {
-            var c: number = value.charCodeAt(i);
-
-            if (c <= 0x7F) {
-                this.writeByte(c);
-            } else if (c <= 0x7FF) {
-                //优化为直接写入多个字节，而不必重复调用writeByte，免去额外的调用和逻辑开销。
-                this._ensureWrite(this._pos + 2);
-                this._u8ByteArray.set([0xC0 | (c >> 6), 0x80 | (c & 0x3F)], this._pos);
-                this._pos += 2;
-            } else if (c >= 0xD800 && c <= 0xDBFF) {
-                i++;
-                const c2 = value.charCodeAt(i);
-                if (!Number.isNaN(c2) && c2 >= 0xDC00 && c2 <= 0xDFFF) {
-                    const _p1 = (c & 0x3FF) + 0x40;
-                    const _p2 = c2 & 0x3FF;
-
-                    const _b1 = 0xF0 | ((_p1 >> 8) & 0x3F);
-                    const _b2 = 0x80 | ((_p1 >> 2) & 0x3F);
-                    const _b3 = 0x80 | ((_p1 & 0x3) << 4) | ((_p2 >> 6) & 0xF);
-                    const _b4 = 0x80 | (_p2 & 0x3F);
-
-                    this._ensureWrite(this._pos + 4);
-                    this._u8ByteArray.set([_b1, _b2, _b3, _b4], this._pos);
-                    this._pos += 4;
-                }
-            } else if (c <= 0xFFFF) {
-                this._ensureWrite(this._pos + 3);
-                this._u8ByteArray.set([0xE0 | (c >> 12), 0x80 | ((c >> 6) & 0x3F), 0x80 | (c & 0x3F)], this._pos);
-                this._pos += 3;
-            } else {
-                this._ensureWrite(this._pos + 4);
-                this._u8ByteArray.set([0xF0 | (c >> 18), 0x80 | ((c >> 12) & 0x3F), 0x80 | ((c >> 6) & 0x3F), 0x80 | (c & 0x3F)], this._pos);
-                this._pos += 4;
-            }
-        }
-    }
-
-    /**
-     * @en Writes a UTF-8 string to the byte stream. First, the length of the UTF-8 string in bytes is written (as a 16-bit integer), followed by the bytes representing the string characters.
-     * The corresponding reading method is getUTFString.
-     * @param value The string value to write.
-     * @zh 将 UTF-8 字符串写入字节流。先写入以字节表示的 UTF-8 字符串长度（作为 16 位整数），然后写入表示字符串字符的字节。
-     * 对应的读取方法为： getUTFString 。
-     * @param value 要写入的字符串值。
-     */
-    writeUTFString(value: string): void {
-        var tPos: number = this.pos;
-        this.writeUint16(1);
-        this.writeUTFBytes(value);
-        var dPos: number = this.pos - tPos - 2;
-        this._dataView.setUint16(tPos, dPos, this.littleEndian);
-    }
-
-    /**
-     * @en Writes a UTF-8 string to the byte stream. First, the length of the UTF-8 string in bytes is written (as a 32-bit integer), followed by the bytes representing the string characters.
-     * @param value The string value to write.
-     * @zh 将 UTF-8 字符串写入字节流。先写入以字节表示的 UTF-8 字符串长度（作为 32 位整数），然后写入表示字符串字符的字节。
-     * @param value 要写入的字符串值。
-     */
-    writeUTFString32(value: string): void {
-        var tPos = this.pos;
-        this.writeUint32(1);
-        this.writeUTFBytes(value);
-        var dPos = this.pos - tPos - 4;
-        this._dataView.setUint32(tPos, dPos, this.littleEndian);
-    }
-
-    writeArrayBuffer(arraybuffer: any, offset: number = 0, length: number = 0): void {
-        if (offset < 0 || length < 0) throw "writeArrayBuffer error - Out of bounds";
-        if (length == 0) length = arraybuffer.byteLength - offset;
-        this._ensureWrite(this._pos + length);
-        var uint8array: any = new Uint8Array(arraybuffer);
-        this._u8ByteArray.set(uint8array.subarray(offset, offset + length), this._pos);
-        this._pos += length;
     }
 }
 

@@ -1,3 +1,5 @@
+import { ByteBuffer } from "./utils/ByteBuffer";
+
 export class TranslationHelper {
     public static strings: Record<string, Record<string, string>>;
 

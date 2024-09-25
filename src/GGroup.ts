@@ -1,3 +1,4 @@
+import { ByteBuffer } from "./utils/ByteBuffer";
 import { Timer } from "./utils/Timer";
 
 export class GGroup extends GObject {

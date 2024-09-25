@@ -1,3 +1,5 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
+
 export class GearIcon extends GearBase {
     private _storage: Record<string, string>;
     private _default: string;

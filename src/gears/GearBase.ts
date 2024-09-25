@@ -1,3 +1,5 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
+
 export class GearBase {
     public static disableAllTweenEffect: boolean;
 

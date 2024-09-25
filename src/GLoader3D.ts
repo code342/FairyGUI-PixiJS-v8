@@ -1,3 +1,5 @@
+import { ByteBuffer } from "./utils/ByteBuffer";
+
 export class GLoader3D extends GObject {
     private _url: string;
     private _align: AlignType;

@@ -1,3 +1,5 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
+
 export class PlayTransitionAction extends ControllerAction {
     public transitionName: string;
     public playTimes: number;

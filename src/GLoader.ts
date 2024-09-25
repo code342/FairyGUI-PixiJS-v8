@@ -1,4 +1,5 @@
 import { GObject } from "./GObject";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GLoader extends GObject {
     private _url: string;

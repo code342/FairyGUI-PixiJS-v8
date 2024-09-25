@@ -3,6 +3,7 @@ import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GComboBox extends GComponent {
     public dropdown: GComponent;

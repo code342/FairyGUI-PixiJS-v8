@@ -3,6 +3,7 @@ import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { ScrollRectComp } from "./display/ScrollRectComp";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GComponent extends GObject {
     private _sortingChildCount: number = 0;

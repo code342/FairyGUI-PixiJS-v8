@@ -1,3 +1,5 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
+
 interface Value {
     playing?: boolean;
     frame?: number;

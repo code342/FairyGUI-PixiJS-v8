@@ -1,3 +1,5 @@
+import { ByteBuffer } from "./utils/ByteBuffer";
+
 export class GLabel extends GComponent {
     protected _titleObject: GObject;
     protected _iconObject: GObject;

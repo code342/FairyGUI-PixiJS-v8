@@ -1,6 +1,7 @@
 import { FederatedPointerEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { MouseEvents } from "./utils/LayaCompliant";
+import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GScrollBar extends GComponent {
     private _grip: GObject;

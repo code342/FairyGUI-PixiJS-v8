@@ -1,3 +1,4 @@
+import { ByteBuffer } from "../utils/ByteBuffer";
 
 export class GearText extends GearBase {
     private _storage: Record<string, string>;
