@@ -1,4 +1,6 @@
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { RelationItem } from "./RelationItem";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class Relations {

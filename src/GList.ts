@@ -1,4 +1,4 @@
-import { Container, FederatedPointerEvent } from "pixi.js";
+import { Container, FederatedPointerEvent, Point } from "pixi.js";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
@@ -36,7 +36,7 @@ export class GList extends GComponent {
     private _firstIndex: number = 0; //the top left index
     private _curLineItemCount: number = 0; //item count in one line
     private _curLineItemCount2: number; //只用在页面模式，表示垂直方向的项目数
-    private _itemSize?: Laya.Point;
+    private _itemSize?: Point;
     private _virtualListChanged: number = 0; //1-content changed, 2-size changed
     private _virtualItems?: Array<ItemInfo>;
     private _eventLocked?: boolean;
@@ -160,15 +160,15 @@ export class GList extends GComponent {
         }
     }
 
-    public get virtualItemSize(): Laya.Point {
+    public get virtualItemSize(): Point {
         return this._itemSize;
     }
 
-    public set virtualItemSize(value: Laya.Point) {
+    public set virtualItemSize(value: Point) {
         if (this._virtual) {
             if (this._itemSize == null)
-                this._itemSize = new Laya.Point();
-            this._itemSize.setTo(value.x, value.y);
+                this._itemSize = new Point();
+            this._itemSize.set(value.x, value.y);
             this.setVirtualListChangedFlag(true);
         }
     }
@@ -811,10 +811,10 @@ export class GList extends GComponent {
             || dir == 0 && delta > size / 2;
     }
 
-    public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: Laya.Point): Laya.Point {
+    public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: Point): Point {
         if (this._virtual) {
             if (!result)
-                result = new Laya.Point();
+                result = new Point();
 
             var saved: number;
             var index: number;
@@ -986,7 +986,7 @@ export class GList extends GComponent {
             this.removeChildrenToPool();
 
             if (this._itemSize == null) {
-                this._itemSize = new Laya.Point();
+                this._itemSize = new Point();
                 var obj: GObject = this.getFromPool(null);
                 if (obj == null) {
                     throw new Error("Virtual List must have a default list item resource.");
@@ -1915,7 +1915,7 @@ export class GList extends GComponent {
         }
 
         if (newOffsetX != this._alignOffset.x || newOffsetY != this._alignOffset.y) {
-            this._alignOffset.setTo(newOffsetX, newOffsetY);
+            this._alignOffset.set(newOffsetX, newOffsetY);
             if (this._scrollPane)
                 this._scrollPane.adjustMaskContainer();
             else

@@ -43,15 +43,15 @@ export class ScrollPane {
     private _xPos: number;
     private _yPos: number;
 
-    private _viewSize: Laya.Point;
-    private _contentSize: Laya.Point;
-    private _overlapSize: Laya.Point;
-    private _pageSize: Laya.Point;
-    private _containerPos: Laya.Point;
-    private _beginTouchPos: Laya.Point;
-    private _lastTouchPos: Laya.Point;
-    private _lastTouchGlobalPos: Laya.Point;
-    private _velocity: Laya.Point;
+    private _viewSize: Point;
+    private _contentSize: Point;
+    private _overlapSize: Point;
+    private _pageSize: Point;
+    private _containerPos: Point;
+    private _beginTouchPos: Point;
+    private _lastTouchPos: Point;
+    private _lastTouchGlobalPos: Point;
+    private _velocity: Point;
     private _velocityScale: number;
     private _lastMoveTime: number;
     private _isHoldAreaDone: boolean;
@@ -63,10 +63,10 @@ export class ScrollPane {
     private _dragged: boolean;
 
     private _tweening: number;
-    private _tweenTime: Laya.Point;
-    private _tweenDuration: Laya.Point;
-    private _tweenStart: Laya.Point;
-    private _tweenChange: Laya.Point;
+    private _tweenTime: Point;
+    private _tweenDuration: Point;
+    private _tweenStart: Point;
+    private _tweenChange: Point;
 
     private _pageController?: Controller;
 
@@ -96,19 +96,19 @@ export class ScrollPane {
         this._footerLockedSize = 0;
         this._headerLockedSize = 0;
         this._scrollBarMargin = new Margin();
-        this._viewSize = new Laya.Point();
-        this._contentSize = new Laya.Point();
-        this._pageSize = new Laya.Point(1, 1);
-        this._overlapSize = new Laya.Point();
-        this._tweenTime = new Laya.Point();
-        this._tweenStart = new Laya.Point();
-        this._tweenDuration = new Laya.Point();
-        this._tweenChange = new Laya.Point();
-        this._velocity = new Laya.Point();
-        this._containerPos = new Laya.Point();
-        this._beginTouchPos = new Laya.Point();
-        this._lastTouchPos = new Laya.Point();
-        this._lastTouchGlobalPos = new Laya.Point();
+        this._viewSize = new Point();
+        this._contentSize = new Point();
+        this._pageSize = new Point(1, 1);
+        this._overlapSize = new Point();
+        this._tweenTime = new Point();
+        this._tweenStart = new Point();
+        this._tweenDuration = new Point();
+        this._tweenChange = new Point();
+        this._velocity = new Point();
+        this._containerPos = new Point();
+        this._beginTouchPos = new Point();
+        this._lastTouchPos = new Point();
+        this._lastTouchGlobalPos = new Point();
         this._scrollStep = UIConfig.defaultScrollStep;
         this._mouseWheelStep = this._scrollStep * 2;
         this._decelerationRate = UIConfig.defaultScrollDecelerationRate;
@@ -1033,7 +1033,7 @@ export class ScrollPane {
         var sensitivity: number = UIConfig.touchScrollSensitivity;
 
         let mousePoint:Point = GRoot.inst.mousePosition;
-        var pt: Laya.Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+        var pt: Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
 
         var diff: number, diff2: number;
         var sv: boolean, sh: boolean, st: boolean;
@@ -1413,7 +1413,7 @@ export class ScrollPane {
         return changed;
     }
 
-    private loopCheckingTarget(endPos: Laya.Point): void {
+    private loopCheckingTarget(endPos: Point): void {
         if (this._loop == 1)
             this.loopCheckingTarget2(endPos, "x");
 
@@ -1421,7 +1421,7 @@ export class ScrollPane {
             this.loopCheckingTarget2(endPos, "y");
     }
 
-    private loopCheckingTarget2(endPos: Laya.Point, axis: string): void {
+    private loopCheckingTarget2(endPos: Point, axis: string): void {
         var halfSize: number;
         var tmp: number;
         if (endPos[axis] > 0) {
@@ -1478,7 +1478,7 @@ export class ScrollPane {
         return value;
     }
 
-    private alignPosition(pos: Laya.Point, inertialScrolling: boolean): void {
+    private alignPosition(pos: Point, inertialScrolling: boolean): void {
         if (this._pageMode) {
             pos.x = this.alignByPage(pos.x, "x", inertialScrolling);
             pos.y = this.alignByPage(pos.y, "y", inertialScrolling);
@@ -1491,7 +1491,7 @@ export class ScrollPane {
                 yDir = pos.y - this._containerPos.y;
             }
 
-            var pt: Laya.Point = this._owner.getSnappingPositionWithDir(-pos.x, -pos.y, xDir, yDir, s_vec2);
+            var pt: Point = this._owner.getSnappingPositionWithDir(-pos.x, -pos.y, xDir, yDir, s_vec2);
             if (pos.x < 0 && pos.x > -this._overlapSize.x)
                 pos.x = -pt.x;
             if (pos.y < 0 && pos.y > -this._overlapSize.y)
@@ -1553,7 +1553,7 @@ export class ScrollPane {
         return pos;
     }
 
-    private updateTargetAndDuration(orignPos: Laya.Point, resultPos: Laya.Point): void {
+    private updateTargetAndDuration(orignPos: Point, resultPos: Point): void {
         resultPos.x = this.updateTargetAndDuration2(orignPos.x, "x");
         resultPos.y = this.updateTargetAndDuration2(orignPos.y, "y");
     }
@@ -1650,8 +1650,8 @@ export class ScrollPane {
             if (pos > 0) {
                 if (!this._header.displayObject.parent)
                     this._maskContainer.addChildAt(this._header.displayObject, 0);
-                var pt: Laya.Point = s_vec2;
-                pt.setTo(this._header.width, this._header.height);
+                var pt: Point = s_vec2;
+                pt.set(this._header.width, this._header.height);
                 pt[this._refreshBarAxis] = pos;
                 this._header.setSize(pt.x, pt.y);
             }
@@ -1668,7 +1668,7 @@ export class ScrollPane {
                     this._maskContainer.addChildAt(this._footer.displayObject, 0);
 
                 pt = s_vec2;
-                pt.setTo(this._footer.x, this._footer.y);
+                pt.set(this._footer.x, this._footer.y);
                 if (max > 0)
                     pt[this._refreshBarAxis] = pos + this._contentSize[this._refreshBarAxis];
                 else
@@ -1676,7 +1676,7 @@ export class ScrollPane {
                         this._viewSize[this._refreshBarAxis] - this._contentSize[this._refreshBarAxis]);
                 this._footer.setXY(pt.x, pt.y);
 
-                pt.setTo(this._footer.width, this._footer.height);
+                pt.set(this._footer.width, this._footer.height);
                 if (max > 0)
                     pt[this._refreshBarAxis] = -max - pos;
                 else
@@ -1793,10 +1793,10 @@ const TWEEN_TIME_GO: number = 0.5; //调用SetPos(ani)时使用的缓动时间
 const TWEEN_TIME_DEFAULT: number = 0.3; //惯性滚动的最小缓动时间
 const PULL_RATIO: number = 0.5; //下拉过顶或者上拉过底时允许超过的距离占显示区域的比例
 
-var s_vec2: Laya.Point = new Laya.Point();
+var s_vec2: Point = new Point();
 var s_rect: Laya.Rectangle = new Laya.Rectangle();
-var sEndPos: Laya.Point = new Laya.Point();
-var sOldChange: Laya.Point = new Laya.Point();
+var sEndPos: Point = new Point();
+var sOldChange: Point = new Point();
 
 function easeFunc(t: number, d: number): number {
     return (t = t / d - 1) * t * t + 1;//cubicOut

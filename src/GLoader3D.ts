@@ -244,7 +244,7 @@ export class GLoader3D extends GObject {
         }
     }
 
-    public setSkeleton(skeleton: Laya.Skeleton | Laya.SpineSkeleton, anchor?: Laya.Point): void {
+    public setSkeleton(skeleton: Laya.Skeleton | Laya.SpineSkeleton, anchor?: Point): void {
         this.url = null;
 
         this._content = skeleton;

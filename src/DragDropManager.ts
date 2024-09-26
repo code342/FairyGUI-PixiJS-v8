@@ -44,7 +44,7 @@ export class DragDropManager {
         this._agent.url = icon;
         GRoot.inst.addChild(this._agent);
         let mousePoint:Point = GRoot.inst.mousePosition;
-        var pt: Laya.Point = GRoot.inst.globalToLocal(mousePoint.x, mousePoint.y);
+        var pt: Point = GRoot.inst.globalToLocal(mousePoint.x, mousePoint.y);
         this._agent.setXY(pt.x, pt.y);
         this._agent.startDrag(touchID);
     }

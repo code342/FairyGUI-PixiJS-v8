@@ -1,7 +1,9 @@
+import { Point } from "pixi.js";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { PackageItemType } from "./FieldTypes";
 
 type PackageDependency = { id: string, name: string };
 
@@ -412,7 +414,7 @@ export class UIPackage {
                 case PackageItemType.DragonBones:
                     {
                         pi.file = shortPath + pi.file;
-                        pi.skeletonAnchor = new Laya.Point();
+                        pi.skeletonAnchor = new Point();
                         pi.skeletonAnchor.x = buffer.readFloat32();
                         pi.skeletonAnchor.y = buffer.readFloat32();
                         break;
@@ -455,7 +457,7 @@ export class UIPackage {
             var itemId: string = buffer.readS();
             pi = this._itemsById[buffer.readS()];
 
-            let sprite: AtlasSprite = { atlas: pi, rect: new Laya.Rectangle(), offset: new Laya.Point(), originalSize: new Laya.Point() };
+            let sprite: AtlasSprite = { atlas: pi, rect: new Laya.Rectangle(), offset: new Point(), originalSize: new Point() };
             sprite.atlas = pi;
             sprite.rect.x = buffer.readInt32();
             sprite.rect.y = buffer.readInt32();
@@ -811,7 +813,7 @@ export class UIPackage {
 interface AtlasSprite {
     atlas: PackageItem;
     rect: Laya.Rectangle;
-    offset: Laya.Point;
-    originalSize: Laya.Point;
+    offset: Point;
+    originalSize: Point;
     rotated?: boolean;
 }

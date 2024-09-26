@@ -1,5 +1,8 @@
+import { ObjectPropID } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
+import { GPath } from "./tween/GPath";
 import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";

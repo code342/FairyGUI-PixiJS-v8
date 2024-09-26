@@ -13,20 +13,6 @@ export class Events {
     public static PULL_DOWN_RELEASE: string = "fui_pull_down_release";
     public static PULL_UP_RELEASE: string = "fui_pull_up_release";
     public static GEAR_STOP: string = "fui_gear_stop";
-
-    public static $event: Laya.Event = new Laya.Event();
-
-    public static createEvent(type: string, target: Laya.Sprite, source?: { target?: Laya.Sprite, touchId?: number }): Laya.Event {
-        this.$event.setTo(type, target, source ? (source.target || target) : target);
-        this.$event.touchId = source ? (source.touchId || 0) : 0;
-        this.$event.nativeEvent = <any>source;
-        this.$event["_stoped"] = false;
-        return this.$event;
-    }
-
-    public static dispatch(type: string, target: Laya.Sprite, source?: { target?: Laya.Sprite, touchId?: number }): void {
-        target.event(type, this.createEvent(type, target, source));
-    }
 }
 
 /** 通用无参数回调 */

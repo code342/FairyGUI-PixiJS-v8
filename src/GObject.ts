@@ -6,6 +6,7 @@ import { PackageItem } from "./PackageItem";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 import { UIConfig } from "./UIConfig";
+import { Relations } from "./Relations";
 
 
 export class GObject {

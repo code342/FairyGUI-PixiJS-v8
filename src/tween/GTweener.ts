@@ -1,3 +1,5 @@
+import { Point } from "pixi.js";
+
     export class GTweener {
         public _target: any;
         public _propType: any;
@@ -412,7 +414,7 @@
                 }
             }
             else if (this._path) {
-                var pt: Laya.Point = s_vec2;
+                var pt: Point = s_vec2;
                 this._path.getPointAt(this._normalizedTime, pt);
                 if (this._snapping) {
                     pt.x = Math.round(pt.x);
@@ -504,4 +506,4 @@
         }
     }
 
-    var s_vec2: Laya.Point = new Laya.Point();
+    var s_vec2: Point = new Point();

@@ -181,7 +181,7 @@ export class GRoot extends GComponent {
         this.addChild(popup);
         this.adjustModalLayer();
 
-        var pos: Laya.Point;
+        var pos: Point;
         var sizeW: number = 0, sizeH: number = 0;
         if (target) {
             pos = target.localToGlobal();
@@ -261,7 +261,7 @@ export class GRoot extends GComponent {
         this.showTooltipsWin(this._defaultTooltipWin);
     }
 
-    public showTooltipsWin(tooltipWin: GObject, position?: Laya.Point): void {
+    public showTooltipsWin(tooltipWin: GObject, position?: Point): void {
         this.hideTooltips();
 
         this._tooltipWin = tooltipWin;
@@ -277,7 +277,7 @@ export class GRoot extends GComponent {
             xx = position.x;
             yy = position.y;
         }
-        var pt: Laya.Point = this.globalToLocal(xx, yy);
+        var pt: Point = this.globalToLocal(xx, yy);
         xx = pt.x;
         yy = pt.y;
 

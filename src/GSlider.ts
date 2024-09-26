@@ -1,4 +1,4 @@
-import { FederatedPointerEvent } from "pixi.js";
+import { FederatedPointerEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { GComponent } from "./GComponent";
@@ -22,7 +22,7 @@ export class GSlider extends GComponent {
     private _barMaxWidthDelta: number = 0;
     private _barMaxHeightDelta: number = 0;
     private _gripObject: GObject;
-    private _clickPos: Laya.Point;
+    private _clickPos: Point;
     private _clickPercent: number = 0;
     private _barStartX: number = 0;
     private _barStartY: number = 0;
@@ -38,7 +38,7 @@ export class GSlider extends GComponent {
         this._titleType = ProgressTitleType.Percent;
         this._value = 50;
         this._max = 100;
-        this._clickPos = new Laya.Point();
+        this._clickPos = new Point();
     }
 
     public get titleType(): number {
@@ -234,7 +234,7 @@ export class GSlider extends GComponent {
         }
 
         let mousePoint:Point = GRoot.inst.mousePosition;
-        var pt: Laya.Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+        var pt: Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
         var deltaX: number = pt.x - this._clickPos.x;
         var deltaY: number = pt.y - this._clickPos.y;
         if (this._reverse) {
@@ -258,7 +258,7 @@ export class GSlider extends GComponent {
         if (!this.changeOnClick)
             return;
 
-        var pt: Laya.Point = this._gripObject.globalToLocal(evt.stageX, evt.stageY, s_vec2);
+        var pt: Point = this._gripObject.globalToLocal(evt.stageX, evt.stageY, s_vec2);
         var percent: number = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
         var delta: number;
         if (this._barObjectH)
@@ -273,4 +273,4 @@ export class GSlider extends GComponent {
     }
 }
 
-var s_vec2: Laya.Point = new Laya.Point();
+var s_vec2: Point = new Point();

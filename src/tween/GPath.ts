@@ -1,13 +1,15 @@
+import { Point } from "pixi.js";
 import { ToolSet } from "../utils/ToolSet";
+import { CurveType } from "./GPathPoint";
 
     export class GPath {
         private _segments: Array<Segment>;
-        private _points: Array<Laya.Point>;
+        private _points: Array<Point>;
         private _fullLength: number;
 
         constructor() {
             this._segments = new Array<Segment>();
-            this._points = new Array<Laya.Point>();
+            this._points = new Array<Point>();
         }
 
         public get length(): number {
@@ -36,12 +38,12 @@ import { ToolSet } from "../utils/ToolSet";
             if (cnt == 0)
                 return;
 
-            var splinePoints: Array<Laya.Point> = s_points;
+            var splinePoints: Array<Point> = s_points;
             splinePoints.length = 0;
 
             var prev: GPathPoint = points[0];
             if (prev.curveType == CurveType.CRSpline)
-                splinePoints.push(new Laya.Point(prev.x, prev.y));
+                splinePoints.push(new Point(prev.x, prev.y));
 
             for (var i: number = 1; i < cnt; i++) {
                 var current: GPathPoint = points[i];
@@ -52,21 +54,21 @@ import { ToolSet } from "../utils/ToolSet";
                     seg.ptStart = this._points.length;
                     if (prev.curveType == CurveType.Straight) {
                         seg.ptCount = 2;
-                        this._points.push(new Laya.Point(prev.x, prev.y));
-                        this._points.push(new Laya.Point(current.x, current.y));
+                        this._points.push(new Point(prev.x, prev.y));
+                        this._points.push(new Point(current.x, current.y));
                     }
                     else if (prev.curveType == CurveType.Bezier) {
                         seg.ptCount = 3;
-                        this._points.push(new Laya.Point(prev.x, prev.y));
-                        this._points.push(new Laya.Point(current.x, current.y));
-                        this._points.push(new Laya.Point(prev.control1_x, prev.control1_y));
+                        this._points.push(new Point(prev.x, prev.y));
+                        this._points.push(new Point(current.x, current.y));
+                        this._points.push(new Point(prev.control1_x, prev.control1_y));
                     }
                     else if (prev.curveType == CurveType.CubicBezier) {
                         seg.ptCount = 4;
-                        this._points.push(new Laya.Point(prev.x, prev.y));
-                        this._points.push(new Laya.Point(current.x, current.y));
-                        this._points.push(new Laya.Point(prev.control1_x, prev.control1_y));
-                        this._points.push(new Laya.Point(prev.control2_x, prev.control2_y));
+                        this._points.push(new Point(prev.x, prev.y));
+                        this._points.push(new Point(current.x, current.y));
+                        this._points.push(new Point(prev.control1_x, prev.control1_y));
+                        this._points.push(new Point(prev.control2_x, prev.control2_y));
                     }
                     seg.length = ToolSet.distance(prev.x, prev.y, current.x, current.y);
                     this._fullLength += seg.length;
@@ -75,12 +77,12 @@ import { ToolSet } from "../utils/ToolSet";
 
                 if (current.curveType != CurveType.CRSpline) {
                     if (splinePoints.length > 0) {
-                        splinePoints.push(new Laya.Point(current.x, current.y));
+                        splinePoints.push(new Point(current.x, current.y));
                         this.createSplineSegment();
                     }
                 }
                 else
-                    splinePoints.push(new Laya.Point(current.x, current.y));
+                    splinePoints.push(new Point(current.x, current.y));
 
                 prev = current;
             }
@@ -90,7 +92,7 @@ import { ToolSet } from "../utils/ToolSet";
         }
 
         private createSplineSegment(): void {
-            var splinePoints: Array<Laya.Point> = s_points;
+            var splinePoints: Array<Point> = s_points;
             var cnt: number = splinePoints.length;
             splinePoints.splice(0, 0, splinePoints[0]);
             splinePoints.push(splinePoints[cnt]);
@@ -119,9 +121,9 @@ import { ToolSet } from "../utils/ToolSet";
             this._points.length = 0;
         }
 
-        public getPointAt(t: number, result?: Laya.Point): Laya.Point {
+        public getPointAt(t: number, result?: Point): Point {
             if (!result)
-                result = new Laya.Point();
+                result = new Point();
             else
                 result.x = result.y = 0;
 
@@ -175,20 +177,20 @@ import { ToolSet } from "../utils/ToolSet";
             return this._segments.length;
         }
 
-        public getAnchorsInSegment(segmentIndex: number, points?: Array<Laya.Point>): Array<Laya.Point> {
+        public getAnchorsInSegment(segmentIndex: number, points?: Array<Point>): Array<Point> {
             if (points == null)
-                points = new Array<Laya.Point>();
+                points = new Array<Point>();
 
             var seg: Segment = this._segments[segmentIndex];
             for (var i: number = 0; i < seg.ptCount; i++)
-                points.push(new Laya.Point(this._points[seg.ptStart + i].x, this._points[seg.ptStart + i].y));
+                points.push(new Point(this._points[seg.ptStart + i].x, this._points[seg.ptStart + i].y));
 
             return points;
         }
 
-        public getPointsInSegment(segmentIndex: number, t0: number, t1: number, points?: Array<Laya.Point>, ts?: Array<number>, pointDensity?: number): Array<Laya.Point> {
+        public getPointsInSegment(segmentIndex: number, t0: number, t1: number, points?: Array<Point>, ts?: Array<number>, pointDensity?: number): Array<Point> {
             if (points == null)
-                points = new Array<Laya.Point>();
+                points = new Array<Point>();
             if (!pointDensity || isNaN(pointDensity))
                 pointDensity = 0.1;
 
@@ -196,9 +198,9 @@ import { ToolSet } from "../utils/ToolSet";
                 ts.push(t0);
             var seg: Segment = this._segments[segmentIndex];
             if (seg.type == CurveType.Straight) {
-                points.push(new Laya.Point(ToolSet.lerp(this._points[seg.ptStart].x, this._points[seg.ptStart + 1].x, t0),
+                points.push(new Point(ToolSet.lerp(this._points[seg.ptStart].x, this._points[seg.ptStart + 1].x, t0),
                     ToolSet.lerp(this._points[seg.ptStart].y, this._points[seg.ptStart + 1].y, t0)));
-                points.push(new Laya.Point(ToolSet.lerp(this._points[seg.ptStart].x, this._points[seg.ptStart + 1].x, t1),
+                points.push(new Point(ToolSet.lerp(this._points[seg.ptStart].x, this._points[seg.ptStart + 1].x, t1),
                     ToolSet.lerp(this._points[seg.ptStart].y, this._points[seg.ptStart + 1].y, t1)));
             }
             else {
@@ -208,17 +210,17 @@ import { ToolSet } from "../utils/ToolSet";
                 else
                     func = this.onCRSplineCurve;
 
-                points.push(func.call(this, seg.ptStart, seg.ptCount, t0, new Laya.Point()));
+                points.push(func.call(this, seg.ptStart, seg.ptCount, t0, new Point()));
                 var SmoothAmount: number = Math.min(seg.length * pointDensity, 50);
                 for (var j: number = 0; j <= SmoothAmount; j++) {
                     var t: number = j / SmoothAmount;
                     if (t > t0 && t < t1) {
-                        points.push(func.call(this, seg.ptStart, seg.ptCount, t, new Laya.Point()));
+                        points.push(func.call(this, seg.ptStart, seg.ptCount, t, new Point()));
                         if (ts)
                             ts.push(t);
                     }
                 }
-                points.push(func.call(this, seg.ptStart, seg.ptCount, t1, new Laya.Point()));
+                points.push(func.call(this, seg.ptStart, seg.ptCount, t1, new Point()));
             }
 
             if (ts)
@@ -227,9 +229,9 @@ import { ToolSet } from "../utils/ToolSet";
             return points;
         }
 
-        public getAllPoints(points?: Array<Laya.Point>, ts?: Array<number>, pointDensity?: number): Array<Laya.Point> {
+        public getAllPoints(points?: Array<Point>, ts?: Array<number>, pointDensity?: number): Array<Point> {
             if (points == null)
-                points = new Array<Laya.Point>();
+                points = new Array<Point>();
             if (!pointDensity || isNaN(pointDensity))
                 pointDensity = 0.1;
 
@@ -240,7 +242,7 @@ import { ToolSet } from "../utils/ToolSet";
             return points;
         }
 
-        private onCRSplineCurve(ptStart: number, ptCount: number, t: number, result: Laya.Point): Laya.Point {
+        private onCRSplineCurve(ptStart: number, ptCount: number, t: number, result: Point): Point {
             var adjustedIndex: number = Math.floor(t * (ptCount - 4)) + ptStart; //Since the equation works with 4 points, we adjust the starting point depending on t to return a point on the specific segment
 
             var p0x: number = this._points[adjustedIndex].x;
@@ -265,7 +267,7 @@ import { ToolSet } from "../utils/ToolSet";
             return result;
         }
 
-        private onBezierCurve(ptStart: number, ptCount: number, t: number, result: Laya.Point): Laya.Point {
+        private onBezierCurve(ptStart: number, ptCount: number, t: number, result: Point): Point {
             var t2: number = 1 - t;
             var p0x: number = this._points[ptStart].x;
             var p0y: number = this._points[ptStart].y;
@@ -289,7 +291,7 @@ import { ToolSet } from "../utils/ToolSet";
         }
     }
 
-    var s_points: Array<Laya.Point> = new Array<Laya.Point>();
+    var s_points: Array<Point> = new Array<Point>();
 
     interface Segment {
         type?: number;

@@ -15,12 +15,12 @@ export class GScrollBar extends GComponent {
     private _scrollPerc: number;
     private _fixedGripSize: boolean;
 
-    private _dragOffset: Laya.Point;
+    private _dragOffset: Point;
     private _gripDragging: boolean;
 
     constructor() {
         super();
-        this._dragOffset = new Laya.Point();
+        this._dragOffset = new Point();
         this._scrollPerc = 0;
     }
 
@@ -113,7 +113,7 @@ export class GScrollBar extends GComponent {
             return;
 
         let mousePoint:Point = GRoot.inst.mousePosition;
-        var pt: Laya.Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+        var pt: Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
         if (this._vertical) {
             var curY: number = pt.y - this._dragOffset.y;
             this._target.setPercY((curY - this._bar.y) / (this._bar.height - this._grip.height), false);
@@ -155,7 +155,7 @@ export class GScrollBar extends GComponent {
 
     private __barMouseDown(evt: FederatedPointerEvent): void {
         let mousePoint:Point = GRoot.inst.mousePosition;
-        var pt: Laya.Point = this._grip.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+        var pt: Point = this._grip.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
         if (this._vertical) {
             if (pt.y < 0)
                 this._target.scrollUp(4);
@@ -171,4 +171,4 @@ export class GScrollBar extends GComponent {
     }
 }
 
-var s_vec2: Laya.Point = new Laya.Point();
+var s_vec2: Point = new Point();

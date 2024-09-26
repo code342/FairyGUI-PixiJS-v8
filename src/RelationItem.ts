@@ -1,4 +1,6 @@
+import { RelationType } from "./FieldTypes";
 import { GObject } from "./GObject";
+import { Transition } from "./Transition";
 import { DisplayEvent } from "./utils/LayaCompliant";
 
 export class RelationItem {
