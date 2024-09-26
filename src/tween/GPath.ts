@@ -1,6 +1,6 @@
 import { Point } from "pixi.js";
 import { ToolSet } from "../utils/ToolSet";
-import { CurveType } from "./GPathPoint";
+import { CurveType, GPathPoint } from "./GPathPoint";
 
     export class GPath {
         private _segments: Array<Segment>;

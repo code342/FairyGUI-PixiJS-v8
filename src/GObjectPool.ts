@@ -1,4 +1,5 @@
 import { GObject } from "./GObject";
+import { UIPackage } from "./UIPackage";
 
 export class GObjectPool {
     private _pool: Record<string, Array<GObject>>;

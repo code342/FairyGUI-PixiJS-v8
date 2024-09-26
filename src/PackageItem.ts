@@ -1,6 +1,9 @@
 import { Point, Rectangle } from "pixi.js";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { GRoot } from "./GRoot";
+import { UIPackage } from "./UIPackage";
+import { PixelHitTestData } from "./utils/hittest/PixelHitTest";
+import { Frame } from "./display/MovieClip";
 
 export class PackageItem {
     public owner: UIPackage;

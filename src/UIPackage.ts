@@ -1,9 +1,12 @@
-import { Point } from "pixi.js";
+import { Point, Rectangle } from "pixi.js";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";
 import { ByteBuffer } from "./utils/ByteBuffer";
-import { PackageItemType } from "./FieldTypes";
+import { ObjectType, PackageItemType } from "./FieldTypes";
+import { UIObjectFactory } from "./UIObjectFactory";
+import { AssetProxy } from "./AssetProxy";
+import { Frame } from "./display/MovieClip";
 
 type PackageDependency = { id: string, name: string };
 
@@ -360,7 +363,7 @@ export class UIPackage {
                         pi.objectType = ObjectType.Image;
                         var scaleOption: number = buffer.readByte();
                         if (scaleOption == 1) {
-                            pi.scale9Grid = new Laya.Rectangle();
+                            pi.scale9Grid = new Rectangle();
                             pi.scale9Grid.x = buffer.readInt32();
                             pi.scale9Grid.y = buffer.readInt32();
                             pi.scale9Grid.width = buffer.readInt32();
@@ -457,7 +460,7 @@ export class UIPackage {
             var itemId: string = buffer.readS();
             pi = this._itemsById[buffer.readS()];
 
-            let sprite: AtlasSprite = { atlas: pi, rect: new Laya.Rectangle(), offset: new Point(), originalSize: new Point() };
+            let sprite: AtlasSprite = { atlas: pi, rect: new Rectangle(), offset: new Point(), originalSize: new Point() };
             sprite.atlas = pi;
             sprite.rect.x = buffer.readInt32();
             sprite.rect.y = buffer.readInt32();
@@ -812,7 +815,7 @@ export class UIPackage {
 
 interface AtlasSprite {
     atlas: PackageItem;
-    rect: Laya.Rectangle;
+    rect: Rectangle;
     offset: Point;
     originalSize: Point;
     rotated?: boolean;

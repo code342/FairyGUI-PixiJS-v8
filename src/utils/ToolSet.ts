@@ -1,3 +1,5 @@
+import { ColorMatrix } from "./ColorMatrix";
+
 export class ToolSet {
     public static startsWith(source: string, str: string, ignoreCase?: boolean): boolean {
         if (!source)

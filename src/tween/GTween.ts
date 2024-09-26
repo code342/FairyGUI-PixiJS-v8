@@ -1,3 +1,6 @@
+import { GTweener } from "./GTweener";
+import { TweenManager } from "./TweenManager";
+
     export class GTween {
         public static catchCallbackExceptions: boolean = true;
 

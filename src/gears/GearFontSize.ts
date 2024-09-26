@@ -1,5 +1,7 @@
+import { ObjectPropID } from "../FieldTypes";
 import { GObject } from "../GObject";
 import { ByteBuffer } from "../utils/ByteBuffer";
+import { GearBase } from "./GearBase";
 
 export class GearFontSize extends GearBase {
     private _storage: Record<string, number>;

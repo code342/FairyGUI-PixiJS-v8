@@ -1,3 +1,4 @@
+import { FlipType, ObjectPropID } from "./FieldTypes";
 import { GObject, IGObjectView } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { Image } from "./display/Image";

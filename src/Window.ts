@@ -1,10 +1,13 @@
-import { FederatedPointerEvent } from "pixi.js";
+import { FederatedPointerEvent, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { UIConfig } from "./UIConfig";
 import { UIPackage } from "./UIPackage";
 import { RelationType } from "./FieldTypes";
+import { IUISource } from "./IUISource";
+import { GGraph } from "./GGraph";
+import { GRoot } from "./GRoot";
 
 export class Window extends GComponent {
     private _contentPane: GComponent;

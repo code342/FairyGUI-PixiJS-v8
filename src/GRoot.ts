@@ -5,7 +5,9 @@ import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { ToolSet } from "./utils/ToolSet";
 import { UIConfig } from "./UIConfig";
 import { UIPackage } from "./UIPackage";
-
+import { GGraph } from "./GGraph";
+import { PopupDirection, RelationType } from "./FieldTypes";
+import { Window } from "./Window";
 export class GRoot extends GComponent {
     public static contentScaleLevel: number = 0;
 

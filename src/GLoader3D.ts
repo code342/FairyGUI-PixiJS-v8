@@ -1,5 +1,7 @@
+import { AlignType, LoaderFillType, ObjectPropID, PackageItemType, VertAlignType } from "./FieldTypes";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
+import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 

@@ -1,6 +1,12 @@
+import { AssetProxy } from "./AssetProxy";
+import { MovieClip } from "./display/MovieClip";
+import { LoaderFillType, ObjectPropID, PackageItemType } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { GObjectPool } from "./GObjectPool";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";
+import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 

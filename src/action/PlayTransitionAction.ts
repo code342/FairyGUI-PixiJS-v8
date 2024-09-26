@@ -1,4 +1,7 @@
+import { Controller } from "../Controller";
+import { Transition } from "../Transition";
 import { ByteBuffer } from "../utils/ByteBuffer";
+import { ControllerAction } from "./ControllerAction";
 
 export class PlayTransitionAction extends ControllerAction {
     public transitionName: string;

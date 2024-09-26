@@ -1,3 +1,4 @@
+import { GroupLayoutType } from "./FieldTypes";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { Timer } from "./utils/Timer";

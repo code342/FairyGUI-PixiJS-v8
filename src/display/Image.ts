@@ -4,7 +4,7 @@ import { Timer } from "../utils/Timer";
 export class Image extends Sprite {
     protected _source: Laya.Texture;
     protected _scaleByTile?: boolean;
-    protected _scale9Grid?: Laya.Rectangle;
+    protected _scale9Grid?: Rectangle;
 
     private _tileGridIndice: number = 0;
     private _sizeGrid: number[];
@@ -51,11 +51,11 @@ export class Image extends Sprite {
         }
     }
 
-    public get scale9Grid(): Laya.Rectangle {
+    public get scale9Grid(): Rectangle {
         return this._scale9Grid;
     }
 
-    public set scale9Grid(value: Laya.Rectangle) {
+    public set scale9Grid(value: Rectangle) {
         this._scale9Grid = value;
         this._sizeGrid = null;
         this.markChanged(1);

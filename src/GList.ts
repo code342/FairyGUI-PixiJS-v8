@@ -1,10 +1,15 @@
-import { Container, FederatedPointerEvent, Point } from "pixi.js";
+import { Container, FederatedPointerEvent, Point, Rectangle } from "pixi.js";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { UIConfig } from "./UIConfig";
+import { Controller } from "./Controller";
+import { GObjectPool } from "./GObjectPool";
+import { ChildrenRenderOrder, ListLayoutType, ListSelectionMode, OverflowType } from "./FieldTypes";
+import { UIPackage } from "./UIPackage";
+import { GButton } from "./GButton";
 
 export class GList extends GComponent {
     public itemRenderer: Laya.Handler | ((index: number, item: GObject) => void);
@@ -874,23 +879,23 @@ export class GList extends GComponent {
             if (this._loop)
                 index = Math.floor(this._firstIndex / this._numItems) * this._numItems + index;
 
-            var rect: Laya.Rectangle;
+            var rect: Rectangle;
             var ii: ItemInfo = this._virtualItems[index];
             var pos: number = 0;
             var i: number;
             if (this._layout == ListLayoutType.SingleColumn || this._layout == ListLayoutType.FlowHorizontal) {
                 for (i = this._curLineItemCount - 1; i < index; i += this._curLineItemCount)
                     pos += this._virtualItems[i].height + this._lineGap;
-                rect = new Laya.Rectangle(0, pos, this._itemSize.x, ii.height);
+                rect = new Rectangle(0, pos, this._itemSize.x, ii.height);
             }
             else if (this._layout == ListLayoutType.SingleRow || this._layout == ListLayoutType.FlowVertical) {
                 for (i = this._curLineItemCount - 1; i < index; i += this._curLineItemCount)
                     pos += this._virtualItems[i].width + this._columnGap;
-                rect = new Laya.Rectangle(pos, 0, ii.width, this._itemSize.y);
+                rect = new Rectangle(pos, 0, ii.width, this._itemSize.y);
             }
             else {
                 var page: number = index / (this._curLineItemCount * this._curLineItemCount2);
-                rect = new Laya.Rectangle(page * this.viewWidth + (index % this._curLineItemCount) * (ii.width + this._columnGap),
+                rect = new Rectangle(page * this.viewWidth + (index % this._curLineItemCount) * (ii.width + this._columnGap),
                     (index / this._curLineItemCount) % this._curLineItemCount2 * (ii.height + this._lineGap),
                     ii.width, ii.height);
             }

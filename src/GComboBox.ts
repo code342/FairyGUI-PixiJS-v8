@@ -6,6 +6,13 @@ import { GComponent } from "./GComponent";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { UIConfig } from "./UIConfig";
 import { GObject } from "./GObject";
+import { GList } from "./GList";
+import { ObjectPropID, PopupDirection, RelationType } from "./FieldTypes";
+import { Controller } from "./Controller";
+import { GTextField } from "./GTextField";
+import { GLabel } from "./GLabel";
+import { GButton } from "./GButton";
+import { UIPackage } from "./UIPackage";
 
 export class GComboBox extends GComponent {
     public dropdown: GComponent;

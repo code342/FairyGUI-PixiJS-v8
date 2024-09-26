@@ -12,6 +12,7 @@ import { UIPackage } from "./UIPackage";
 import { Controller } from "./Controller";
 import { GTextField } from "./GTextField";
 import { Window } from "./Window";
+import { GLabel } from "./GLabel";
 export class GButton extends GComponent {
     protected _titleObject: GObject;
     protected _iconObject: GObject;

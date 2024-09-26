@@ -1,3 +1,6 @@
+import { GTextField } from "./GTextField";
+import { UIPackage } from "./UIPackage";
+
 export class GRichTextField extends GTextField {
 
     constructor() {

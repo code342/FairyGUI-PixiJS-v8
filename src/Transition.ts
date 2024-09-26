@@ -1,8 +1,13 @@
 import { ObjectPropID } from "./FieldTypes";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { GRoot } from "./GRoot";
 import { PackageItem } from "./PackageItem";
+import { EaseType } from "./tween/EaseType";
 import { GPath } from "./tween/GPath";
+import { CurveType, GPathPoint } from "./tween/GPathPoint";
+import { GTween } from "./tween/GTween";
+import { GTweener } from "./tween/GTweener";
 import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";

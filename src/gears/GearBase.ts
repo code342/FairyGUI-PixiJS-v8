@@ -1,4 +1,6 @@
 import { GObject } from "../GObject";
+import { EaseType } from "../tween/EaseType";
+import { GTweener } from "../tween/GTweener";
 import { ByteBuffer } from "../utils/ByteBuffer";
 
 export class GearBase {

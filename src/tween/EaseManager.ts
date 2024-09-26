@@ -36,6 +36,8 @@
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import { EaseType } from "./EaseType";
+
     const _PiOver2: number = Math.PI * 0.5;
     const _TwoPi: number = Math.PI * 2;
 

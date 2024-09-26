@@ -1,7 +1,23 @@
 import { ObjectType, PackageItemType } from "./FieldTypes";
+import { GButton } from "./GButton";
+import { GComboBox } from "./GComboBox";
 import { GComponent } from "./GComponent";
 import { GGraph } from "./GGraph";
+import { GGroup } from "./GGroup";
+import { GImage } from "./GImage";
+import { GLabel } from "./GLabel";
+import { GList } from "./GList";
+import { GLoader } from "./GLoader";
+import { GLoader3D } from "./GLoader3D";
+import { GMovieClip } from "./GMovieClip";
 import { GObject } from "./GObject";
+import { GProgressBar } from "./GProgressBar";
+import { GRichTextField } from "./GRichTextField";
+import { GScrollBar } from "./GScrollBar";
+import { GSlider } from "./GSlider";
+import { GTextField } from "./GTextField";
+import { GTextInput } from "./GTextInput";
+import { GTree } from "./GTree";
 import { PackageItem } from "./PackageItem";
 import { UIPackage } from "./UIPackage";
 

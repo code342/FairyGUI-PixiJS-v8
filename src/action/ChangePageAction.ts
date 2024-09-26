@@ -1,4 +1,7 @@
+import { Controller } from "../Controller";
+import { GComponent } from "../GComponent";
 import { ByteBuffer } from "../utils/ByteBuffer";
+import { ControllerAction } from "./ControllerAction";
 
 export class ChangePageAction extends ControllerAction {
     public objectId: string;

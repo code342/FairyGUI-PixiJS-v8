@@ -1,4 +1,7 @@
+import { Controller } from "../Controller";
 import { ByteBuffer } from "../utils/ByteBuffer";
+import { ChangePageAction } from "./ChangePageAction";
+import { PlayTransitionAction } from "./PlayTransitionAction";
 
 export class ControllerAction {
     public fromPage: string[];

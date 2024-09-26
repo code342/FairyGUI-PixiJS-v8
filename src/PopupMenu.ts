@@ -1,5 +1,12 @@
+import { Controller } from "./Controller";
+import { PopupDirection, RelationType } from "./FieldTypes";
+import { GButton } from "./GButton";
+import { GComponent } from "./GComponent";
+import { GList } from "./GList";
 import { GObject } from "./GObject";
+import { GRoot } from "./GRoot";
 import { UIConfig } from "./UIConfig";
+import { UIPackage } from "./UIPackage";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 

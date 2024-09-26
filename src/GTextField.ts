@@ -1,4 +1,6 @@
+import { AutoSizeType, ObjectPropID } from "./FieldTypes";
 import { GObject, IGObjectView } from "./GObject";
+import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 

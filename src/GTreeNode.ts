@@ -1,3 +1,6 @@
+import { GComponent } from "./GComponent";
+import { GTree } from "./GTree";
+
 export class GTreeNode {
     public data: any;
 

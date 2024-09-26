@@ -10,6 +10,11 @@ import { UIConfig } from "./UIConfig";
 import { UIPackage } from "./UIPackage";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { Controller } from "./Controller";
+import { GScrollBar } from "./GScrollBar";
+import { GTween } from "./tween/GTween";
+import { GTweener } from "./tween/GTweener";
+import { GList } from "./GList";
 
 export class ScrollPane {
     private _owner: GComponent;
@@ -518,12 +523,12 @@ export class ScrollPane {
             this.setPosX(this._xPos + this._scrollStep * ratio, ani);
     }
 
-    public scrollToView(target: Laya.Rectangle | GObject, ani?: boolean, setFirst?: boolean): void {
+    public scrollToView(target: Rectangle | GObject, ani?: boolean, setFirst?: boolean): void {
         this._owner.ensureBoundsCorrect();
         if (this._needRefresh)
             this.refresh();
 
-        var rect: Laya.Rectangle;
+        var rect: Rectangle;
         if (target instanceof GObject) {
             if (target.parent != this._owner) {
                 target.parent.localToGlobalRect(target.x, target.y, target.width, target.height, s_rect);
@@ -1794,7 +1799,7 @@ const TWEEN_TIME_DEFAULT: number = 0.3; //惯性滚动的最小缓动时间
 const PULL_RATIO: number = 0.5; //下拉过顶或者上拉过底时允许超过的距离占显示区域的比例
 
 var s_vec2: Point = new Point();
-var s_rect: Laya.Rectangle = new Laya.Rectangle();
+var s_rect: Rectangle = new Rectangle();
 var sEndPos: Point = new Point();
 var sOldChange: Point = new Point();
 

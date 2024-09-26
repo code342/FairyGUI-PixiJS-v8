@@ -1,5 +1,6 @@
 import { GObject } from "../GObject";
 import { ByteBuffer } from "../utils/ByteBuffer";
+import { GearBase } from "./GearBase";
 
 export class GearText extends GearBase {
     private _storage: Record<string, string>;
