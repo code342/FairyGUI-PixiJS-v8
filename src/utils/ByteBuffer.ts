@@ -1,3 +1,5 @@
+import { Color } from "pixi.js";
+
 export class ByteBuffer {
     public littleEndian: boolean = false;
     private _dataView: DataView;

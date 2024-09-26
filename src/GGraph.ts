@@ -1,8 +1,7 @@
-import { Container, Graphics } from "pixi.js";
+import { Color, Container, DEG_TO_RAD, Graphics } from "pixi.js";
 import { ObjectPropID } from "./FieldTypes";
 import { GObject, IGObjectView } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
-import { ToolSet } from "./utils/ToolSet";
 
 export enum GGGraphType {
     Empty = 0,
@@ -15,8 +14,8 @@ export enum GGGraphType {
 export class GGraph extends GObject {
     private _type: number;
     private _lineSize: number;
-    private _lineColor: string;
-    private _fillColor: string;
+    private _lineColor: Color;
+    private _fillColor: Color;
     private _cornerRadius?: number[];
    // private _hitArea?: Laya.HitArea;
     private _sides?: number;
@@ -30,37 +29,37 @@ export class GGraph extends GObject {
 
         this._type = GGGraphType.Empty;
         this._lineSize = 1;
-        this._lineColor = "#000000"
-        this._fillColor = "#FFFFFF";
+        this._lineColor = new Color("#000000");
+        this._fillColor = new Color("#FFFFFF");
     }
 
     get type(): GGGraphType { return this._type; }
     get polygonPoints(): number[] { return this._polygonPoints; }
 
 
-    public get fillColor(): string { return this._fillColor; }
+    public get fillColor(): string { return this._fillColor.value as string; }
     public set fillColor(v: string) {
-        if (v === this._fillColor) return;
-        this._fillColor = v;
+        if (v === this._fillColor.value) return;
+        this._fillColor.value = v;
         this.updateGraph();
     }
 
 
     public get lineColor(): string {
-        return this._lineColor;
+        return this._lineColor.value as string;
     }
 
     public set lineColor(v: string) {
-        if (v === this._fillColor) return;
-        this._lineColor = v;
+        if (v === this._fillColor.value) return;
+        this._lineColor.value = v;
         this.updateGraph();
     }
 
     public drawRect(lineSize: number, lineColor: string, fillColor: string, cornerRadius?: number[]): void {
         this._type = GGGraphType.Rect;
         this._lineSize = lineSize;
-        this._lineColor = lineColor;
-        this._fillColor = fillColor;
+        this._lineColor.value = lineColor;
+        this._fillColor.value = fillColor;
         this._cornerRadius = cornerRadius;
         this.updateGraph();
     }
@@ -68,16 +67,16 @@ export class GGraph extends GObject {
     public drawEllipse(lineSize: number, lineColor: string, fillColor: string): void {
         this._type = GGGraphType.Ellipse;
         this._lineSize = lineSize;
-        this._lineColor = lineColor;
-        this._fillColor = fillColor;
+        this._lineColor.value = lineColor;
+        this._fillColor.value = fillColor;
         this.updateGraph();
     }
 
     public drawRegularPolygon(lineSize: number, lineColor: string, fillColor: string, sides: number, startAngle?: number, distances?: number[]): void {
         this._type = GGGraphType.RegularPolygon;
         this._lineSize = lineSize;
-        this._lineColor = lineColor;
-        this._fillColor = fillColor;
+        this._lineColor.value = lineColor;
+        this._fillColor.value = fillColor;
         this._sides = sides;
         this._startAngle = startAngle || 0;
         this._distances = distances;
@@ -87,8 +86,8 @@ export class GGraph extends GObject {
     public drawPolygon(lineSize: number, lineColor: string, fillColor: string, points: number[]): void {
         this._type = GGGraphType.Polygon;
         this._lineSize = lineSize;
-        this._lineColor = lineColor;
-        this._fillColor = fillColor;
+        this._lineColor.value = lineColor;
+        this._fillColor.value = fillColor;
         this._polygonPoints = points;
         this.updateGraph();
     }
@@ -104,11 +103,11 @@ export class GGraph extends GObject {
     }
 
     public get color(): string {
-        return this._fillColor;
+        return this._fillColor.value as string;
     }
 
     public set color(value: string) {
-        this._fillColor = value;
+        this._fillColor.value = value;
         this.updateGear(4);
         if (this._type != 0)
             this.updateGraph();
@@ -124,71 +123,37 @@ export class GGraph extends GObject {
         if (w == 0 || h == 0)
             return;
 
-        var fillColor: string = this._fillColor;
-        var lineColor: string = this._lineColor;
-        if (/*Render.isWebGL &&*/ ToolSet.startsWith(fillColor, "rgba")) {
-            //webgl下laya未支持rgba格式
-            var arr: any[] = fillColor.substring(5, fillColor.lastIndexOf(")")).split(",");
-            var a: number = parseFloat(arr[3]);
-            if (a == 0)
-                fillColor = null;
-            else {
-                fillColor = Laya.Utils.toHexColor((parseInt(arr[0]) << 16) + (parseInt(arr[1]) << 8) + parseInt(arr[2]));
-                this.alpha = a;
-            }
-        }
         if (this._type == 1) {
             if (this._cornerRadius) {
-                var paths: any[] = [
-                    ["moveTo", this._cornerRadius[0], 0],
-                    ["lineTo", w - this._cornerRadius[1], 0],
-                    ["arcTo", w, 0, w, this._cornerRadius[1], this._cornerRadius[1]],
-                    ["lineTo", w, h - this._cornerRadius[3]],
-                    ["arcTo", w, h, w - this._cornerRadius[3], h, this._cornerRadius[3]],
-                    ["lineTo", this._cornerRadius[2], h],
-                    ["arcTo", 0, h, 0, h - this._cornerRadius[2], this._cornerRadius[2]],
-                    ["lineTo", 0, this._cornerRadius[0]],
-                    ["arcTo", 0, 0, this._cornerRadius[0], 0, this._cornerRadius[0]],
-                    ["closePath"]
-                ];
-                gr.drawPath(0, 0, paths, fillColor ? { fillStyle: fillColor } : null, this._lineSize > 0 ? { strokeStyle: lineColor, lineWidth: this._lineSize } : null);
+                gr.moveTo(this._cornerRadius[0], 0)
+                  .lineTo(w - this._cornerRadius[1], 0)
+                  .arcTo(w, 0, w, this._cornerRadius[1], this._cornerRadius[1])
+                  .lineTo(w, h - this._cornerRadius[3])
+                  .arcTo(w, h, w - this._cornerRadius[3], h, this._cornerRadius[3])
+                  .lineTo(this._cornerRadius[2], h)
+                  .arcTo(0, h, 0, h - this._cornerRadius[2], this._cornerRadius[2])
+                  .lineTo(0, this._cornerRadius[0])
+                  .arcTo(0, 0, this._cornerRadius[0], 0, this._cornerRadius[0])
+                  .closePath();
             }
-            else
-                gr.drawRect(0, 0, w, h, fillColor, this._lineSize > 0 ? lineColor : null, this._lineSize);
+            else{
+                gr.rect(0, 0, w, h);
+            }
         } else if (this._type == 2) {
-            gr.drawCircle(w / 2, h / 2, w / 2, fillColor, this._lineSize > 0 ? lineColor : null, this._lineSize);
+            let hw = w / 2, hh = h/2;
+            if(w == h) gr.circle(hw, hw, hw);
+            else gr.ellipse(hw, hh, hw, hh);
         }
         else if (this._type == 3) {
-            gr.drawPoly(0, 0, this._polygonPoints, fillColor, this._lineSize > 0 ? lineColor : null, this._lineSize);
+            gr.poly(this._polygonPoints);
         }
         else if (this._type == 4) {
-            if (!this._polygonPoints)
-                this._polygonPoints = [];
-            var radius: number = Math.min(this._width, this._height) / 2;
-            this._polygonPoints.length = 0;
-            var angle: number = Laya.Utils.toRadian(this._startAngle);
-            var deltaAngle: number = 2 * Math.PI / this._sides;
-            var dist: number;
-            for (var i: number = 0; i < this._sides; i++) {
-                if (this._distances) {
-                    dist = this._distances[i];
-                    if (isNaN(dist))
-                        dist = 1;
-                }
-                else
-                    dist = 1;
-
-                var xv: number = radius + radius * dist * Math.cos(angle);
-                var yv: number = radius + radius * dist * Math.sin(angle);
-                this._polygonPoints.push(xv, yv);
-
-                angle += deltaAngle;
-            }
-
-            gr.drawPoly(0, 0, this._polygonPoints, fillColor, this._lineSize > 0 ? lineColor : null, this._lineSize);
+            let radius: number = Math.min(this._width, this._height) / 2;
+            let rotation = DEG_TO_RAD * this._startAngle;
+            gr.regularPoly(0,0,radius, this._sides, rotation);
         }
-
-        this._displayObject.repaint();
+        if(this._fillColor.alpha > 0) gr.fill(this._fillColor);
+        if(this._lineSize > 0) gr.stroke({width:this._lineSize, color:this._lineColor});
     }
 
     public replaceMe(target: GObject): void {
@@ -232,6 +197,7 @@ export class GGraph extends GObject {
         this._type = 0;
         this._displayObject.eventMode = this.touchable ? "static" : "none";
         this.graphics.clear();
+        this._displayObject.removeChildren();
         this._displayObject.addChild(obj);
     }
 
@@ -277,8 +243,8 @@ export class GGraph extends GObject {
             var cnt: number;
 
             this._lineSize = buffer.readInt32();
-            this._lineColor = buffer.readColorS(true);
-            this._fillColor = buffer.readColorS(true);
+            this._lineColor.value = buffer.readColorS(true);
+            this._fillColor.value = buffer.readColorS(true);
             if (buffer.readBool()) {
                 this._cornerRadius = [];
                 for (i = 0; i < 4; i++)

@@ -1192,9 +1192,10 @@ export class GComponent extends GObject {
         }
 
         /*
-        *注意：如果没点击中父节点的hitArea,hitPruneFn会跳过所有子节点的hitTest，导致子节点收不到点击事件
-        *      所以设置hitArea的时候要能覆盖子节点
-        *TODO：如果有hitArea，hitTest的时候，要优先检测_displayObject，不是其子节点
+        *注意：如果没点击中父节点的hitArea,pixi引擎内部的hitPruneFn会跳过所有子节点的hitTest，导致子节点收不到点击事件.
+        *TODO：如果_displayObject有hitArea，hitTest的时候:
+        *    1.优先检测_displayObject（正常流程是优先检测子节点，最后才检测父节点）
+        *    2.没击中_displayObject.hitArea，再继续检测子节点
         */
         if (hitArea) {
             this._displayObject.hitArea = hitArea;
