@@ -1,4 +1,4 @@
-import { Container, Graphics, Point, Rectangle } from "pixi.js";
+import { Container, Graphics, IHitArea, Point, Rectangle } from "pixi.js";
 import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -6,8 +6,18 @@ import { ScrollRectComp } from "./display/ScrollRectComp";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { TranslationHelper } from "./TranslationHelper";
 import { PackageItem } from "./PackageItem";
-import { ChildrenRenderOrder } from "./FieldTypes";
+import { ChildrenRenderOrder, ObjectType, OverflowType } from "./FieldTypes";
 import { ToolSet } from "./utils/ToolSet";
+import { Controller } from "./Controller";
+import { GButton } from "./GButton";
+import { Transition } from "./Transition";
+import { ScrollPane } from "./ScrollPane";
+import { Margin } from "./Margin";
+import { UIPackage } from "./UIPackage";
+import { UIObjectFactory } from "./UIObjectFactory";
+import { GGroup } from "./GGroup";
+import { PixelHitTest } from "./utils/hittest/PixelHitTest";
+import { ChildHitArea } from "./utils/hittest/ChildHitArea";
 
 export class GComponent extends GObject {
     private _sortingChildCount: number = 0;
@@ -322,7 +332,8 @@ export class GComponent extends GObject {
                     if (g.inContainer)
                         displayIndex++;
                 }
-                if (displayIndex == this._container.numChildren)
+                
+                if (displayIndex == this.containerChildrenCount)
                     displayIndex--;
                 this._container.setChildIndex(child.displayObject, displayIndex);
             }
@@ -332,7 +343,7 @@ export class GComponent extends GObject {
                     if (g.inContainer)
                         displayIndex++;
                 }
-                if (displayIndex == this._container.numChildren)
+                if (displayIndex == this.containerChildrenCount)
                     displayIndex--;
                 this._container.setChildIndex(child.displayObject, displayIndex);
             }
@@ -360,6 +371,12 @@ export class GComponent extends GObject {
 
         this.setChildIndex(child1, index2);
         this.setChildIndex(child2, index1);
+    }
+
+    private get containerChildrenCount(): number {
+        if(!this._container || !this._container.children)
+            return 0;
+        return this._container.children.length;
     }
 
     public get numChildren(): number {
@@ -649,7 +666,7 @@ export class GComponent extends GObject {
     public set margin(value: Margin) {
         this._margin.copy(value);
         if (this._scrollRect) {
-            this._container.pos(this._margin.left + this._alignOffset.x, this._margin.top + this._alignOffset.y);
+            this._container.position.set(this._margin.left + this._alignOffset.x, this._margin.top + this._alignOffset.y);
         }
         this.handleSizeChanged();
     }
@@ -712,7 +729,10 @@ export class GComponent extends GObject {
                 hitTest.scaleY = this._height / this.sourceHeight;
         }
         else if (this._displayObject.hitArea instanceof Rectangle) {
-            this._displayObject.hitArea.setTo(0, 0, this._width, this._height);
+            let rect = this._displayObject.hitArea;
+            rect.x = rect.y = 0;
+            rect.width = this._width;
+            rect.height = this._height;
         }
     }
 
@@ -1160,7 +1180,7 @@ export class GComponent extends GObject {
         var hitTestId: string = buffer.readS();
         i1 = buffer.readInt32();
         i2 = buffer.readInt32();
-        var hitArea: Laya.HitArea;
+        var hitArea: IHitArea;
 
         if (hitTestId) {
             pi = contentItem.owner.getItemById(hitTestId);
@@ -1168,7 +1188,7 @@ export class GComponent extends GObject {
                 hitArea = new PixelHitTest(pi.pixelHitTestData, i1, i2);
         }
         else if (i1 != 0 && i2 != -1) {
-            hitArea = new ChildHitArea(this.getChildAt(i2).displayObject);
+            hitArea = new ChildHitArea(this.getChildAt(i2));
         }
 
         /*

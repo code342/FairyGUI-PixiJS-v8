@@ -1,4 +1,7 @@
-export class PixelHitTest extends Laya.HitArea {
+import { IHitArea } from "pixi.js";
+import { ByteBuffer } from "../ByteBuffer";
+
+export class PixelHitTest implements IHitArea {
     private _data: PixelHitTestData;
 
     public offsetX: number;
@@ -7,8 +10,6 @@ export class PixelHitTest extends Laya.HitArea {
     public scaleY: number;
 
     constructor(data: PixelHitTestData, offsetX: number, offsetY: number) {
-        super();
-
         this._data = data;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -42,7 +43,7 @@ export class PixelHitTestData {
     constructor() {
     }
 
-    public load(ba: Laya.Byte): void {
+    public load(ba: ByteBuffer): void {
         ba.readInt32();
         this.pixelWidth = ba.readInt32();
         this.scale = 1 / ba.readByte();

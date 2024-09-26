@@ -1,3 +1,6 @@
+import { ObjectType, PackageItemType } from "./FieldTypes";
+import { GComponent } from "./GComponent";
+import { GGraph } from "./GGraph";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIPackage } from "./UIPackage";

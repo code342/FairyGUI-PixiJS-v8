@@ -6,7 +6,12 @@ import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { UIConfig } from "./UIConfig";
 import { PackageItem } from "./PackageItem";
-
+import { ButtonMode, ObjectPropID } from "./FieldTypes";
+import { GRoot } from "./GRoot";
+import { UIPackage } from "./UIPackage";
+import { Controller } from "./Controller";
+import { GTextField } from "./GTextField";
+import { Window } from "./Window";
 export class GButton extends GComponent {
     protected _titleObject: GObject;
     protected _iconObject: GObject;

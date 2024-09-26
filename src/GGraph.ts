@@ -1,4 +1,6 @@
-import { GObject } from "./GObject";
+import { Container, Graphics } from "pixi.js";
+import { ObjectPropID } from "./FieldTypes";
+import { GObject, IGObjectView } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 
@@ -16,12 +18,13 @@ export class GGraph extends GObject {
     private _lineColor: string;
     private _fillColor: string;
     private _cornerRadius?: number[];
-    private _hitArea?: Laya.HitArea;
+   // private _hitArea?: Laya.HitArea;
     private _sides?: number;
     private _startAngle?: number;
     private _polygonPoints?: number[];
     private _distances?: number[];
 
+    public graphics:Graphics;
     constructor() {
         super();
 
@@ -112,8 +115,8 @@ export class GGraph extends GObject {
     }
 
     private updateGraph(): void {
-        this._displayObject.mouseEnabled = this.touchable;
-        var gr: Laya.Graphics = this._displayObject.graphics;
+        this._displayObject.eventMode = this.touchable ? "static" : "none";
+        var gr: Graphics = this.graphics;
         gr.clear();
 
         var w: number = this.width;
@@ -225,20 +228,21 @@ export class GGraph extends GObject {
         this._parent.addChildAt(target, index);
     }
 
-    public setNativeObject(obj: Laya.Sprite): void {
+    public setNativeObject(obj: Container): void {
         this._type = 0;
-        this._displayObject.mouseEnabled = this.touchable;
-        this._displayObject.graphics.clear();
+        this._displayObject.eventMode = this.touchable ? "static" : "none";
+        this.graphics.clear();
         this._displayObject.addChild(obj);
     }
 
     protected createDisplayObject(): void {
-        super.createDisplayObject();
-        this._displayObject.mouseEnabled = false;
+        this._displayObject = this.graphics = new Graphics(); //在pixijs里Graphics就是独立的displayobject
+        (this._displayObject as IGObjectView).$owner = this;
+        this._displayObject.eventMode = 'none';
 
-        this._hitArea = new Laya.HitArea();
-        this._hitArea.hit = this._displayObject.graphics;
-        this._displayObject.hitArea = this._hitArea;
+      //  this._hitArea = new Laya.HitArea();
+      //  this._hitArea.hit = this._displayObject.graphics;
+      //  this._displayObject.hitArea = this._hitArea;
     }
 
     public getProp(index: number): any {

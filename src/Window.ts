@@ -4,6 +4,7 @@ import { GObject } from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { UIConfig } from "./UIConfig";
 import { UIPackage } from "./UIPackage";
+import { RelationType } from "./FieldTypes";
 
 export class Window extends GComponent {
     private _contentPane: GComponent;

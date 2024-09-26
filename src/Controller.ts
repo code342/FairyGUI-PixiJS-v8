@@ -1,6 +1,9 @@
 import { EventEmitter } from "pixi.js";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { ByteBuffer } from "./utils/ByteBuffer";
+import { UIPackage } from "./UIPackage";
+import { ControllerAction } from "./action/ControllerAction";
+import { GComponent } from "./GComponent";
 
 var _nextPageId: number = 0;
 
