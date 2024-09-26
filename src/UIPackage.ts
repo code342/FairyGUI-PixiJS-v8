@@ -7,6 +7,7 @@ import { ObjectType, PackageItemType } from "./FieldTypes";
 import { UIObjectFactory } from "./UIObjectFactory";
 import { AssetProxy } from "./AssetProxy";
 import { Frame } from "./display/MovieClip";
+import { PixelHitTestData } from "./utils/hittest/PixelHitTest";
 
 type PackageDependency = { id: string, name: string };
 

@@ -376,8 +376,8 @@ export class GLoader extends GObject {
                         this._content2.setScale(1, 1);
                 }
                 else {
-                    this._content.size(cw, ch);
-                    this._content.pos(0, 0);
+                    this._content.setSize(cw, ch);
+                    this._content.position.set(0, 0);
                 }
                 return;
             }
@@ -424,7 +424,7 @@ export class GLoader extends GObject {
             else
                 this._content2.setScale(sx, sy);
         } else {
-            this._content.size(cw, ch);
+            this._content.setSize(cw, ch);
         }
 
         var nx: number, ny: number;
@@ -444,7 +444,7 @@ export class GLoader extends GObject {
         if (this._content2)
             this._content2.setXY(nx, ny);
         else
-            this._content.pos(nx, ny);
+            this._content.position.set(nx, ny);
     }
 
     private clearContent(): void {

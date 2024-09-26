@@ -251,7 +251,7 @@ export class GLoader3D extends GObject {
 
         this._content = skeleton;
         this._container.addChild(this._content);
-        this._content.pos(anchor.x, anchor.y);
+        this._content.position.set(anchor.x, anchor.y);
         ToolSet.setColorFilter(this._content, this._color);
 
         this.onChange();
@@ -297,7 +297,7 @@ export class GLoader3D extends GObject {
 
             if (cw == this._width && ch == this._height) {
                 this._container.scale(1, 1);
-                this._container.pos(0, 0);
+                this._container.position.set(0, 0);
 
                 return;
             }
@@ -352,7 +352,7 @@ export class GLoader3D extends GObject {
         else
             ny = 0;
 
-        this._container.pos(nx, ny);
+        this._container.position.set(nx, ny);
     }
 
     private clearContent(): void {

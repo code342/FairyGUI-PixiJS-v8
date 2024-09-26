@@ -43,9 +43,3 @@ export class DisplayEvent {
     public static PullDownRelease = "pullDownRelease";
     public static PullUpRelease = "pullUpRelease";
 }
-
-export class HitArea implements IHitArea {
-    contains(x: number, y: number): boolean {
-        return false;
-    }
-}

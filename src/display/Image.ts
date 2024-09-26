@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { Rectangle, Sprite } from "pixi.js";
 import { Timer } from "../utils/Timer";
 
 export class Image extends Sprite {
@@ -42,9 +42,9 @@ export class Image extends Sprite {
             this._source = value;
             if (!this._isWidthSet && !this._isHeightSet) {
                 if (this._source)
-                    this.size(this._source.width, this._source.height);
+                    this.setSize(this._source.width, this._source.height);
                 else
-                    this.size(0, 0);
+                    this.setSize(0, 0);
             }
             this.repaint();
             this.markChanged(1);

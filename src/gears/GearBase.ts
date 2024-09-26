@@ -1,7 +1,18 @@
+import { Controller } from "../Controller";
 import { GObject } from "../GObject";
 import { EaseType } from "../tween/EaseType";
 import { GTweener } from "../tween/GTweener";
 import { ByteBuffer } from "../utils/ByteBuffer";
+import { GearAnimation } from "./GearAnimation";
+import { GearColor } from "./GearColor";
+import { GearDisplay } from "./GearDisplay";
+import { GearDisplay2 } from "./GearDisplay2";
+import { GearFontSize } from "./GearFontSize";
+import { GearIcon } from "./GearIcon";
+import { GearLook } from "./GearLook";
+import { GearSize } from "./GearSize";
+import { GearText } from "./GearText";
+import { GearXY } from "./GearXY";
 
 export class GearBase {
     public static disableAllTweenEffect: boolean;

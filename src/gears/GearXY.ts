@@ -1,4 +1,5 @@
 import { GObject } from "../GObject";
+import { GTween } from "../tween/GTween";
 import { GTweener } from "../tween/GTweener";
 import { UIPackage } from "../UIPackage";
 import { ByteBuffer } from "../utils/ByteBuffer";

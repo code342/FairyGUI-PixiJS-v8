@@ -252,7 +252,7 @@ export class GRoot extends GComponent {
         if (this._defaultTooltipWin == null) {
             var resourceURL: string = UIConfig.tooltipsWin;
             if (!resourceURL) {
-                Laya.Log.print("UIConfig.tooltipsWin not defined");
+                console.log("UIConfig.tooltipsWin not defined");
                 return;
             }
 

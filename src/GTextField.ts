@@ -189,7 +189,7 @@ export class GTextField extends GObject {
         this._displayObject.overflow = this._autoSize == AutoSizeType.Shrink ? "shrink" : (this._autoSize == AutoSizeType.Ellipsis ? "ellipsis" : "visible");
         if (!this._underConstruct) {
             if (!this._heightAutoSize)
-                this._displayObject.size(this.width, this.height);
+                this._displayObject.setSize(this.width, this.height);
             else if (!this._widthAutoSize)
                 this._displayObject.width = this.width;
         }
@@ -230,7 +230,7 @@ export class GTextField extends GObject {
     }
 
     protected handleSizeChanged(): void {
-        this._displayObject.size(this._width, this._height);
+        this._displayObject.setSize(this._width, this._height);
     }
 
     protected handleGrayedChanged(): void {

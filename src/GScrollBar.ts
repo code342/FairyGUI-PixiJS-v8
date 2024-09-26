@@ -72,13 +72,13 @@ export class GScrollBar extends GComponent {
 
         this._grip = this.getChild("grip");
         if (!this._grip) {
-            Laya.Log.print("需要定义grip");
+            console.log("需要定义grip");
             return;
         }
 
         this._bar = this.getChild("bar");
         if (!this._bar) {
-            Laya.Log.print("需要定义bar");
+            console.log("需要定义bar");
             return;
         }
 

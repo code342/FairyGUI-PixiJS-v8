@@ -7,6 +7,28 @@ import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 import { UIConfig } from "./UIConfig";
 import { Relations } from "./Relations";
+import { ObjectPropID, RelationType } from "./FieldTypes";
+import { Controller } from "./Controller";
+import { GearBase } from "./gears/GearBase";
+import { GGroup } from "./GGroup";
+import { GMovieClip } from "./GMovieClip";
+import { GImage } from "./GImage";
+import { GComboBox } from "./GComboBox";
+import { GSlider } from "./GSlider";
+import { GGraph } from "./GGraph";
+import { GTree } from "./GTree";
+import { GList } from "./GList";
+import { GLoader } from "./GLoader";
+import { GTextInput } from "./GTextInput";
+import { GRichTextField } from "./GRichTextField";
+import { GTextField } from "./GTextField";
+import { GProgressBar } from "./GProgressBar";
+import { GLabel } from "./GLabel";
+import { GButton } from "./GButton";
+import { GComponent } from "./GComponent";
+import { GearDisplay } from "./gears/GearDisplay";
+import { GTreeNode } from "./GTreeNode";
+import { GearDisplay2 } from "./gears/GearDisplay2";
 
 
 export class GObject {

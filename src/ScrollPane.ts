@@ -15,6 +15,7 @@ import { GScrollBar } from "./GScrollBar";
 import { GTween } from "./tween/GTween";
 import { GTweener } from "./tween/GTweener";
 import { GList } from "./GList";
+import { Margin } from "./Margin";
 
 export class ScrollPane {
     private _owner: GComponent;
@@ -89,7 +90,7 @@ export class ScrollPane {
         this._owner.displayObject.addChild(this._maskContainer);
 
         this._container = this._owner._container;
-        this._container.pos(0, 0);
+        this._container.position.set(0, 0);
         this._maskContainer.addChild(this._container);
 
         this._mouseWheelEnabled = true;
@@ -689,7 +690,7 @@ export class ScrollPane {
             my = this._owner.margin.top;
         }
 
-        this._maskContainer.pos(mx, my);
+        this._maskContainer.position.set(mx, my);
 
         mx = this._owner._alignOffset.x;
         my = this._owner._alignOffset.y;
@@ -707,7 +708,7 @@ export class ScrollPane {
                 mx += this._owner.margin.left;
                 my += this._owner.margin.top;
             }
-            this._alignContainer.pos(mx, my);
+            this._alignContainer.position.set(mx, my);
         }
     }
 
@@ -887,11 +888,11 @@ export class ScrollPane {
                 max += this._footerLockedSize;
 
             if (this._refreshBarAxis == "x") {
-                this._container.pos(ToolSet.clamp(this._container.x, -max, this._headerLockedSize),
+                this._container.position.set(ToolSet.clamp(this._container.x, -max, this._headerLockedSize),
                     ToolSet.clamp(this._container.y, -this._overlapSize.y, 0));
             }
             else {
-                this._container.pos(ToolSet.clamp(this._container.x, -this._overlapSize.x, 0),
+                this._container.position.set(ToolSet.clamp(this._container.x, -this._overlapSize.x, 0),
                     ToolSet.clamp(this._container.y, -max, this._headerLockedSize));
             }
 
@@ -910,7 +911,7 @@ export class ScrollPane {
             }
         }
         else {
-            this._container.pos(ToolSet.clamp(this._container.x, -this._overlapSize.x, 0),
+            this._container.position.set(ToolSet.clamp(this._container.x, -this._overlapSize.x, 0),
                 ToolSet.clamp(this._container.y, -this._overlapSize.y, 0));
         }
 
@@ -991,7 +992,7 @@ export class ScrollPane {
             if (this._tweening != 0)
                 this.killTween();
 
-            this._container.pos(Math.floor(-this._xPos), Math.floor(-this._yPos));
+            this._container.position.set(Math.floor(-this._xPos), Math.floor(-this._yPos));
 
             this.loopCheckingCurrent();
         }
@@ -1413,7 +1414,7 @@ export class ScrollPane {
         }
 
         if (changed)
-            this._container.pos(Math.floor(-this._xPos), Math.floor(-this._yPos));
+            this._container.position.set(Math.floor(-this._xPos), Math.floor(-this._yPos));
 
         return changed;
     }
@@ -1634,7 +1635,7 @@ export class ScrollPane {
     private killTween(): void {
         if (this._tweening == 1) //取消类型为1的tween需立刻设置到终点
         {
-            this._container.pos(this._tweenStart.x + this._tweenChange.x, this._tweenStart.y + this._tweenChange.y);
+            this._container.position.set(this._tweenStart.x + this._tweenChange.x, this._tweenStart.y + this._tweenChange.y);
             this._owner.emit(DisplayEvent.Scroll);
         }
 
@@ -1699,7 +1700,7 @@ export class ScrollPane {
         var nx: number = this.runTween("x");
         var ny: number = this.runTween("y");
 
-        this._container.pos(nx, ny);
+        this._container.position.set(nx, ny);
 
         if (this._tweening == 2) {
             if (this._overlapSize.x > 0)

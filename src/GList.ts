@@ -1924,7 +1924,7 @@ export class GList extends GComponent {
             if (this._scrollPane)
                 this._scrollPane.adjustMaskContainer();
             else
-                this._container.pos(this._margin.left + this._alignOffset.x, this._margin.top + this._alignOffset.y);
+                this._container.position.set(this._margin.left + this._alignOffset.x, this._margin.top + this._alignOffset.y);
         }
     }
 
