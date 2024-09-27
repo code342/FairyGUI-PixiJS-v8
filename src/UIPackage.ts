@@ -1,4 +1,4 @@
-import { Point, Rectangle } from "pixi.js";
+import { BitmapFont, Point, Rectangle, Texture } from "pixi.js";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";
@@ -609,9 +609,9 @@ export class UIPackage {
                     item.decoded = true;
                     var sprite: AtlasSprite = this._sprites[item.id];
                     if (sprite) {
-                        var atlasTexture: Laya.Texture = <Laya.Texture>(this.getItemAsset(sprite.atlas));
+                        var atlasTexture: Texture = <Texture>(this.getItemAsset(sprite.atlas));
                         if (atlasTexture) {
-                            item.texture = Laya.Texture.create(atlasTexture,
+                            item.texture = Texture.create(atlasTexture,
                                 sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
                                 sprite.offset.x, sprite.offset.y,
                                 sprite.originalSize.x, sprite.originalSize.y);
@@ -729,8 +729,8 @@ export class UIPackage {
             spriteId = buffer.readS();
 
             if (spriteId != null && (sprite = this._sprites[spriteId]) != null) {
-                var atlasTexture: Laya.Texture = <Laya.Texture>(this.getItemAsset(sprite.atlas));
-                frame.texture = Laya.Texture.create(atlasTexture,
+                var atlasTexture: Texture = <Texture>(this.getItemAsset(sprite.atlas));
+                frame.texture = Texture.create(atlasTexture,
                     sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
                     fx, fy, item.width, item.height);
             }
@@ -742,7 +742,7 @@ export class UIPackage {
 
     private loadFont(item: PackageItem): void {
         item = item.getBranch();
-        let font = new Laya.BitmapFont();
+        let font = new BitmapFont();
         item.bitmapFont = font;
         Laya.Text.registerBitmapFont("ui://" + this.id + item.id, font);
 
@@ -759,10 +759,10 @@ export class UIPackage {
         let lineHeight = buffer.readInt32();
         font.lineHeight = Math.max(lineHeight, font.fontSize);
 
-        let mainTexture: Laya.Texture = null;
+        let mainTexture: Texture = null;
         let mainSprite = this._sprites[item.id];
         if (mainSprite)
-            mainTexture = <Laya.Texture>(this.getItemAsset(mainSprite.atlas));
+            mainTexture = <Texture>(this.getItemAsset(mainSprite.atlas));
 
         buffer.seek(0, 1);
 
@@ -787,7 +787,7 @@ export class UIPackage {
             buffer.readByte(); //channel
 
             if (ttf) {
-                bg.texture = Laya.Texture.create(mainTexture,
+                bg.texture = Texture.create(mainTexture,
                     bx + mainSprite.rect.x, by + mainSprite.rect.y, bg.width, bg.height);
             }
             else {

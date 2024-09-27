@@ -94,10 +94,12 @@ export class GImage extends GObject {
         this._contentItem = this._contentItem.getHighResolution();
         this._contentItem.load();
 
-        this._image.scale9Grid = this._contentItem.scale9Grid;
-        this._image.scaleByTile = this._contentItem.scaleByTile;
-        this._image.tileGridIndice = this._contentItem.tileGridIndice;
-        this._image.texture = this._contentItem.texture;
+        this._image.imgOption = {
+            scale9Grid: this._contentItem.scale9Grid,
+            scaleByTile: this._contentItem.scaleByTile,
+            tileGridIndice: this._contentItem.tileGridIndice,
+            texture: this._contentItem.texture
+        }
 
         this.setSize(this.sourceWidth, this.sourceHeight);
     }

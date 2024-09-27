@@ -35,7 +35,7 @@ export class PopupMenu {
         this._contentPane.dispose();
     }
 
-    public addItem(caption: string, handler?: SimpleHandler): GButton {
+    public addItem(caption: string, handler?: () => void): GButton {
         var item: GButton = this._list.addItemFromPool().asButton;
         item.title = caption;
         item.data = handler;
@@ -46,7 +46,7 @@ export class PopupMenu {
         return item;
     }
 
-    public addItemAt(caption: string, index: number, handler?: SimpleHandler): GButton {
+    public addItemAt(caption: string, index: number, handler?: () => void): GButton {
         var item: GButton = this._list.getFromPool().asButton;
         this._list.addChildAt(item, index);
         item.title = caption;
@@ -170,8 +170,6 @@ export class PopupMenu {
         r.hidePopup(this.contentPane);
         if (typeof itemObject.data === 'function')
             (<() => void>itemObject.data)();
-        else if (itemObject.data instanceof Laya.Handler)
-            (<Laya.Handler>itemObject.data).run();
     }
 
     private __addedToStage(): void {

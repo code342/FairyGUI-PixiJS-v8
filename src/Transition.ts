@@ -23,7 +23,7 @@ export class Transition {
     private _totalTasks: number;
     private _playing: boolean;
     private _paused: boolean;
-    private _onComplete: SimpleHandler;
+    private _onComplete: () => void;
     private _options: number;
     private _reversed: boolean;
     private _totalDuration: number;
@@ -45,11 +45,11 @@ export class Transition {
         this._endTime = 0;
     }
 
-    public play(onComplete?: SimpleHandler, times?: number, delay?: number, startTime?: number, endTime?: number): void {
+    public play(onComplete?: () => void, times?: number, delay?: number, startTime?: number, endTime?: number): void {
         this._play(onComplete, times, delay, startTime, endTime, false);
     }
 
-    public playReverse(onComplete?: SimpleHandler, times?: number, delay?: number, startTime?: number, endTime?: number): void {
+    public playReverse(onComplete?: () => void, times?: number, delay?: number, startTime?: number, endTime?: number): void {
         this._play(onComplete, 1, delay, startTime, endTime, true);
     }
 
@@ -76,7 +76,7 @@ export class Transition {
         }
     }
 
-    private _play(onComplete: SimpleHandler, times: number, delay: number, startTime: number, endTime: number, reversed: boolean): void {
+    private _play(onComplete: () => void, times: number, delay: number, startTime: number, endTime: number, reversed: boolean): void {
         if (times == undefined) times = 1;
         if (delay == undefined) delay = 0;
         if (startTime == undefined) startTime = 0;
@@ -173,7 +173,7 @@ export class Transition {
         }
 
         if (processCallback && handler) {
-            typeof handler === 'function' ? handler() : handler.run();
+            handler();
         }
     }
 
@@ -356,7 +356,7 @@ export class Transition {
             throw new Error("this.label not exists");
     }
 
-    public setHook(label: string, callback: SimpleHandler): void {
+    public setHook(label: string, callback: () => void): void {
         var cnt: number = this._items.length;
         var found: boolean = false;
         for (var i: number = 0; i < cnt; i++) {
@@ -873,11 +873,11 @@ export class Transition {
     private callHook(item: Item, tweenEnd: boolean): void {
         if (tweenEnd) {
             if (item.tweenConfig && item.tweenConfig.endHook)
-                typeof item.tweenConfig.endHook == "function" ? item.tweenConfig.endHook() : item.tweenConfig.endHook.run();
+                item.tweenConfig.endHook();
         }
         else {
             if (item.time >= this._startTime && item.hook) {
-                typeof item.hook == "function" ? item.hook() : item.hook.run();
+                item.hook();
             }
         }
     }
@@ -1232,7 +1232,7 @@ class Item {
     public tweenConfig?: TweenConfig;
     public label?: string;
     public value: TValue;
-    public hook?: SimpleHandler;
+    public hook?: () => void;
 
     public tweener?: GTweener;
     public target: GObject;
@@ -1253,7 +1253,7 @@ class TweenConfig {
     public startValue: TValue;
     public endValue: TValue;
     public endLabel: string;
-    public endHook?: SimpleHandler;
+    public endHook?: () => void;
     public path?: GPath;
 
     constructor() {

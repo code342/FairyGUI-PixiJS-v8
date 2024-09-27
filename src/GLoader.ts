@@ -1,3 +1,4 @@
+import { Texture } from "pixi.js";
 import { AssetProxy } from "./AssetProxy";
 import { MovieClip } from "./display/MovieClip";
 import { LoaderFillType, ObjectPropID, PackageItemType } from "./FieldTypes";
@@ -253,10 +254,13 @@ export class GLoader extends GObject {
                     this.setErrorState();
                 }
                 else {
-                    this._content.texture = this._contentItem.texture;
-                    this._content.scale9Grid = this._contentItem.scale9Grid;
-                    this._content.scaleByTile = this._contentItem.scaleByTile;
-                    this._content.tileGridIndice = this._contentItem.tileGridIndice;
+                    this._content.imgOption = {
+                        texture:this._contentItem.texture,
+                        scale9Grid:this._contentItem.scale9Grid,
+                        scaleByTile:this._contentItem.scaleByTile,
+                        tileGridIndice:this._contentItem.tileGridIndice
+                    }
+
                     this.sourceWidth = this._contentItem.width;
                     this.sourceHeight = this._contentItem.height;
                     this.updateLayout();
@@ -293,18 +297,20 @@ export class GLoader extends GObject {
     }
 
     protected loadExternal(): void {
-        AssetProxy.inst.load(this._url, Laya.Loader.IMAGE).then((tex: Laya.Texture) => {
+        AssetProxy.inst.load(this._url, Laya.Loader.IMAGE).then((tex: Texture) => {
             this.__getResCompleted(tex);
         });
     }
 
-    protected freeExternal(texture: Laya.Texture): void {
+    protected freeExternal(texture: Texture): void {
     }
 
-    protected onExternalLoadSuccess(texture: Laya.Texture): void {
-        this._content.texture = texture;
-        this._content.scale9Grid = null;
-        this._content.scaleByTile = false;
+    protected onExternalLoadSuccess(texture: Texture): void {
+        this._content.imgOption = {
+            texture:texture,
+            scale9Grid:null,
+            scaleByTile:false,
+        }
         this.sourceWidth = texture.width;
         this.sourceHeight = texture.height;
         this.updateLayout();
@@ -314,7 +320,7 @@ export class GLoader extends GObject {
         this.setErrorState();
     }
 
-    private __getResCompleted(tex: Laya.Texture): void {
+    private __getResCompleted(tex: Texture): void {
         if (tex != null)
             this.onExternalLoadSuccess(tex);
         else

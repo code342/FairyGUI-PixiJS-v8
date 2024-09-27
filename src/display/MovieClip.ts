@@ -1,9 +1,10 @@
+import { Texture } from "pixi.js";
 import { DisplayEvent } from "../utils/LayaCompliant";
 import { Timer } from "../utils/Timer";
 import { Image } from "./Image";
 export interface Frame {
     addDelay: number;
-    texture?: Laya.Texture;
+    texture?: Texture;
 }
 
 export class MovieClip extends Image {
@@ -21,7 +22,7 @@ export class MovieClip extends Image {
     private _times: number = 0;
     private _endAt: number = 0;
     private _status: number = 0; //0-none, 1-next loop, 2-ending, 3-ended
-    private _endHandler?: SimpleHandler;
+    private _endHandler?: () => void;
 
     private _frameElapsed: number = 0; //当前帧延迟
     private _reversed: boolean;
@@ -30,7 +31,7 @@ export class MovieClip extends Image {
     constructor() {
         super();
 
-        this.mouseEnabled = false;
+        this.eventMode = 'none';
 
         this.setPlaySettings();
 
@@ -170,7 +171,7 @@ export class MovieClip extends Image {
     }
 
     //从start帧开始，播放到end帧（-1表示结尾），重复times次（0表示无限循环），循环结束后，停止在endAt帧（-1表示参数end）
-    public setPlaySettings(start?: number, end?: number, times?: number, endAt?: number, endHandler?: SimpleHandler): void {
+    public setPlaySettings(start?: number, end?: number, times?: number, endAt?: number, endHandler?: () => void): void {
         if (start == undefined) start = 0;
         if (end == undefined) end = -1;
         if (times == undefined) times = 0;
@@ -252,10 +253,7 @@ export class MovieClip extends Image {
             if (this._endHandler) {
                 var handler = this._endHandler;
                 this._endHandler = null;
-                if (typeof handler === 'function')
-                    handler();
-                else
-                    handler.run();
+                handler();
             }
         }
         else {

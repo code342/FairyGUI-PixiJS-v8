@@ -1,4 +1,4 @@
-import { Point, Rectangle } from "pixi.js";
+import { BitmapFont, Point, Rectangle, Texture } from "pixi.js";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { GRoot } from "./GRoot";
 import { UIPackage } from "./UIPackage";
@@ -28,7 +28,7 @@ export class PackageItem {
     public scaleByTile?: boolean;
     public tileGridIndice?: number;
     public smoothing?: boolean;
-    public texture?: Laya.Texture;
+    public texture?: Texture;
     public pixelHitTestData?: PixelHitTestData;
 
     //movieclip
@@ -41,7 +41,7 @@ export class PackageItem {
     public extensionType?: any;
 
     //font 
-    public bitmapFont?: Laya.BitmapFont;
+    public bitmapFont?: BitmapFont;
 
     //skeleton
     public templet?: Laya.Templet | Laya.SpineTemplet;
