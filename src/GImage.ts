@@ -17,12 +17,12 @@ export class GImage extends GObject {
     }
 
     public get color(): string {
-        return this.image.color;
+        return this._image.color;
     }
 
     public set color(value: string) {
-        if (this.image.color != value) {
-            this.image.color = value;
+        if (this._image.color != value) {
+            this._image.color = value;
             this.updateGear(4);
         }
     }
@@ -45,41 +45,41 @@ export class GImage extends GObject {
         }
     }
 
-    public get fillMethod(): number {
-        return this.image.fillMethod;
+  /*  public get fillMethod(): number {
+        return this._image.fillMethod;
     }
 
     public set fillMethod(value: number) {
-        this.image.fillMethod = value;
+        this._image.fillMethod = value;
     }
 
     public get fillOrigin(): number {
-        return this.image.fillOrigin;
+        return this._image.fillOrigin;
     }
 
     public set fillOrigin(value: number) {
-        this.image.fillOrigin = value;
+        this._image.fillOrigin = value;
     }
 
     public get fillClockwise(): boolean {
-        return this.image.fillClockwise;
+        return this._image.fillClockwise;
     }
 
     public set fillClockwise(value: boolean) {
-        this.image.fillClockwise = value;
+        this._image.fillClockwise = value;
     }
 
     public get fillAmount(): number {
-        return this.image.fillAmount;
+        return this._image.fillAmount;
     }
 
     public set fillAmount(value: number) {
-        this.image.fillAmount = value;
-    }
+        this._image.fillAmount = value;
+    }*/
 
     protected createDisplayObject(): void {
         this._displayObject = this._image = new Image();
-        this.image.eventMode = 'none';
+        this._image.eventMode = 'none';
         (this._displayObject as IGObjectView).$owner = this;
     }
 
@@ -94,10 +94,10 @@ export class GImage extends GObject {
         this._contentItem = this._contentItem.getHighResolution();
         this._contentItem.load();
 
-        this.image.scale9Grid = this._contentItem.scale9Grid;
-        this.image.scaleByTile = this._contentItem.scaleByTile;
-        this.image.tileGridIndice = this._contentItem.tileGridIndice;
-        this.image.texture = this._contentItem.texture;
+        this._image.scale9Grid = this._contentItem.scale9Grid;
+        this._image.scaleByTile = this._contentItem.scaleByTile;
+        this._image.tileGridIndice = this._contentItem.tileGridIndice;
+        this._image.texture = this._contentItem.texture;
 
         this.setSize(this.sourceWidth, this.sourceHeight);
     }
@@ -107,9 +107,9 @@ export class GImage extends GObject {
 
         if (this._flip != FlipType.None) {
             if (this.scaleX == -1)
-                this.image.x += this.width;
+                this._image.x += this.width;
             if (this.scaleY == -1)
-                this.image.y += this.height;
+                this._image.y += this.height;
         }
     }
 
@@ -135,11 +135,12 @@ export class GImage extends GObject {
         if (buffer.readBool())
             this.color = buffer.readColorS();
         this.flip = buffer.readByte();
-        this.image.fillMethod = buffer.readByte();
-        if (this.image.fillMethod != 0) {
-            this.image.fillOrigin = buffer.readByte();
-            this.image.fillClockwise = buffer.readBool();
-            this.image.fillAmount = buffer.readFloat32();
+        let fillMethod = buffer.readByte();
+        if (fillMethod != 0) {
+            let fillOrigin = buffer.readByte();
+            let fillClockwise = buffer.readBool();
+            let fillAmount = buffer.readFloat32();
+            this._image.maskOption = {fillMethod:fillMethod, fillOrigin:fillOrigin, fillClockwise:fillClockwise, fillAmount:fillAmount}
         }
     }
 }

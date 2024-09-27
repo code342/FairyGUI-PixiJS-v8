@@ -1,144 +1,41 @@
-import { Rectangle, Sprite } from "pixi.js";
-import { Timer } from "../utils/Timer";
+import { Container, Graphics, NineSliceSprite, NineSliceSpriteOptions, Rectangle, Sprite, Texture, TilingSprite } from "pixi.js";
+import { fillImage } from "./FillUtils";
 
-export class Image extends Sprite {
-    protected _source: Laya.Texture;
+interface FillMaskOption{
+    fillMethod?:number;
+    fillAmount?:number;
+    fillOrigin?:number;
+    fillClockwise?:boolean;
+}
+
+interface FillTextureOption{
+    texture?:Texture;
+    scale9Grid?:Rectangle;
+    scaleByTile?:boolean;
+    tileGridIndice?:number;
+    color?:string;
+}
+
+export class Image extends Container {
+    protected _source: Texture;
     protected _scaleByTile?: boolean;
     protected _scale9Grid?: Rectangle;
-
+    //画九宫格的时候是否重复填充（0：不重复填充，1：重复填充）。
     private _tileGridIndice: number = 0;
-    private _sizeGrid: number[];
-    private _needRebuild: number = 0;
+    private _color: string;
+
     private _fillMethod: number = 0;
     private _fillOrigin: number = 0;
     private _fillAmount: number = 0;
     private _fillClockwise?: boolean;
-    private _mask?: Laya.Sprite;
-    private _color: string;
+
+    private _view:Sprite|TilingSprite|NineSliceSprite|Graphics;
 
     constructor() {
         super();
 
-        this.mouseEnabled = false;
+        this.eventMode = "none";
         this._color = "#FFFFFF";
-    }
-
-    set_width(value: number) {
-        super.set_width(value);
-        this.markChanged(1);
-    }
-
-    set_height(value: number): void {
-        super.set_height(value);
-        this.markChanged(1);
-    }
-
-    public get texture(): Laya.Texture {
-        return this._source;
-    }
-
-    public set texture(value: Laya.Texture) {
-        if (this._source != value) {
-            this._source = value;
-            if (!this._isWidthSet && !this._isHeightSet) {
-                if (this._source)
-                    this.setSize(this._source.width, this._source.height);
-                else
-                    this.setSize(0, 0);
-            }
-            this.repaint();
-            this.markChanged(1);
-        }
-    }
-
-    public get scale9Grid(): Rectangle {
-        return this._scale9Grid;
-    }
-
-    public set scale9Grid(value: Rectangle) {
-        this._scale9Grid = value;
-        this._sizeGrid = null;
-        this.markChanged(1);
-    }
-
-    public get scaleByTile(): boolean {
-        return this._scaleByTile;
-    }
-
-    public set scaleByTile(value: boolean) {
-        if (this._scaleByTile != value) {
-            this._scaleByTile = value;
-            this.markChanged(1);
-        }
-    }
-
-    public get tileGridIndice(): number {
-        return this._tileGridIndice;
-    }
-
-    public set tileGridIndice(value: number) {
-        if (this._tileGridIndice != value) {
-            this._tileGridIndice = value;
-            this.markChanged(1);
-        }
-    }
-
-    public get fillMethod(): number {
-        return this._fillMethod;
-    }
-
-    public set fillMethod(value: number) {
-        if (this._fillMethod != value) {
-            this._fillMethod = value;
-            if (this._fillMethod != 0) {
-                if (!this._mask) {
-                    this._mask = new Laya.Sprite();
-                    this._mask.mouseEnabled = false;
-                }
-                this.mask = this._mask;
-                this.markChanged(2);
-            }
-            else if (this.mask) {
-                this._mask.graphics.clear();
-                this.mask = null;
-            }
-        }
-    }
-
-    public get fillOrigin(): number {
-        return this._fillOrigin;
-    }
-
-    public set fillOrigin(value: number) {
-        if (this._fillOrigin != value) {
-            this._fillOrigin = value;
-            if (this._fillMethod != 0)
-                this.markChanged(2);
-        }
-    }
-
-    public get fillClockwise(): boolean {
-        return this._fillClockwise;
-    }
-
-    public set fillClockwise(value: boolean) {
-        if (this._fillClockwise != value) {
-            this._fillClockwise = value;
-            if (this._fillMethod != 0)
-                this.markChanged(2);
-        }
-    }
-
-    public get fillAmount(): number {
-        return this._fillAmount;
-    }
-
-    public set fillAmount(value: number) {
-        if (this._fillAmount != value) {
-            this._fillAmount = value;
-            if (this._fillMethod != 0)
-                this.markChanged(2);
-        }
     }
 
     public get color(): string {
@@ -148,77 +45,134 @@ export class Image extends Sprite {
     public set color(value: string) {
         if (this._color != value) {
             this._color = value;
-            this.markChanged(1);
+            this.fillTexture();
         }
     }
 
-    private markChanged(flag: number): void {
-        if (!this._needRebuild) {
-            this._needRebuild = flag;
+    public get fillMethod(): number {
+        return this._fillMethod;
+    }
 
-            Timer.shared.callLater(this, this.rebuild);
+    public get texture(): Texture {
+        return this._source;
+    }
+
+    public set texture(value: Texture) {
+        if (this._source != value) {
+            this._source = value;
+            if (this._source)
+                this.setSize(this._source.width, this._source.height);
+            else
+                this.setSize(0, 0);
+
+            this.fillTexture();
         }
-        else
-            this._needRebuild |= flag;
     }
 
-    protected rebuild(): void {
-        if ((this._needRebuild & 1) != 0)
-            this.doDraw();
-        if ((this._needRebuild & 2) != 0 && this._fillMethod != 0)
-            this.doFill();
-        this._needRebuild = 0;
+    public set imgOption(options:FillTextureOption){
+        if("scale9Grid" in options) this._scale9Grid = options.scale9Grid
+        if("scaleByTile" in options) this._scaleByTile = options.scaleByTile
+        if("tileGridIndice" in options) this._tileGridIndice = options.tileGridIndice
+        if("color" in options) this._color = options.color;
+        if("texture" in options) this._source = options.texture;
+
+        this.fillTexture();
     }
 
-    private doDraw(): void {
+    public set maskOption(options:FillMaskOption){
+        if("fillAmount" in options) this._fillAmount = options.fillAmount;
+        if("fillClockwise" in options) this._fillClockwise = options.fillClockwise;
+        if("fillOrigin" in options) this._fillOrigin = options.fillOrigin;
+        if("fillMethod" in options) this._fillMethod = options.fillMethod;
+
+        
+        if (this._fillMethod != 0) {
+            this.fillMask();
+        }
+        else if (this.mask) {
+            this.mask = null;
+            if(this._view && this._view instanceof Graphics)
+                this._view.clear();
+        }
+    }
+
+    private fillMask():void{
+        if (!this._view) {
+            this._view = new Graphics();
+            this._view.eventMode = "none";
+        }
+        let graphic = <Graphics>this._view;
+        this.mask = graphic;
         var w: number = this.width;
         var h: number = this.height;
-        var g: Laya.Graphics = this.graphics;
-        var tex: Laya.Texture = this._source;
 
-        g.clear();
-
-        if (tex == null || w == 0 || h == 0) {
-            return;
-        }
-
-        if (this._scaleByTile) {
-            g.fillTexture(tex, 0, 0, w, h);
-        }
-        else if (this._scale9Grid) {
-            if (!this._sizeGrid) {
-                var tw: number = tex.width;
-                var th: number = tex.height;
-                var left: number = this._scale9Grid.x;
-                var right: number = Math.max(tw - this._scale9Grid.right, 0);
-                var top: number = this._scale9Grid.y;
-                var bottom: number = Math.max(th - this._scale9Grid.bottom, 0);
-                this._sizeGrid = [top, right, bottom, left, this._tileGridIndice];
-            }
-
-            g.draw9Grid(tex, 0, 0, w, h, this._sizeGrid, this._color);
-        }
-        else {
-            g.drawImage(tex, 0, 0, w, h, this._color);
-        }
-    }
-
-    private doFill(): void {
-        var w: number = this.width;
-        var h: number = this.height;
-        var g: Laya.Graphics = this._mask.graphics;
-        g.clear();
+        graphic.clear();
 
         if (w == 0 || h == 0)
             return;
 
         var points: any[] = fillImage(w, h, this._fillMethod, this._fillOrigin, this._fillClockwise, this._fillAmount);
         if (points == null) {
-            //this.mask = null;
-            //this.mask = this._mask;
             return;
         }
 
-        g.drawPoly(0, 0, points, "#FFFFFF", null, 0);
+        graphic.poly(points).fill("#FFFFFF");
+    }
+
+
+    //TODO:某个属性改变导致重复创建对象的问题；显示类型发生变化的问题
+    private fillTexture(): void {
+        var w: number = this.width;
+        var h: number = this.height;
+        var tex: Texture = this._source;
+
+        if(this._view) this._view.removeFromParent();
+
+        if (tex == null || w == 0 || h == 0) {
+            return;
+        }
+
+        if (this._scaleByTile) {
+            if(this._view == null){ 
+                this._view = new TilingSprite({texture:tex, width:w, height:h, tilePosition:{x:0,y:0}});
+            }
+            else{ //just update
+                this._view.texture = tex;
+                this._view.setSize(w,h);
+            }
+        }
+        else if (this._scale9Grid) {
+            var tw: number = tex.width;
+            var th: number = tex.height;
+            var left: number = this._scale9Grid.x;
+            var right: number = Math.max(tw - this._scale9Grid.right, 0);
+            var top: number = this._scale9Grid.y;
+            var bottom: number = Math.max(th - this._scale9Grid.bottom, 0);
+            //TODO：尚未支持重复填充，需要根据tileGridIndice来决定是否填充
+            let opt:NineSliceSpriteOptions = {leftWidth:left, rightWidth:right, topHeight:top, bottomHeight:bottom,
+                        texture:tex,tint:this._color,x:0,y:0,width:w,height:h};
+            if(this._view == null){
+                this._view = new NineSliceSprite(opt)
+            }else{
+                let view = <NineSliceSprite>this._view;
+                view.texture = tex;
+                view.leftWidth = left;
+                view.rightWidth = right;
+                view.topHeight = top;
+                view.bottomHeight = bottom;
+                view.tint = this._color;
+                view.setSize(w, h);
+            }
+        }
+        else {
+            if(this._view == null){
+                this._view = new Sprite({texture:tex, x:0, y:0, width:w, height:h,tint:this._color});
+            }else{
+                this._view.tint = this._color;
+                this._view.texture = tex;
+                this._view.setSize(w,h);
+            }
+        }
+        this.addChild(this._view);
     }
 }

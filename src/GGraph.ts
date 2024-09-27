@@ -149,11 +149,44 @@ export class GGraph extends GObject {
         }
         else if (this._type == 4) {
             let radius: number = Math.min(this._width, this._height) / 2;
-            let rotation = DEG_TO_RAD * this._startAngle;
-            gr.regularPoly(0,0,radius, this._sides, rotation);
+            let angle = DEG_TO_RAD * this._startAngle;
+            let dist = this._distances[0];
+            let isRegular = true;
+            for (let i: number = 1; i < this._sides; i++) {
+                if(this._distances[i] != dist){
+                    isRegular = false;
+                    break;
+                }
+            }
+            if(isRegular){ //正多边形，所有边一样长，角度一样大
+                gr.regularPoly(0,0,radius, this._sides, angle);
+            }else{
+                if (!this._polygonPoints)
+                    this._polygonPoints = [];
+                this._polygonPoints.length = 0;
+                var deltaAngle: number = 2 * Math.PI / this._sides;
+                for (var i: number = 0; i < this._sides; i++) {
+                    if (this._distances) {
+                        dist = this._distances[i];
+                        if (isNaN(dist))
+                            dist = 1;
+                    }
+                    else
+                        dist = 1;
+    
+                    var xv: number = radius + radius * dist * Math.cos(angle);
+                    var yv: number = radius + radius * dist * Math.sin(angle);
+                    this._polygonPoints.push(xv, yv);
+    
+                    angle += deltaAngle;
+                }
+                gr.poly(this._polygonPoints);
+            }
         }
-        if(this._fillColor.alpha > 0) gr.fill(this._fillColor);
-        if(this._lineSize > 0) gr.stroke({width:this._lineSize, color:this._lineColor});
+        if(this._fillColor.alpha > 0) 
+            gr.fill(this._fillColor);
+        if(this._lineSize > 0) 
+            gr.stroke({width:this._lineSize, color:this._lineColor});
     }
 
     public replaceMe(target: GObject): void {
