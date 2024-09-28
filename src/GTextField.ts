@@ -26,7 +26,7 @@ export class GTextField extends GObject {
         this._displayObject = new Laya.Text();
         (this._displayObject as IGObjectView).$owner = this;
         this._displayObject.padding = labelPadding;
-        this._displayObject.mouseEnabled = false;
+        this._displayObject.eventMode = "none";
         this._autoSize = AutoSizeType.Both;
         this._widthAutoSize = this._heightAutoSize = true;
         (<Laya.Text>this._displayObject)._onPostLayout = () => this.updateSize();

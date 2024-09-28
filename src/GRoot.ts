@@ -416,13 +416,13 @@ export class GRoot extends GComponent {
     }
 
     private __winResize(): void {
-        this.setSize(Laya.stage.width, Laya.stage.height);
+        this.setSize(this.stage.width, this.stage.height);
 
         this.updateContentScaleLevel();
     }
 
     private updateContentScaleLevel(): void {
-        var mat: Laya.Matrix = <Laya.Matrix>(<any>Laya.stage)._canvasTransform;
+        var mat: Laya.Matrix = <Laya.Matrix>(this.stage)._canvasTransform;
         var ss: number = Math.max(mat.getScaleX(), mat.getScaleY());
         if (ss >= 3.5)
             GRoot.contentScaleLevel = 3; //x4

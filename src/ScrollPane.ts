@@ -602,16 +602,16 @@ export class ScrollPane {
     }
 
     public cancelDragging(): void {
-        this._owner.displayObject.stage.off(MouseEvents.Move, this.__mouseMove, this);
-        this._owner.displayObject.stage.off(MouseEvents.Up, this.__mouseUp, this);
-        this._owner.displayObject.stage.off(MouseEvents.Click, this.__click, this);
+        GRoot.inst.stage.off(MouseEvents.Move, this.__mouseMove, this);
+        GRoot.inst.stage.off(MouseEvents.Up, this.__mouseUp, this);
+        GRoot.inst.stage.off(MouseEvents.Click, this.__click, this);
 
         if (ScrollPane.draggingPane == this)
             ScrollPane.draggingPane = null;
 
         _gestureFlag = 0;
         this._dragged = false;
-        this._maskContainer.mouseEnabled = true;
+        this._maskContainer.eventMode = "static";
     }
 
     public lockHeader(size: number): void {
@@ -1027,9 +1027,9 @@ export class ScrollPane {
         this._velocityScale = 1;
         this._lastMoveTime = Timer.shared.currTimer / 1000;
 
-        this._owner.displayObject.stage.on(MouseEvents.Move, this.__mouseMove, this);
-        this._owner.displayObject.stage.on(MouseEvents.Up, this.__mouseUp, this);
-        this._owner.displayObject.stage.on(MouseEvents.Click, this.__click, this);
+        GRoot.inst.stage.on(MouseEvents.Move, this.__mouseMove, this);
+        GRoot.inst.stage.on(MouseEvents.Up, this.__mouseUp, this);
+        GRoot.inst.stage.on(MouseEvents.Click, this.__click, this);
     }
 
     private __mouseMove(): void {
@@ -1198,7 +1198,7 @@ export class ScrollPane {
         ScrollPane.draggingPane = this;
         this._isHoldAreaDone = true;
         this._dragged = true;
-        this._maskContainer.mouseEnabled = false;
+        this._maskContainer.eventMode = "none";
 
         this.updateScrollBarPos();
         this.updateScrollBarVisible();
@@ -1212,9 +1212,9 @@ export class ScrollPane {
         if (this._owner.isDisposed)
             return;
 
-        this._owner.displayObject.stage.off(MouseEvents.Move, this.__mouseMove, this);
-        this._owner.displayObject.stage.off(MouseEvents.Up, this.__mouseUp, this);
-        this._owner.displayObject.stage.off(MouseEvents.Click, this.__click, this);
+        GRoot.inst.stage.off(MouseEvents.Move, this.__mouseMove, this);
+        GRoot.inst.stage.off(MouseEvents.Up, this.__mouseUp, this);
+        GRoot.inst.stage.off(MouseEvents.Click, this.__click, this);
 
         if (ScrollPane.draggingPane == this)
             ScrollPane.draggingPane = null;
@@ -1223,12 +1223,12 @@ export class ScrollPane {
 
         if (!this._dragged || !this._touchEffect) {
             this._dragged = false;
-            this._maskContainer.mouseEnabled = true;
+            this._maskContainer.eventMode = "static";
             return;
         }
 
         this._dragged = false;
-        this._maskContainer.mouseEnabled = true;
+        this._maskContainer.eventMode = "static";
 
         this._tweenStart.set(this._container.x, this._container.y);
 
@@ -1579,7 +1579,7 @@ export class ScrollPane {
             var v2: number = Math.abs(v) * this._velocityScale;
             //在移动设备上，需要对不同分辨率做一个适配，我们的速度判断以1136分辨率为基准
             if (Laya.Browser.onMobile)
-                v2 *= 1136 / Math.max(Laya.stage.width, Laya.stage.height);
+                v2 *= 1136 / Math.max(GRoot.inst.stage.width, GRoot.inst.stage.height);
             //这里有一些阈值的处理，因为在低速内，不希望产生较大的滚动（甚至不滚动）
             var ratio: number = 0;
             if (this._pageMode || !Laya.Browser.onMobile) {

@@ -43,7 +43,7 @@ export class GLoader extends GObject {
 
         this._content = new MovieClip();
         this._displayObject.addChild(this._content);
-        this._displayObject.mouseEnabled = true;
+        this._displayObject.eventMode = "static";
     }
 
     public dispose(): void {
