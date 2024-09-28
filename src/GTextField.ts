@@ -3,7 +3,7 @@ import { GObject } from "./GObject";
 import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
-import { Text } from "pixi.js";
+import {  Text, TextStyleAlign } from "pixi.js";
 export class GTextField extends GObject {
     protected _text: string;
     protected _autoSize: number;
@@ -12,7 +12,9 @@ export class GTextField extends GObject {
     protected _color: string;
     protected _singleLine: boolean;
     protected _letterSpacing: number = 0;
-
+    private _ubbEnabled:boolean;
+    private _strokeWidth:number;
+    private _strokeColor:string;
     declare _displayObject: Text //| Laya.Input;
 
     constructor() {
@@ -25,11 +27,11 @@ export class GTextField extends GObject {
     protected createDisplayObject(): void {
         this._displayObject = new Text();
         this._displayObject.$owner = this;
-        this._displayObject.padding = labelPadding;
+        this._displayObject.style.padding = labelPadding[0];
         this._displayObject.eventMode = "none";
         this._autoSize = AutoSizeType.Both;
         this._widthAutoSize = this._heightAutoSize = true;
-        (<Text>this._displayObject)._onPostLayout = () => this.updateSize();
+        //(<Text>this._displayObject)._onPostLayout = () => this.updateSize();
     }
 
     public get displayObject(): Text {
@@ -44,22 +46,22 @@ export class GTextField extends GObject {
         return this._displayObject.text;
     }
 
-    public get font(): string {
-        return this._displayObject.font;
+    public get font(): string | string[] {
+        return this._displayObject.style.fontFamily;
     }
 
     public set font(value: string) {
         if (ToolSet.startsWith(value, "ui://"))
             UIPackage.getItemAssetByURL(value);
-        this._displayObject.font = value;
+        this._displayObject.style.fontFamily = value;
     }
 
     public get fontSize(): number {
-        return this._displayObject.fontSize;
+        return this._displayObject.style.fontSize;
     }
 
     public set fontSize(value: number) {
-        this._displayObject.fontSize = value;
+        this._displayObject.style.fontSize = value;
     }
 
     public get color(): string {
@@ -72,34 +74,34 @@ export class GTextField extends GObject {
             this.updateGear(4);
 
             if (this.grayed)
-                this._displayObject.color = "#AAAAAA";
+                this._displayObject.style.fill = "#AAAAAA";
             else
-                this._displayObject.color = this._color;
+                this._displayObject.style.fill = this._color;
         }
     }
 
     public get align(): string {
-        return this._displayObject.align;
+        return this._displayObject.style.align;
     }
 
-    public set align(value: string) {
-        this._displayObject.align = value;
+    public set align(value: TextStyleAlign) {
+        this._displayObject.style.align = value;
     }
 
     public get valign(): string {
-        return this._displayObject.valign;
+        return "";
     }
 
     public set valign(value: string) {
-        this._displayObject.valign = value;
+        console.log("dont support valign!!!");
     }
 
     public get leading(): number {
-        return this._displayObject.leading;
+        return this._displayObject.style.leading;
     }
 
     public set leading(value: number) {
-        this._displayObject.leading = value;
+        this._displayObject.style.leading = value;
     }
 
     public get letterSpacing(): number {
@@ -111,27 +113,34 @@ export class GTextField extends GObject {
     }
 
     public get bold(): boolean {
-        return this._displayObject.bold;
+        return this._displayObject.style.fontWeight == "bold";
     }
 
     public set bold(value: boolean) {
-        this._displayObject.bold = value;
+        if(value)
+            this._displayObject.style.fontWeight = "bold";
+        else if(this._displayObject.style.fontWeight == "bold"){
+            this._displayObject.style.fontWeight = "normal";
+        }
     }
 
     public get italic(): boolean {
-        return this._displayObject.italic;
+        return this._displayObject.style.fontStyle == "italic";
     }
 
     public set italic(value: boolean) {
-        this._displayObject.italic = value;
+        if(value)
+            this._displayObject.style.fontStyle = "italic";
+        else if(this._displayObject.style.fontStyle == "italic")
+            this._displayObject.style.fontStyle = "normal";
     }
 
     public get underline(): boolean {
-        return this._displayObject.underline;
+        return false;
     }
 
     public set underline(value: boolean) {
-        this._displayObject.underline = value;
+        console.log('dont support underline!!!');
     }
 
     public get singleLine(): boolean {
@@ -140,34 +149,31 @@ export class GTextField extends GObject {
 
     public set singleLine(value: boolean) {
         this._singleLine = value;
-        this._displayObject.wordWrap = !this._widthAutoSize && !this._singleLine;
+        this._displayObject.style.wordWrap = !this._widthAutoSize && !this._singleLine;
     }
 
-    public get stroke(): number {
-        return this._displayObject.stroke;
-    }
 
-    public set stroke(value: number) {
-        this._displayObject.stroke = value;
-    }
-
-    public get strokeColor(): string {
-        return this._displayObject.strokeColor;
+    private setStroke(){
+        this._displayObject.style.stroke = {
+            width:this._strokeWidth,
+            color:this._strokeColor
+        }
     }
 
     public set strokeColor(value: string) {
-        if (this._displayObject.strokeColor != value) {
-            this._displayObject.strokeColor = value;
+        if (this._strokeColor != value) {
+            this._strokeColor = value;
+            this.setStroke();
             this.updateGear(4);
         }
     }
 
     public set ubbEnabled(value: boolean) {
-        this._displayObject.ubb = value;
+        this._ubbEnabled = value;
     }
 
     public get ubbEnabled(): boolean {
-        return this._displayObject.ubb;
+        return this._ubbEnabled;
     }
 
     public get autoSize(): number {
@@ -185,8 +191,8 @@ export class GTextField extends GObject {
     }
 
     protected updateAutoSize(): void {
-        this._displayObject.wordWrap = !this._widthAutoSize && !this._singleLine;
-        this._displayObject.overflow = this._autoSize == AutoSizeType.Shrink ? "shrink" : (this._autoSize == AutoSizeType.Ellipsis ? "ellipsis" : "visible");
+        this._displayObject.style.wordWrap = !this._widthAutoSize && !this._singleLine;
+        //this._displayObject.style.overflow = this._autoSize == AutoSizeType.Shrink ? "shrink" : (this._autoSize == AutoSizeType.Ellipsis ? "ellipsis" : "visible");
         if (!this._underConstruct) {
             if (!this._heightAutoSize)
                 this._displayObject.setSize(this.width, this.height);
@@ -196,10 +202,10 @@ export class GTextField extends GObject {
     }
 
     public get textWidth(): number {
-        return this._displayObject.textWidth;
+        return this._displayObject.width;
     }
 
-    public get templateVars(): Record<string, any> {
+    /*public get templateVars(): Record<string, any> {
         return this._displayObject.templateVars;
     }
 
@@ -215,19 +221,19 @@ export class GTextField extends GObject {
 
     public flushVars(): void {
         //nothing here. auto flush
-    }
+    }*/
 
     public ensureSizeCorrect(): void {
-        if (!this._underConstruct)
-            this._displayObject.typeset();
+       /* if (!this._underConstruct)
+            this._displayObject.typeset();*/
     }
 
-    private updateSize(): void {
+   /* private updateSize(): void {
         if (this._widthAutoSize)
-            this.setSize(this._displayObject.textWidth, this._displayObject.textHeight);
+            this.setSize(this._displayObject.width, this._displayObject.height);
         else if (this._heightAutoSize)
-            this.height = this._displayObject.textHeight;
-    }
+            this.height = this._displayObject.height;
+    }*/
 
     protected handleSizeChanged(): void {
         this._displayObject.setSize(this._width, this._height);
@@ -237,9 +243,9 @@ export class GTextField extends GObject {
         super.handleGrayedChanged();
 
         if (this.grayed)
-            this._displayObject.color = "#AAAAAA";
+            this._displayObject.style.fill = "#AAAAAA";
         else
-            this._displayObject.color = this._color;
+            this._displayObject.style.fill = this._color;
     }
 
     public getProp(index: number): any {
@@ -288,22 +294,24 @@ export class GTextField extends GObject {
         this.valign = iv == 0 ? "top" : (iv == 1 ? "middle" : "bottom");
         this.leading = buffer.readInt16();
         this.letterSpacing = buffer.readInt16();
-        this.ubbEnabled = buffer.readBool();
+        this._ubbEnabled = buffer.readBool();
         this.autoSize = buffer.readByte();
         this.underline = buffer.readBool();
         this.italic = buffer.readBool();
         this.bold = buffer.readBool();
         this.singleLine = buffer.readBool();
         if (buffer.readBool()) {
-            this.strokeColor = buffer.readColorS();
-            this.stroke = buffer.readFloat32() + 1;
+            this._strokeColor = buffer.readColorS();
+            this._strokeWidth = buffer.readFloat32() + 1;
+            this.setStroke();
         }
 
         if (buffer.readBool()) //shadow
             buffer.skip(12);
 
-        if (buffer.readBool())
-            this._displayObject.templateVars = {};
+        if (buffer.readBool()){
+            //this._displayObject.templateVars = {};
+        }
     }
 
     public setup_afterAdd(buffer: ByteBuffer, beginPos: number): void {
