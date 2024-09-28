@@ -1,6 +1,6 @@
 import { MovieClip } from "./display/MovieClip";
 import { ObjectPropID } from "./FieldTypes";
-import { GObject, IGObjectView } from "./GObject";
+import { GObject} from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
@@ -22,7 +22,7 @@ export class GMovieClip extends GObject {
     protected createDisplayObject(): void {
         this._displayObject = this._movieClip = new MovieClip();
         this._movieClip.eventMode = 'none';
-        (this._displayObject as IGObjectView).$owner = this;
+        this._displayObject.$owner = this;
     }
 
     public get playing(): boolean {

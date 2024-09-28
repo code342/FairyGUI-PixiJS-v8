@@ -1,4 +1,3 @@
-import { IGObjectView } from "./GObject";
 import { GTextField } from "./GTextField";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { UBBParser } from "./utils/UBBParser";
@@ -12,7 +11,7 @@ export class GTextInput extends GTextField {
 
     protected createDisplayObject(): void {
         this._displayObject = new Laya.Input();
-        (this._displayObject as IGObjectView).$owner = this;
+        this._displayObject.$owner = this;
     }
 
     public get nativeInput(): Laya.Input {

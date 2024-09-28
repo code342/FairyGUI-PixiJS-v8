@@ -1,5 +1,5 @@
 import { FlipType, ObjectPropID } from "./FieldTypes";
-import { GObject, IGObjectView } from "./GObject";
+import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { Image } from "./display/Image";
 import { ByteBuffer } from "./utils/ByteBuffer";
@@ -80,7 +80,7 @@ export class GImage extends GObject {
     protected createDisplayObject(): void {
         this._displayObject = this._image = new Image();
         this._image.eventMode = 'none';
-        (this._displayObject as IGObjectView).$owner = this;
+        this._displayObject.$owner = this;
     }
 
     public constructFromResource(): void {

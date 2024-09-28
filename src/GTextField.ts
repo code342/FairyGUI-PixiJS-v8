@@ -1,9 +1,9 @@
 import { AutoSizeType, ObjectPropID } from "./FieldTypes";
-import { GObject, IGObjectView } from "./GObject";
+import { GObject } from "./GObject";
 import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
-
+import { Text } from "pixi.js";
 export class GTextField extends GObject {
     protected _text: string;
     protected _autoSize: number;
@@ -13,7 +13,7 @@ export class GTextField extends GObject {
     protected _singleLine: boolean;
     protected _letterSpacing: number = 0;
 
-    declare _displayObject: Laya.Text | Laya.Input;
+    declare _displayObject: Text //| Laya.Input;
 
     constructor() {
         super();
@@ -23,16 +23,16 @@ export class GTextField extends GObject {
     }
 
     protected createDisplayObject(): void {
-        this._displayObject = new Laya.Text();
-        (this._displayObject as IGObjectView).$owner = this;
+        this._displayObject = new Text();
+        this._displayObject.$owner = this;
         this._displayObject.padding = labelPadding;
         this._displayObject.eventMode = "none";
         this._autoSize = AutoSizeType.Both;
         this._widthAutoSize = this._heightAutoSize = true;
-        (<Laya.Text>this._displayObject)._onPostLayout = () => this.updateSize();
+        (<Text>this._displayObject)._onPostLayout = () => this.updateSize();
     }
 
-    public get displayObject(): Laya.Text {
+    public get displayObject(): Text {
         return this._displayObject;
     }
 

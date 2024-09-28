@@ -1,4 +1,4 @@
-import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter, FederatedPointerEvent} from "pixi.js";
+import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter, FederatedPointerEvent, View} from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -938,7 +938,7 @@ export class GObject {
 
     protected createDisplayObject(): void {
         this._displayObject = new Container();
-        (this._displayObject as IGObjectView).$owner = this;
+        this._displayObject.$owner = this;
     }
 
     protected handleXYChanged(): void {
@@ -1237,7 +1237,7 @@ export class GObject {
     //-------------------------------------------------------------------
 
     public static cast(sprite: Container): GObject {
-        return (sprite as IGObjectView).$owner;
+        return sprite.$owner;
     }
 }
 
@@ -1247,11 +1247,6 @@ export const BlendMode: { [key: number]: string } = {
     4: "screen"
 }
 
-
-
-export interface IGObjectView extends Container {
-    $owner: GObject;
-}
 
 var _gInstanceCounter: number = 0;
 var sGlobalDragStart: Point = new Point();

@@ -1,6 +1,6 @@
 import { Color, Container, DEG_TO_RAD, Graphics } from "pixi.js";
 import { ObjectPropID } from "./FieldTypes";
-import { GObject, IGObjectView } from "./GObject";
+import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 export enum GGGraphType {
@@ -236,7 +236,7 @@ export class GGraph extends GObject {
 
     protected createDisplayObject(): void {
         this._displayObject = this.graphics = new Graphics(); //在pixijs里Graphics就是独立的displayobject
-        (this._displayObject as IGObjectView).$owner = this;
+        this._displayObject.$owner = this;
         this._displayObject.eventMode = 'none';
 
       //  this._hitArea = new Laya.HitArea();

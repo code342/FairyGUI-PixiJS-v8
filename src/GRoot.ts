@@ -1,6 +1,6 @@
 import { Application, Container, FederatedPointerEvent, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
-import { GObject, IGObjectView } from "./GObject";
+import { GObject} from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { ToolSet } from "./utils/ToolSet";
 import { UIConfig } from "./UIConfig";
@@ -377,9 +377,9 @@ export class GRoot extends GComponent {
         this._checkPopups = true;
         this._justClosedPopups.length = 0;
         if (this._popupStack.length > 0) {
-            var mc: Laya.Node = clickTarget;
+            var mc: Container = clickTarget;
             while (mc != this.displayObject.stage && mc) {
-                let owner = (mc as IGObjectView).$owner;
+                let owner = mc.$owner;
                 if (owner) {
                     var pindex: number = this._popupStack.indexOf(owner);
                     if (pindex != -1) {
