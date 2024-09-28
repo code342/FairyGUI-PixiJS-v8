@@ -281,11 +281,10 @@ export class MovieClip extends Image {
         }
         else
             this.texture = null;
-        this.rebuild();
     }
 
     private checkTimer(): void {
-        if (this._playing && this._frameCount > 0 && this.stage != null)
+        if (this._playing && this._frameCount > 0 && this.parentRenderGroup != null)
             Timer.shared.frameLoop(1, this, this.update);
         else
             Timer.shared.clear(this, this.update);

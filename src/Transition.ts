@@ -266,7 +266,7 @@ export class Transition {
         return this._totalDuration;
     }
 
-    public setValue(label: string, ...args): void {
+    public setValue(label: string, ...args:any[]): void {
         var cnt: number = this._items.length;
         var found: boolean = false;
         var value: any;
@@ -519,7 +519,7 @@ export class Transition {
         else if (this._onComplete) {
             var handler = this._onComplete;
             this._onComplete = null;
-            typeof handler === 'function' ? handler() : handler.run();
+            handler();
         }
     }
 
@@ -911,7 +911,7 @@ export class Transition {
                     if (this._onComplete) {
                         var handler = this._onComplete;
                         this._onComplete = null;
-                        typeof handler === 'function' ? handler() : handler.run();
+                        handler();
                     }
                 }
             }

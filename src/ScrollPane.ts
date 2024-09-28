@@ -537,7 +537,10 @@ export class ScrollPane {
             }
             else {
                 rect = s_rect;
-                rect.setTo(target.x, target.y, target.width, target.height);
+                rect.x = target.x;
+                rect.y = target.y;
+                rect.width = target.width;
+                rect.height = target.height;
             }
         }
         else
@@ -618,10 +621,10 @@ export class ScrollPane {
         this._headerLockedSize = size;
 
         if (!this._refreshEventDispatching && this._container[this._refreshBarAxis] >= 0) {
-            this._tweenStart.setTo(this._container.x, this._container.y);
-            this._tweenChange.setTo(0, 0);
+            this._tweenStart.set(this._container.x, this._container.y);
+            this._tweenChange.set(0, 0);
             this._tweenChange[this._refreshBarAxis] = this._headerLockedSize - this._tweenStart[this._refreshBarAxis];
-            this._tweenDuration.setTo(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
+            this._tweenDuration.set(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
             this.startTween(2);
         }
     }
@@ -633,15 +636,15 @@ export class ScrollPane {
         this._footerLockedSize = size;
 
         if (!this._refreshEventDispatching && this._container[this._refreshBarAxis] <= -this._overlapSize[this._refreshBarAxis]) {
-            this._tweenStart.setTo(this._container.x, this._container.y);
-            this._tweenChange.setTo(0, 0);
+            this._tweenStart.set(this._container.x, this._container.y);
+            this._tweenChange.set(0, 0);
             var max: number = this._overlapSize[this._refreshBarAxis];
             if (max == 0)
                 max = Math.max(this._contentSize[this._refreshBarAxis] + this._footerLockedSize - this._viewSize[this._refreshBarAxis], 0);
             else
                 max += this._footerLockedSize;
             this._tweenChange[this._refreshBarAxis] = -max - this._tweenStart[this._refreshBarAxis];
-            this._tweenDuration.setTo(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
+            this._tweenDuration.set(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
             this.startTween(2);
         }
     }
@@ -938,7 +941,7 @@ export class ScrollPane {
         Timer.shared.clear(this, this.refresh);
 
         if (this._pageMode || this._snapToItem) {
-            sEndPos.setTo(-this._xPos, -this._yPos);
+            sEndPos.set(-this._xPos, -this._yPos);
             this.alignPosition(sEndPos, false);
             this._xPos = -sEndPos.x;
             this._yPos = -sEndPos.y;
@@ -980,9 +983,9 @@ export class ScrollPane {
             }
 
             if (posX != this._container.x || posY != this._container.y) {
-                this._tweenDuration.setTo(TWEEN_TIME_GO, TWEEN_TIME_GO);
-                this._tweenStart.setTo(this._container.x, this._container.y);
-                this._tweenChange.setTo(posX - this._tweenStart.x, posY - this._tweenStart.y);
+                this._tweenDuration.set(TWEEN_TIME_GO, TWEEN_TIME_GO);
+                this._tweenStart.set(this._container.x, this._container.y);
+                this._tweenChange.set(posX - this._tweenStart.x, posY - this._tweenStart.y);
                 this.startTween(1);
             }
             else if (this._tweening != 0)
@@ -1015,12 +1018,12 @@ export class ScrollPane {
         let mousePoint:Point = GRoot.inst.mousePosition;
         var pt: Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
 
-        this._containerPos.setTo(this._container.x, this._container.y);
-        this._beginTouchPos.setTo(pt.x, pt.y);
-        this._lastTouchPos.setTo(pt.x, pt.y);
-        this._lastTouchGlobalPos.setTo(mousePoint.x, mousePoint.y);
+        this._containerPos.set(this._container.x, this._container.y);
+        this._beginTouchPos.set(pt.x, pt.y);
+        this._lastTouchPos.set(pt.x, pt.y);
+        this._lastTouchGlobalPos.set(mousePoint.x, mousePoint.y);
         this._isHoldAreaDone = false;
-        this._velocity.setTo(0, 0);
+        this._velocity.set(0, 0);
         this._velocityScale = 1;
         this._lastMoveTime = Timer.shared.currTimer / 1000;
 
@@ -1172,8 +1175,8 @@ export class ScrollPane {
         else if (deltaPositionY != 0)
             this._velocityScale = Math.abs(deltaGlobalPositionY / deltaPositionY);
 
-        this._lastTouchPos.setTo(pt.x, pt.y);
-        this._lastTouchGlobalPos.setTo(mousePoint.x, mousePoint.y);
+        this._lastTouchPos.set(pt.x, pt.y);
+        this._lastTouchGlobalPos.set(mousePoint.x, mousePoint.y);
         this._lastMoveTime = now;
 
         //同步更新pos值
@@ -1227,9 +1230,9 @@ export class ScrollPane {
         this._dragged = false;
         this._maskContainer.mouseEnabled = true;
 
-        this._tweenStart.setTo(this._container.x, this._container.y);
+        this._tweenStart.set(this._container.x, this._container.y);
 
-        sEndPos.setTo(this._tweenStart.x, this._tweenStart.y);
+        sEndPos.set(this._tweenStart.x, this._tweenStart.y);
         var flag: boolean = false;
         if (this._container.x > 0) {
             sEndPos.x = 0;
@@ -1248,7 +1251,7 @@ export class ScrollPane {
             flag = true;
         }
         if (flag) {
-            this._tweenChange.setTo(sEndPos.x - this._tweenStart.x, sEndPos.y - this._tweenStart.y);
+            this._tweenChange.set(sEndPos.x - this._tweenStart.x, sEndPos.y - this._tweenStart.y);
             if (this._tweenChange.x < -UIConfig.touchDragSensitivity || this._tweenChange.y < -UIConfig.touchDragSensitivity) {
                 this._refreshEventDispatching = true;
                 this._owner.emit(DisplayEvent.PullDownRelease);
@@ -1276,7 +1279,7 @@ export class ScrollPane {
                 this._tweenChange.y = sEndPos.y - this._tweenStart.y;
             }
 
-            this._tweenDuration.setTo(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
+            this._tweenDuration.set(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
         }
         else {
             //更新速度
@@ -1292,8 +1295,8 @@ export class ScrollPane {
                 this.updateTargetAndDuration(this._tweenStart, sEndPos);
             }
             else
-                this._tweenDuration.setTo(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
-            sOldChange.setTo(sEndPos.x - this._tweenStart.x, sEndPos.y - this._tweenStart.y);
+                this._tweenDuration.set(TWEEN_TIME_DEFAULT, TWEEN_TIME_DEFAULT);
+            sOldChange.set(sEndPos.x - this._tweenStart.x, sEndPos.y - this._tweenStart.y);
 
             //调整目标位置
             this.loopCheckingTarget(sEndPos);
@@ -1625,7 +1628,7 @@ export class ScrollPane {
     }
 
     private startTween(type: number): void {
-        this._tweenTime.setTo(0, 0);
+        this._tweenTime.set(0, 0);
         this._tweening = type;
         Timer.shared.frameLoop(1, this, this.tweenUpdate);
 

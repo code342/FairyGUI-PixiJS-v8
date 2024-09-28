@@ -581,11 +581,12 @@ export class GObject {
         if(!this._displayObject){
             return false;
         }
-        let current = this._displayObject;
+        return this._displayObject.parentRenderGroup != null;
+       /* let current = this._displayObject;
         while(current.parent){
             current = current.parent;
         }
-        return current == GRoot.inst.stage;
+        return current == GRoot.inst.stage;*/
     }
 
     public get resourceURL(): string {
