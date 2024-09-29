@@ -39,6 +39,7 @@ export class GTextField extends GObject {
     }
 
     public set text(value: string) {
+
         this._displayObject.text = value;
     }
 
@@ -307,7 +308,11 @@ export class GTextField extends GObject {
         }
 
         if (buffer.readBool()) //shadow
-            buffer.skip(12);
+        {
+            let color = buffer.readColorS();
+            let offsetx = buffer.readFloat32();
+            let offsety = buffer.readFloat32();
+        }
 
         if (buffer.readBool()){
             //this._displayObject.templateVars = {};
