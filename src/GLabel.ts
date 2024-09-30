@@ -1,3 +1,4 @@
+import Input from "./display/Input";
 import { ObjectPropID } from "./FieldTypes";
 import { GButton } from "./GButton";
 import { GComponent } from "./GComponent";
@@ -190,9 +191,9 @@ export class GLabel extends GComponent {
                 iv = buffer.readInt32();
                 if (iv != 0) {
                     if (iv == 4)
-                        input.keyboardType = Laya.Input.TYPE_NUMBER;
+                        input.keyboardType = Input.TYPE_NUMBER;
                     else if (iv == 3)
-                        input.keyboardType = Laya.Input.TYPE_URL;
+                        input.keyboardType = Input.TYPE_URL;
                 }
                 if (buffer.readBool())
                     input.password = true;

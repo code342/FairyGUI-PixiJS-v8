@@ -1,3 +1,4 @@
+import Input from "./display/Input";
 import { AutoSizeType, ObjectPropID } from "./FieldTypes";
 import { GObject } from "./GObject";
 import { UIPackage } from "./UIPackage";
@@ -15,7 +16,7 @@ export class GTextField extends GObject {
     private _ubbEnabled:boolean;
     private _strokeWidth:number;
     private _strokeColor:string;
-    declare _displayObject: Text //| Laya.Input;
+    declare _displayObject: Text | Input;
 
     constructor() {
         super();

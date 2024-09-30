@@ -13,6 +13,7 @@ import { GTextField } from "./GTextField";
 import { GLabel } from "./GLabel";
 import { GButton } from "./GButton";
 import { UIPackage } from "./UIPackage";
+import Input from "./display/Input";
 
 export class GComboBox extends GComponent {
     public dropdown: GComponent;
@@ -460,7 +461,7 @@ export class GComboBox extends GComponent {
     }
 
     private __mousedown(evt:FederatedPointerEvent): void {
-        if (evt.target instanceof Laya.Input)
+        if (evt.target instanceof Input)
             return;
 
         this._down = true;

@@ -1,9 +1,5 @@
 import { Ticker } from "pixi.js";
 
-/**
- * @en The `Timer` class is responsible for time management. It is a singleton and should not be instantiated manually. Access it via `Laya.timer`
- * @zh Timer 是时钟管理类。它是一个单例，不要手动实例化此类，应该通过 Laya.timer 访问。
- */
 export class Timer {
     private static _pool: any[] = [];
     static _mid: number = 1;

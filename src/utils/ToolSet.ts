@@ -1,3 +1,4 @@
+import { Color, ColorMatrixFilter, Container, Filter } from "pixi.js";
 import { ColorMatrix } from "./ColorMatrix";
 
 export class ToolSet {
@@ -113,80 +114,41 @@ export class ToolSet {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 
-    public static setColorFilter(obj: Laya.Sprite, color?: string | number[] | boolean): void {
-        var filter: Laya.ColorFilter = (<any>obj).$_colorFilter_; //cached instance
-        var filters: any[] = obj.filters;
-
-        var toApplyColor: any;
-        var toApplyGray: boolean;
-        var tp: string = typeof (color);
-        if (tp == "boolean") //gray
-        {
-            toApplyColor = filter ? (<any>filter).$_color_ : null;
-            toApplyGray = <boolean>color;
-        }
-        else {
-            if (tp == "string") {
-                var arr: any[] = Laya.ColorUtils.create(color).arrColor;
-                if (arr[0] == 1 && arr[1] == 1 && arr[2] == 1)
-                    color = null;
-                else {
-                    color = [arr[0], 0, 0, 0, 0,
-                        0, arr[1], 0, 0, 0,
-                        0, 0, arr[2], 0, 0,
-                        0, 0, 0, 1, 0];
-                }
+    public static setColorFilter(obj: Container, color?: string | number[] | boolean): void {
+        if(obj.filters == null) obj.filters = [];
+        let filters = obj.filters as Filter[];
+        let colorFilter:ColorMatrixFilter;
+        for (let filter of filters) {
+            if (filter instanceof ColorMatrixFilter) {
+                colorFilter = filter;
+                break; 
             }
-            toApplyColor = color;
-            toApplyGray = filter ? (<any>filter).$_grayed_ : false;
         }
-
-        if ((!toApplyColor && toApplyColor != 0) && !toApplyGray) {
-            if (filters && filter) {
-                let i: number = filters.indexOf(filter);
-                if (i != -1) {
-                    filters.splice(i, 1);
-                    if (filters.length > 0)
-                        obj.filters = filters;
-                    else
-                        obj.filters = null;
-                }
-            }
+        if(colorFilter == null){
+            colorFilter = new ColorMatrixFilter();
+            filters.push(colorFilter);
+        }
+        
+        let colorType = typeof(color)
+        if(colorType == "boolean"){
+            //set gray
+            colorFilter.greyscale(0.3, true);
             return;
+        }else if(colorType == "string"){
+            //trans color string to color array
+            let colorArray = new Color(color as string).toArray();
+            colorFilter.matrix = [
+                colorArray[0], 0, 0, 0, 0,
+                0, colorArray[1], 0, 0, 0,
+                0, 0, colorArray[2], 0, 0,
+                0, 0, 0, 1, 0
+            ]
+        }else{
+            let co = color as number[];
+            colorFilter.brightness(co[0],false);
+            colorFilter.contrast(co[1],false);
+            colorFilter.saturate(co[2]);
+            colorFilter.hue(co[3],false);
         }
-
-        if (!filter) {
-            filter = new Laya.ColorFilter();
-            (<any>obj).$_colorFilter_ = filter;
-        }
-        if (!filters)
-            filters = [filter];
-        else {
-            let i: number = filters.indexOf(filter);
-            if (i == -1)
-                filters.push(filter);
-        }
-        obj.filters = filters;
-
-        (<any>filter).$_color_ = toApplyColor;
-        (<any>filter).$_grayed_ = toApplyGray;
-
-        filter.reset();
-
-        if (toApplyGray)
-            filter.gray();
-        else if (toApplyColor.length == 20)
-            filter.setByMatrix(toApplyColor);
-        else
-            filter.setByMatrix(getColorMatrix(toApplyColor[0], toApplyColor[1], toApplyColor[2], toApplyColor[3]));
-    }
-}
-
-let helper: ColorMatrix = new ColorMatrix();
-function getColorMatrix(p_brightness: number, p_contrast: number, p_saturation: number, p_hue: number, result?: number[]): Array<number> {
-    result = result || new Array<number>(ColorMatrix.length);
-    helper.reset();
-    helper.adjustColor(p_brightness, p_contrast, p_saturation, p_hue);
-    helper.matrix.forEach((e, i) => result[i] = e);
-    return result;
+   }
 }

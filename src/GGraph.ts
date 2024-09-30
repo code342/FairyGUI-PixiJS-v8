@@ -17,7 +17,6 @@ export class GGraph extends GObject {
     private _lineColor: Color;
     private _fillColor: Color;
     private _cornerRadius?: number[];
-   // private _hitArea?: Laya.HitArea;
     private _sides?: number;
     private _startAngle?: number;
     private _polygonPoints?: number[];
@@ -238,10 +237,6 @@ export class GGraph extends GObject {
         this._displayObject = this.graphics = new Graphics(); //在pixijs里Graphics就是独立的displayobject
         this._displayObject.$owner = this;
         this._displayObject.eventMode = 'none';
-
-      //  this._hitArea = new Laya.HitArea();
-      //  this._hitArea.hit = this._displayObject.graphics;
-      //  this._displayObject.hitArea = this._hitArea;
     }
 
     public getProp(index: number): any {

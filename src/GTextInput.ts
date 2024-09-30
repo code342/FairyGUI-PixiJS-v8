@@ -1,20 +1,21 @@
+import Input from "./display/Input";
 import { GTextField } from "./GTextField";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { UBBParser } from "./utils/UBBParser";
 
 export class GTextInput extends GTextField {
-    declare _displayObject: Laya.Input;
+    declare _displayObject: Input;
 
     constructor() {
         super();
     }
 
     protected createDisplayObject(): void {
-        this._displayObject = new Laya.Input();
+        this._displayObject = new Input();
         this._displayObject.$owner = this;
     }
 
-    public get nativeInput(): Laya.Input {
+    public get nativeInput(): Input {
         return this._displayObject;
     }
 
@@ -97,9 +98,9 @@ export class GTextInput extends GTextField {
         iv = buffer.readInt32();
         if (iv != 0) {
             if (iv == 4)
-                this.keyboardType = Laya.Input.TYPE_NUMBER;
+                this.keyboardType = Input.TYPE_NUMBER;
             else if (iv == 3)
-                this.keyboardType = Laya.Input.TYPE_URL;
+                this.keyboardType = Input.TYPE_URL;
         }
         if (buffer.readBool())
             this.password = true;
