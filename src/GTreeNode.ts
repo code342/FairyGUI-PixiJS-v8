@@ -246,10 +246,7 @@ export class GTreeNode {
     public _setTree(value: GTree): void {
         this._tree = value;
         if (this._tree && this._tree.treeNodeWillExpand && this._expanded) {
-            if (typeof (this._tree.treeNodeWillExpand) == "function")
                 this._tree.treeNodeWillExpand(this, true);
-            else
-                this._tree.treeNodeWillExpand.runWith([this, true]);
         }
 
         if (this._children) {

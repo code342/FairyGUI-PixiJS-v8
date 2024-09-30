@@ -91,7 +91,7 @@ export class UIPackage {
     /**
      * @param resKey resKey 或 [resKey1,resKey2,resKey3....]
      */
-    public static loadPackage(resKey: string | Array<string>, completeHandler: Laya.Handler | ((pkgs: UIPackage[]) => void), progressHandler?: Laya.Handler | ((progress: number) => void)): void {
+    public static loadPackage(resKey: string | Array<string>, completeHandler: (pkgs: UIPackage[]) => void, progressHandler?: (progress: number) => void): void {
         let loadKeyArr = [];
         let keys: Array<string> = [];
         let i: number;
@@ -118,7 +118,7 @@ export class UIPackage {
             }
         }
         if (loadKeyArr.length == 0 && completeHandler) {
-            typeof completeHandler === 'function' ? completeHandler(pkgArr) : completeHandler.runWith([pkgArr]);
+            completeHandler(pkgArr);
             return;
         }
 
@@ -147,7 +147,7 @@ export class UIPackage {
             if (urls.length > 0) {
                 AssetProxy.inst.load(urls, null, (progress: number) => {
                     if (progressHandler)
-                        typeof progressHandler === 'function' ? progressHandler(progress) : progressHandler.runWith(progress);
+                        progressHandler(progress);
                 }).then(() => {
                     for (i = 0; i < pkgArr.length; i++) {
                         pkg = pkgArr[i];
@@ -157,7 +157,7 @@ export class UIPackage {
                             UIPackage._instById[pkg._resKey] = pkg;
                         }
                     }
-                    typeof completeHandler === 'function' ? completeHandler(pkgArr) : completeHandler.runWith([pkgArr]);
+                     completeHandler(pkgArr);
                 });
             }
             else {
@@ -169,7 +169,7 @@ export class UIPackage {
                         UIPackage._instById[pkg._resKey] = pkg;
                     }
                 }
-                typeof completeHandler === 'function' ? completeHandler(pkgArr) : completeHandler.runWith([pkgArr]);
+                completeHandler(pkgArr);
             }
         });
     }
@@ -529,8 +529,8 @@ export class UIPackage {
                     pi.texture = null;
                 }
             }
-            else if (pi.type == PackageItemType.Sound) {
-                Laya.SoundManager.destroySound(pi.file);
+            else if (pi.type == PackageItemType.Sound) {//TODO:support destroy sound
+                
             }
             else if (pi.templet)
                 pi.templet.destroy();

@@ -12,8 +12,8 @@ import { UIPackage } from "./UIPackage";
 import { GButton } from "./GButton";
 
 export class GList extends GComponent {
-    public itemRenderer: Laya.Handler | ((index: number, item: GObject) => void);
-    public itemProvider: Laya.Handler | ((index: number) => string);
+    public itemRenderer: (index: number, item: GObject) => void;
+    public itemProvider: (index: number) => string;
 
     public scrollItemToViewOnClick: boolean;
     public foldInvisibleItems: boolean;
@@ -1075,10 +1075,7 @@ export class GList extends GComponent {
                     if (this.itemProvider == null) {
                         this.addItemFromPool();
                     } else {
-                        if (typeof this.itemProvider === 'function')
-                            this.addItemFromPool(this.itemProvider(i));
-                        else
-                            this.addItemFromPool(this.itemProvider.runWith(i));
+                        this.addItemFromPool(this.itemProvider(i));
                     }
                 }
             }
@@ -1088,10 +1085,7 @@ export class GList extends GComponent {
 
             if (this.itemRenderer != null) {
                 for (i = 0; i < value; i++) {
-                    if (typeof this.itemRenderer === 'function')
-                        this.itemRenderer(i, this.getChildAt(i));
-                    else
-                        this.itemRenderer.runWith([i, this.getChildAt(i)]);
+                    this.itemRenderer(i, this.getChildAt(i));
                 }
             }
         }
@@ -1423,7 +1417,7 @@ export class GList extends GComponent {
 
             if (ii.obj == null || forceUpdate) {
                 if (this.itemProvider != null) {
-                    url = typeof this.itemProvider === 'function' ? this.itemProvider(curIndex % this._numItems) : this.itemProvider.runWith(curIndex % this._numItems);
+                    url = this.itemProvider(curIndex % this._numItems);
                     if (url == null)
                         url = this._defaultItem;
                     url = UIPackage.normalizeURL(url);
@@ -1490,7 +1484,7 @@ export class GList extends GComponent {
                 if (this._autoResizeItem && (this._layout == ListLayoutType.SingleColumn || this._columnCount > 0))
                     ii.obj.setSize(partSize, ii.obj.height, true);
 
-                typeof this.itemRenderer === 'function' ? this.itemRenderer(curIndex % this._numItems, ii.obj) : this.itemRenderer.runWith([curIndex % this._numItems, ii.obj]);
+                this.itemRenderer(curIndex % this._numItems, ii.obj);
                 if (curIndex % this._curLineItemCount == 0) {
                     deltaSize += Math.ceil(ii.obj.height) - ii.height;
                     if (curIndex == newFirstIndex && oldFirstIndex > newFirstIndex) {
@@ -1577,7 +1571,7 @@ export class GList extends GComponent {
 
             if (ii.obj == null || forceUpdate) {
                 if (this.itemProvider != null) {
-                    url = typeof this.itemProvider === 'function' ? this.itemProvider(curIndex % this._numItems) : this.itemProvider.runWith(curIndex % this._numItems);
+                    url = this.itemProvider(curIndex % this._numItems);
                     if (url == null)
                         url = this._defaultItem;
                     url = UIPackage.normalizeURL(url);
@@ -1643,7 +1637,7 @@ export class GList extends GComponent {
                 if (this._autoResizeItem && (this._layout == ListLayoutType.SingleRow || this._lineCount > 0))
                     ii.obj.setSize(ii.obj.width, partSize, true);
 
-                typeof this.itemRenderer === 'function' ? this.itemRenderer(curIndex % this._numItems, ii.obj) : this.itemRenderer.runWith([curIndex % this._numItems, ii.obj]);
+                this.itemRenderer(curIndex % this._numItems, ii.obj);
                 if (curIndex % this._curLineItemCount == 0) {
                     deltaSize += Math.ceil(ii.obj.width) - ii.width;
                     if (curIndex == newFirstIndex && oldFirstIndex > newFirstIndex) {
@@ -1776,7 +1770,7 @@ export class GList extends GComponent {
 
                 if (ii.obj == null) {
                     if (this.itemProvider != null) {
-                        url = typeof this.itemProvider === 'function' ? this.itemProvider(i % this._numItems) : this.itemProvider.runWith(i % this._numItems);
+                        url = this.itemProvider(i % this._numItems);
                         if (url == null)
                             url = this._defaultItem;
                         url = UIPackage.normalizeURL(url);
@@ -1811,7 +1805,7 @@ export class GList extends GComponent {
                         ii.obj.setSize(ii.obj.width, partHeight, true);
                 }
 
-                typeof this.itemRenderer === 'function' ? this.itemRenderer(i % this._numItems, ii.obj) : this.itemRenderer.runWith([i % this._numItems, ii.obj]);
+                this.itemRenderer(i % this._numItems, ii.obj);
                 ii.width = Math.ceil(ii.obj.width);
                 ii.height = Math.ceil(ii.obj.height);
             }

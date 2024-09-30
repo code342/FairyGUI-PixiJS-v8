@@ -320,19 +320,24 @@ export class GRoot extends GComponent {
     private setFocus(value: GObject): void {
     }
 
+    //TODO:support volumeScale get
     public get volumeScale(): number {
-        return Laya.SoundManager.soundVolume;
+        console.log('dont support volumeScale!!!');
+        return 0;;
     }
 
+    //TODO:support volumeScale set
     public set volumeScale(value: number) {
-        Laya.SoundManager.soundVolume = value;
+        console.log('dont support volumeScale!!!');
+        
     }
 
+    //TODO:support sound play
     public playOneShotSound(url: string, volumeScale?: number): void {
         if (ToolSet.startsWith(url, "ui://"))
             return;
 
-        Laya.SoundManager.playSound(url);
+        console.log('dont support playOneShotSound!!!');
     }
 
     private adjustModalLayer(): void {

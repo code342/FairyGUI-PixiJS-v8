@@ -10,7 +10,7 @@ import { ByteBuffer } from "./utils/ByteBuffer";
 import { Timer } from "./utils/Timer";
 
 export class AsyncOperation {
-    public callback: Laya.Handler | ((obj: GObject) => void);
+    public callback: (obj: GObject) => void;
 
     private _itemList: Array<DisplayListItem>;
     private _objectPool: GObject[];
@@ -203,10 +203,7 @@ export class AsyncOperation {
         this._itemList.length = 0;
         this._objectPool.length = 0;
 
-        if (typeof this.callback === 'function')
-            this.callback(result);
-        else if (this.callback)
-            this.callback.runWith(result);
+        this.callback(result);
     }
 }
 

@@ -1,4 +1,4 @@
-import { Point } from "pixi.js";
+import { FederatedEvent, Point } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { GObject } from "./GObject";
 import { GLoader } from "./GLoader";
@@ -57,7 +57,7 @@ export class DragDropManager {
         }
     }
 
-    private __dragEnd(evt: Laya.Event): void {
+    private __dragEnd(evt: FederatedEvent): void {
         if (!this._agent.parent) //cancelled
             return;
 
