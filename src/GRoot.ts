@@ -1,4 +1,4 @@
-import { Application, Container, FederatedPointerEvent, Point } from "pixi.js";
+import { Application, Container, FederatedPointerEvent, Matrix, Point } from "pixi.js";
 import { GComponent } from "./GComponent";
 import { GObject} from "./GObject";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
@@ -375,7 +375,7 @@ export class GRoot extends GComponent {
         this.__winResize();
     }
 
-    public checkPopups(clickTarget: Laya.Sprite): void {
+    public checkPopups(clickTarget: Container): void {
         if (this._checkPopups)
             return;
 
@@ -383,7 +383,7 @@ export class GRoot extends GComponent {
         this._justClosedPopups.length = 0;
         if (this._popupStack.length > 0) {
             var mc: Container = clickTarget;
-            while (mc != this.displayObject.stage && mc) {
+            while (mc != this.stage && mc) {
                 let owner = mc.$owner;
                 if (owner) {
                     var pindex: number = this._popupStack.indexOf(owner);
@@ -427,7 +427,7 @@ export class GRoot extends GComponent {
     }
 
     private updateContentScaleLevel(): void {
-        var mat: Laya.Matrix = <Laya.Matrix>(this.stage)._canvasTransform;
+        var mat:Matrix = <Matrix>(this.stage)._canvasTransform;
         var ss: number = Math.max(mat.getScaleX(), mat.getScaleY());
         if (ss >= 3.5)
             GRoot.contentScaleLevel = 3; //x4

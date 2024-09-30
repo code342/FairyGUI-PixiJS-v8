@@ -1,3 +1,4 @@
+import { Container } from "pixi.js";
 import { AlignType, LoaderFillType, ObjectPropID, PackageItemType, VertAlignType } from "./FieldTypes";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
@@ -19,7 +20,7 @@ export class GLoader3D extends GObject {
     private _skinName: string;
     private _color: string;
     private _contentItem: PackageItem;
-    private _container: Laya.Sprite;
+    private _container: Container;
     private _content: Laya.Skeleton | Laya.SpineSkeleton;
     private _updatingLayout: boolean;
 
@@ -37,7 +38,7 @@ export class GLoader3D extends GObject {
     protected createDisplayObject(): void {
         super.createDisplayObject();
 
-        this._container = new Laya.Sprite();
+        this._container = new Container();
         this._displayObject.addChild(this._container);
     }
 
@@ -194,7 +195,7 @@ export class GLoader3D extends GObject {
         }
     }
 
-    public get content(): Laya.Sprite {
+    public get content(): Container {
         return this._content;
     }
 
@@ -296,7 +297,7 @@ export class GLoader3D extends GObject {
             this._updatingLayout = false;
 
             if (cw == this._width && ch == this._height) {
-                this._container.scale(1, 1);
+                this._container.scale.set(1, 1);
                 this._container.position.set(0, 0);
 
                 return;
@@ -336,7 +337,7 @@ export class GLoader3D extends GObject {
             }
         }
 
-        this._container.scale(sx, sy);
+        this._container.scale.set(sx, sy);
 
         var nx: number, ny: number;
         if (this._align == AlignType.Center)
