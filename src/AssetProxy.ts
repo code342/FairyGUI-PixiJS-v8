@@ -1,8 +1,8 @@
+import { Assets } from "pixi.js";
 import { PackageItem } from "./PackageItem";
 
 export class AssetProxy {
 
-    loader = Laya.loader;
 
     private static _inst: AssetProxy;
 
@@ -13,14 +13,20 @@ export class AssetProxy {
     }
 
     public getRes(url: string, type?: string): any {
-        return this.loader.getRes(url, type);
+        return Assets.get(url)
     }
 
     getItemRes(item: PackageItem) {
         return this.getRes(item.file);
     }
 
-    public load(url: string | Laya.ILoadURL | (string | Readonly<Laya.ILoadURL>)[], type?: string, onProgress?: Laya.ProgressCallback): Promise<any> {
-        return this.loader.load(url, type, onProgress);
+    public load(url: string | string[], type?: string, onProgress?: (progress: number) => void): Promise<any> {
+        //return this.loader.load(url, type, onProgress);
+        return Assets.load(url,onProgress);
+    }
+
+    //TODO：待测试是否释放texture
+    clearTextureRes(url:string){
+        Assets.unload(url);
     }
 }

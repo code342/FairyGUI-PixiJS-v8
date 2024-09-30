@@ -5,8 +5,8 @@ export class UIConfig {
   }
 
   //Default font name
-  public static get defaultFont() { return Laya.Config.defaultFont; }
-  public static set defaultFont(value: string) { Laya.Config.defaultFont = value; }
+  public static get defaultFont() { return "Arial" }
+  public static set defaultFont(value: string) { console.log("dont support defaultFont set")}
 
   //Resource using in Window.ShowModalWait for locking the window.
   public static windowModalWaiting: string;

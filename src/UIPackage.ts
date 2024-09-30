@@ -97,12 +97,12 @@ export class UIPackage {
         let i: number;
         if (Array.isArray(resKey)) {
             for (i = 0; i < resKey.length; i++) {
-                loadKeyArr.push({ url: resKey[i] + "." + UIConfig.packageFileExtension, type: Laya.Loader.BUFFER });
+                loadKeyArr.push({ url: resKey[i] + "." + UIConfig.packageFileExtension});
                 keys.push(resKey[i]);
             }
         }
         else {
-            loadKeyArr = [{ url: resKey + "." + UIConfig.packageFileExtension, type: Laya.Loader.BUFFER }];
+            loadKeyArr = [{ url: resKey + "." + UIConfig.packageFileExtension}];
             keys = [resKey];
         }
 
@@ -122,7 +122,7 @@ export class UIPackage {
             return;
         }
 
-        AssetProxy.inst.load(loadKeyArr, Laya.Loader.BUFFER).then((resArr: Array<Laya.TextResource>) => {
+        AssetProxy.inst.load(loadKeyArr).then((resArr: Array<ByteBuffer>) => {
             let pkg: UIPackage;
             let urls = [];
             for (i = 0; i < loadKeyArr.length; i++) {
@@ -131,15 +131,15 @@ export class UIPackage {
                     pkg = new UIPackage();
                     pkgArr.push(pkg);
                     pkg._resKey = keys[i];
-                    pkg.loadPackage(new ByteBuffer(asset.data));
+                    pkg.loadPackage(new ByteBuffer(asset));
                     let cnt: number = pkg._items.length;
                     for (let j: number = 0; j < cnt; j++) {
                         let pi: PackageItem = pkg._items[j];
                         if (pi.type == PackageItemType.Atlas) {
-                            urls.push({ url: pi.file, type: Laya.Loader.IMAGE });
+                            urls.push({ url: pi.file});
                         }
                         else if (pi.type == PackageItemType.Sound) {
-                            urls.push({ url: pi.file, type: Laya.Loader.SOUND });
+                            urls.push({ url: pi.file});
                         }
                     }
                 }
@@ -514,7 +514,7 @@ export class UIPackage {
             var pi: PackageItem = this._items[i];
             if (pi.type == PackageItemType.Atlas) {
                 if (pi.texture)
-                    Laya.loader.clearTextureRes(pi.texture.url);
+                    AssetProxy.inst.clearTextureRes(pi.texture.url)
             }
         }
     }
@@ -676,14 +676,14 @@ export class UIPackage {
             case PackageItemType.Spine:
             case PackageItemType.DragonBones:
                 item.loading = [onComplete];
-                let url: Laya.ILoadURL | string;
+                let url: string;
                 if (UIConfig.useLayaSkeleton) {
                     let pos = item.file.lastIndexOf('.');
                     url = item.file.substring(0, pos + 1).replace("_ske", "") + "sk";
                 }
                 else
-                    url = { url: item.file, type: Laya.Loader.SPINE };
-                Laya.loader.load(url).then(templet => {
+                    url = item.file;
+                AssetProxy.inst.load(url).then(templet => {
                     let arr = item.loading;
                     delete item.loading;
                     item.templet = templet;

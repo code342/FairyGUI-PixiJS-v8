@@ -297,12 +297,13 @@ export class GLoader extends GObject {
     }
 
     protected loadExternal(): void {
-        AssetProxy.inst.load(this._url, Laya.Loader.IMAGE).then((tex: Texture) => {
+        AssetProxy.inst.load(this._url).then((tex: Texture) => {
             this.__getResCompleted(tex);
         });
     }
 
     protected freeExternal(texture: Texture): void {
+
     }
 
     protected onExternalLoadSuccess(texture: Texture): void {
