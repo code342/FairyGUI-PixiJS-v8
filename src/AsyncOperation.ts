@@ -156,7 +156,7 @@ export class AsyncOperation {
         var di: DisplayListItem;
         var poolStart: number;
         var k: number;
-        var t: number = Laya.Browser.now();
+        var t: number = Date.now();
         var frameTime: number = UIConfig.frameTimeForAsyncUIConstruction;
         var totalItems: number = this._itemList.length;
 
@@ -194,7 +194,7 @@ export class AsyncOperation {
             }
 
             this._index++;
-            if ((this._index % 5 == 0) && Laya.Browser.now() - t >= frameTime)
+            if ((this._index % 5 == 0) && Date.now() - t >= frameTime)
                 return;
         }
 

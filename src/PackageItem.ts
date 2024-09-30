@@ -4,6 +4,8 @@ import { GRoot } from "./GRoot";
 import { UIPackage } from "./UIPackage";
 import { PixelHitTestData } from "./utils/hittest/PixelHitTest";
 import { Frame } from "./display/MovieClip";
+import SpineTemplet from "./extension/SpineTemplet";
+import Templet from "./extension/Templet";
 
 export class PackageItem {
     public owner: UIPackage;
@@ -44,7 +46,7 @@ export class PackageItem {
     public bitmapFont?: BitmapFont;
 
     //skeleton
-    public templet?: Laya.Templet | Laya.SpineTemplet;
+    public templet?: Templet | SpineTemplet;
     public skeletonAnchor?: Point;
 
     constructor() {

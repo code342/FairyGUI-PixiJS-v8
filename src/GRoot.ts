@@ -21,7 +21,7 @@ export class GRoot extends GComponent {
     public app:Application;
     public stage:Container;
     private static _inst: GRoot;
-
+    public ScrollFrameRate:number = 30;
     public static get inst(): GRoot {
         if (!GRoot._inst)
             new GRoot();

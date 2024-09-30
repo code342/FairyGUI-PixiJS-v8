@@ -1,4 +1,4 @@
-import { Container, FederatedWheelEvent, Point, Rectangle } from "pixi.js";
+import { Container, FederatedWheelEvent, isMobile, Point, Rectangle, Ticker } from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -1145,7 +1145,7 @@ export class ScrollPane {
 
 
         //更新速度
-        var frameRate: number = Laya.stage.frameRate == Laya.Stage.FRAME_SLOW ? 30 : 60;
+        var frameRate: number = GRoot.inst.ScrollFrameRate;
         var now: number = Timer.shared.currTimer / 1000;
         var deltaTime: number = Math.max(now - this._lastMoveTime, 1 / frameRate);
         var deltaPositionX: number = pt.x - this._lastTouchPos.x;
@@ -1284,7 +1284,7 @@ export class ScrollPane {
         else {
             //更新速度
             if (!this._inertiaDisabled) {
-                var frameRate: number = Laya.stage.frameRate == Laya.Stage.FRAME_SLOW ? 30 : 60;
+                var frameRate: number = GRoot.inst.ScrollFrameRate;
                 var elapsed: number = (Timer.shared.currTimer / 1000 - this._lastMoveTime) * frameRate - 1;
                 if (elapsed > 1) {
                     var factor: number = Math.pow(0.833, elapsed);
@@ -1578,11 +1578,11 @@ export class ScrollPane {
             //以屏幕像素为基准
             var v2: number = Math.abs(v) * this._velocityScale;
             //在移动设备上，需要对不同分辨率做一个适配，我们的速度判断以1136分辨率为基准
-            if (Laya.Browser.onMobile)
+            if (isMobile.any)
                 v2 *= 1136 / Math.max(GRoot.inst.stage.width, GRoot.inst.stage.height);
             //这里有一些阈值的处理，因为在低速内，不希望产生较大的滚动（甚至不滚动）
             var ratio: number = 0;
-            if (this._pageMode || !Laya.Browser.onMobile) {
+            if (this._pageMode || !isMobile.any) {
                 if (v2 > 500)
                     ratio = Math.pow((v2 - 500) / 500, 2);
             }

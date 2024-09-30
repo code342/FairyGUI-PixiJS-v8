@@ -1,10 +1,13 @@
-import { Container } from "pixi.js";
+import { Container, Point } from "pixi.js";
 import { AlignType, LoaderFillType, ObjectPropID, PackageItemType, VertAlignType } from "./FieldTypes";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
+import Skeleton from "./extension/Skeleton";
+import SpineSkeleton from "./extension/SpineSkeleton";
+import Templet from "./extension/Templet";
 
 export class GLoader3D extends GObject {
     private _url: string;
@@ -21,7 +24,7 @@ export class GLoader3D extends GObject {
     private _color: string;
     private _contentItem: PackageItem;
     private _container: Container;
-    private _content: Laya.Skeleton | Laya.SpineSkeleton;
+    private _content: Skeleton | SpineSkeleton;
     private _updatingLayout: boolean;
 
     public constructor() {
@@ -238,16 +241,16 @@ export class GLoader3D extends GObject {
         if (!templet)
             return;
 
-        if (templet instanceof Laya.Templet)
+        if (templet instanceof Templet)
             this.setSkeleton(templet.buildArmature(1), this._contentItem.skeletonAnchor);
         else {
-            let obj = new Laya.SpineSkeleton();
+            let obj = new SpineSkeleton();
             obj.templet = templet;
             this.setSkeleton(obj, this._contentItem.skeletonAnchor);
         }
     }
 
-    public setSkeleton(skeleton: Laya.Skeleton | Laya.SpineSkeleton, anchor?: Point): void {
+    public setSkeleton(skeleton: Skeleton | SpineSkeleton, anchor?: Point): void {
         this.url = null;
 
         this._content = skeleton;

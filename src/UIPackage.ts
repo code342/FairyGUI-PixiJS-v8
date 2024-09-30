@@ -1,4 +1,4 @@
-import { BitmapFont, Point, Rectangle, Texture } from "pixi.js";
+import { BitmapFont, BitmapFontManager, Point, Rectangle, Texture } from "pixi.js";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";
@@ -8,6 +8,7 @@ import { UIObjectFactory } from "./UIObjectFactory";
 import { AssetProxy } from "./AssetProxy";
 import { Frame } from "./display/MovieClip";
 import { PixelHitTestData } from "./utils/hittest/PixelHitTest";
+import { BMGlyph } from "./extension/BMGlyph";
 
 type PackageDependency = { id: string, name: string };
 
@@ -97,12 +98,12 @@ export class UIPackage {
         let i: number;
         if (Array.isArray(resKey)) {
             for (i = 0; i < resKey.length; i++) {
-                loadKeyArr.push({ url: resKey[i] + "." + UIConfig.packageFileExtension});
+                loadKeyArr.push(resKey[i] + "." + UIConfig.packageFileExtension);
                 keys.push(resKey[i]);
             }
         }
         else {
-            loadKeyArr = [{ url: resKey + "." + UIConfig.packageFileExtension}];
+            loadKeyArr = [resKey + "." + UIConfig.packageFileExtension];
             keys = [resKey];
         }
 
@@ -136,10 +137,10 @@ export class UIPackage {
                     for (let j: number = 0; j < cnt; j++) {
                         let pi: PackageItem = pkg._items[j];
                         if (pi.type == PackageItemType.Atlas) {
-                            urls.push({ url: pi.file});
+                            urls.push(pi.file);
                         }
                         else if (pi.type == PackageItemType.Sound) {
-                            urls.push({ url: pi.file});
+                            urls.push(pi.file);
                         }
                     }
                 }
@@ -514,7 +515,8 @@ export class UIPackage {
             var pi: PackageItem = this._items[i];
             if (pi.type == PackageItemType.Atlas) {
                 if (pi.texture)
-                    AssetProxy.inst.clearTextureRes(pi.texture.url)
+                    //TODO:test
+                    AssetProxy.inst.clearTextureRes(pi.file)
             }
         }
     }
@@ -740,24 +742,26 @@ export class UIPackage {
         }
     }
 
+
+    //TODO:待完善
     private loadFont(item: PackageItem): void {
         item = item.getBranch();
-        let font = new BitmapFont();
-        item.bitmapFont = font;
-        Laya.Text.registerBitmapFont("ui://" + this.id + item.id, font);
+        //let font = new BitmapFont(null);
+        //item.bitmapFont = font;
+        
 
         let buffer = item.rawData;
 
         buffer.seek(0, 0);
 
         let ttf = buffer.readBool();
-        font.tint = buffer.readBool();
-        font.autoScaleSize = buffer.readBool();
+        let tint = buffer.readBool();
+        let autoScaleSize = buffer.readBool();
         buffer.readBool(); //has channel
-        font.fontSize = Math.max(buffer.readInt32(), 1);
+        let fontSize = Math.max(buffer.readInt32(), 1);
         let xadvance = buffer.readInt32();
         let lineHeight = buffer.readInt32();
-        font.lineHeight = Math.max(lineHeight, font.fontSize);
+        //lineHeight = Math.max(lineHeight, font.fontSize);
 
         let mainTexture: Texture = null;
         let mainSprite = this._sprites[item.id];
@@ -766,14 +770,14 @@ export class UIPackage {
 
         buffer.seek(0, 1);
 
-        let dict = font.dict;
+        let dict:{[key: number]:BMGlyph} = {};//font.dict;
         var cnt: number = buffer.readInt32();
         for (let i = 0; i < cnt; i++) {
             let nextPos = buffer.readInt16();
             nextPos += buffer.pos;
 
             let ch = buffer.readUint16();
-            let bg: Laya.BMGlyph = {};
+            let bg: BMGlyph = new BMGlyph();
             dict[ch] = bg;
 
             let img: string = buffer.readS();

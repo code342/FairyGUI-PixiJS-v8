@@ -13,6 +13,7 @@ import { Controller } from "./Controller";
 import { GTextField } from "./GTextField";
 import { Window } from "./Window";
 import { GLabel } from "./GLabel";
+import { ToolSet } from "./utils/ToolSet";
 export class GButton extends GComponent {
     protected _titleObject: GObject;
     protected _iconObject: GObject;
@@ -273,7 +274,7 @@ export class GButton extends GComponent {
             var cnt: number = this.numChildren;
             if (val == GButton.DOWN || val == GButton.SELECTED_OVER || val == GButton.SELECTED_DISABLED) {
                 var r: number = this._downEffectValue * 255;
-                var color: string = Laya.Utils.toHexColor((r << 16) + (r << 8) + r);
+                var color: string = ToolSet.toHexColor((r << 16) + (r << 8) + r);
                 for (var i: number = 0; i < cnt; i++) {
                     var obj: GObject = this.getChildAt(i);
                     if (!(obj instanceof GTextField))
