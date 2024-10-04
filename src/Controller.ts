@@ -29,7 +29,7 @@ export class Controller extends EventEmitter {
     }
 
     public dispose(): void {
-        this.offAll();
+        this.removeAllListeners()
     }
 
     public get selectedIndex(): number {

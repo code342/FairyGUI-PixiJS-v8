@@ -2,6 +2,7 @@ import { Point } from "pixi.js";
 import { TweenValue } from "./TweenValue";
 import { GPath } from "./GPath";
 import { EaseType } from "./EaseType";
+import { evaluateEase } from "./EaseManager";
 
     export class GTweener {
         public _target: any;

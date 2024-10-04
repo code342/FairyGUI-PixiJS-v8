@@ -1,5 +1,4 @@
 import { Color, ColorMatrixFilter, Container, Filter } from "pixi.js";
-import { ColorMatrix } from "./ColorMatrix";
 
 export class ToolSet {
     public static startsWith(source: string, str: string, ignoreCase?: boolean): boolean {

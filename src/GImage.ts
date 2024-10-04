@@ -45,11 +45,11 @@ export class GImage extends GObject {
         }
     }
 
-  /*  public get fillMethod(): number {
+    public get fillMethod(): number {
         return this._image.fillMethod;
     }
 
-    public set fillMethod(value: number) {
+    /*public set fillMethod(value: number) {
         this._image.fillMethod = value;
     }
 
@@ -67,7 +67,7 @@ export class GImage extends GObject {
 
     public set fillClockwise(value: boolean) {
         this._image.fillClockwise = value;
-    }
+    }*/
 
     public get fillAmount(): number {
         return this._image.fillAmount;
@@ -75,7 +75,7 @@ export class GImage extends GObject {
 
     public set fillAmount(value: number) {
         this._image.fillAmount = value;
-    }*/
+    }
 
     protected createDisplayObject(): void {
         this._displayObject = this._image = new Image();

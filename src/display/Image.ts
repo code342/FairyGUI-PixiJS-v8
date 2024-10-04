@@ -53,6 +53,17 @@ export class Image extends Container {
         return this._fillMethod;
     }
 
+    public get fillAmount(): number {
+        return this._fillAmount;
+    }
+
+    public set fillAmount(value: number) {
+        if(this._fillAmount != value){
+            this._fillAmount = value;
+            this.fillMask();
+        }
+    }
+
     public get texture(): Texture {
         return this._source;
     }

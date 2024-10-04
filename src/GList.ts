@@ -230,7 +230,7 @@ export class GList extends GComponent {
     }
 
     public returnToPool(obj: GObject): void {
-        obj.displayObject.cacheAs = "none";
+        //obj.displayObject.cacheAs = "none";
         this._pool.returnObject(obj);
     }
 

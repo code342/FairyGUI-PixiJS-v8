@@ -181,7 +181,7 @@ export class GLoader extends GObject {
         return this._content.fillMethod;
     }
 
-    public set fillMethod(value: number) {
+   /* public set fillMethod(value: number) {
         this._content.fillMethod = value;
     }
 
@@ -200,6 +200,14 @@ export class GLoader extends GObject {
     public set fillClockwise(value: boolean) {
         this._content.fillClockwise = value;
     }
+
+    public get fillAmount(): number {
+        return this._content.fillAmount;
+    }
+
+    public set fillAmount(value: number) {
+        this._content.fillAmount = value;
+    }*/
 
     public get fillAmount(): number {
         return this._content.fillAmount;
@@ -538,11 +546,17 @@ export class GLoader extends GObject {
         if (buffer.readBool())
             this.color = buffer.readColorS();
 
-        this._content.fillMethod = buffer.readByte();
-        if (this._content.fillMethod != 0) {
-            this._content.fillOrigin = buffer.readByte();
-            this._content.fillClockwise = buffer.readBool();
-            this._content.fillAmount = buffer.readFloat32();
+        let fillMethod = buffer.readByte();
+        if (fillMethod != 0) {
+            let fillOrigin = buffer.readByte();
+            let fillClockwise = buffer.readBool();
+            let fillAmount = buffer.readFloat32();
+            this._content.maskOption = {
+                fillMethod : fillMethod,
+                fillClockwise: fillClockwise,
+                fillAmount: fillAmount,
+                fillOrigin: fillOrigin
+            }
         }
 
         if (buffer.version >= 7)

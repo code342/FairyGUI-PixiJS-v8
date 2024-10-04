@@ -1,5 +1,6 @@
 import { GObject } from "../GObject";
 import { Timer } from "../utils/Timer";
+import { GTweener } from "./GTweener";
 
     export class TweenManager {
         public static createTween(): GTweener {

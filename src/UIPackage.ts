@@ -9,6 +9,7 @@ import { AssetProxy } from "./AssetProxy";
 import { Frame } from "./display/MovieClip";
 import { PixelHitTestData } from "./utils/hittest/PixelHitTest";
 import { BMGlyph } from "./extension/BMGlyph";
+import { Cache } from "pixi.js";
 
 type PackageDependency = { id: string, name: string };
 
@@ -470,10 +471,10 @@ export class UIPackage {
             sprite.rect.height = buffer.readInt32();
             sprite.rotated = buffer.readBool();
             if (ver2 && buffer.readBool()) {
-                sprite.offset.x = buffer.readInt32();
+                sprite.offset.x = buffer.readInt32();       //沿x轴裁剪掉的长度
                 sprite.offset.y = buffer.readInt32();
-                sprite.originalSize.x = buffer.readInt32();
-                sprite.originalSize.y = buffer.readInt32();
+                sprite.originalSize.x = buffer.readInt32(); //裁剪前的宽
+                sprite.originalSize.y = buffer.readInt32(); //裁剪前的高
             }
             else {
                 sprite.originalSize.x = sprite.rect.width;
@@ -613,10 +614,13 @@ export class UIPackage {
                     if (sprite) {
                         var atlasTexture: Texture = <Texture>(this.getItemAsset(sprite.atlas));
                         if (atlasTexture) {
-                            item.texture = Texture.create(atlasTexture,
+                            let key = this._resKey+"_"+sprite.atlas+"_"+item.id;
+                            let orig = new Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
+                            item.texture = this.createSubTexture(key,atlasTexture,orig, sprite.rect,sprite.offset.x,sprite.offset.y,0);
+                            /*item.texture = Texture.create(atlasTexture,
                                 sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
                                 sprite.offset.x, sprite.offset.y,
-                                sprite.originalSize.x, sprite.originalSize.y);
+                                sprite.originalSize.x, sprite.originalSize.y);*/
                         } else {
                             item.texture = null;
                         }
@@ -732,9 +736,14 @@ export class UIPackage {
 
             if (spriteId != null && (sprite = this._sprites[spriteId]) != null) {
                 var atlasTexture: Texture = <Texture>(this.getItemAsset(sprite.atlas));
-                frame.texture = Texture.create(atlasTexture,
+
+                let key = this._resKey+"_"+sprite.atlas+"_"+spriteId;
+                let orig = new Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
+                frame.texture = this.createSubTexture(key,atlasTexture,orig, sprite.rect,fx,fy,0);
+
+                /*frame.texture = Texture.create(atlasTexture,
                     sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
-                    fx, fy, item.width, item.height);
+                    fx, fy, item.width, item.height);*/
             }
             item.frames[i] = frame;
 
@@ -791,8 +800,13 @@ export class UIPackage {
             buffer.readByte(); //channel
 
             if (ttf) {
-                bg.texture = Texture.create(mainTexture,
-                    bx + mainSprite.rect.x, by + mainSprite.rect.y, bg.width, bg.height);
+
+                let key = this._resKey+"_"+mainSprite.atlas+"_"+item.id+"_"+i;
+                let rect:Rectangle = new Rectangle(bx + mainSprite.rect.x, by + mainSprite.rect.y, bg.width, bg.height);
+                bg.texture = this.createSubTexture(key, mainTexture, rect);
+
+                //bg.texture = Texture.create(mainTexture,
+                //    bx + mainSprite.rect.x, by + mainSprite.rect.y, bg.width, bg.height);
             }
             else {
                 let charImg = this._itemsById[img];
@@ -816,12 +830,33 @@ export class UIPackage {
             buffer.pos = nextPos;
         }
     }
+
+    createSubTexture(cacheId:string, mainTexture:Texture, frame:Rectangle, orig?:Rectangle, offsetX:number=0, offsetY:number=0, rotate:number=0):Texture{
+        let subTexture = Cache.get(cacheId);
+        if(subTexture){
+            if(subTexture instanceof Texture && subTexture.width==frame.width && subTexture.height==frame.height){
+                return subTexture;
+            }else{
+                throw new Error("cacheId Error " + cacheId);
+                return null;
+            }
+        }else{
+            let width = frame ? frame.width : orig.width;
+            let height = frame ? frame.height : orig.height;
+            let trim:Rectangle;
+            if(offsetX != 0 || offsetY != 0){
+               trim = new Rectangle(offsetX, offsetY, width, height);
+            }
+            subTexture = new Texture({source:mainTexture.source, frame:frame, orig:orig, trim:trim, rotate:rotate});
+        }
+        return subTexture;
+    }
 }
 
 interface AtlasSprite {
     atlas: PackageItem;
     rect: Rectangle;
-    offset: Point;
-    originalSize: Point;
+    offset: Point;        //裁剪的偏移
+    originalSize: Point;  //原始大小，即裁剪前的尺寸
     rotated?: boolean;
 }

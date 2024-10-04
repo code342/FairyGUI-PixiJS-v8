@@ -259,7 +259,7 @@ export class GSlider extends GComponent {
         if (!this.changeOnClick)
             return;
 
-        var pt: Point = this._gripObject.globalToLocal(evt.stageX, evt.stageY, s_vec2);
+        var pt: Point = this._gripObject.globalToLocal(evt.globalX, evt.globalY, s_vec2);
         var percent: number = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
         var delta: number;
         if (this._barObjectH)
