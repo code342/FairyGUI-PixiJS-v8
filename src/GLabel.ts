@@ -1,8 +1,8 @@
 import Input from "./display/Input";
 import { ObjectPropID } from "./FieldTypes";
+import { GObject } from "./GObject";
 import { GButton } from "./GButton";
 import { GComponent } from "./GComponent";
-import { GObject } from "./GObject";
 import { GTextField } from "./GTextField";
 import { GTextInput } from "./GTextInput";
 import { ByteBuffer } from "./utils/ByteBuffer";

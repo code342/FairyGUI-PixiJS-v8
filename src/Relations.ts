@@ -1,5 +1,5 @@
-import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { GComponent } from "./GComponent";
 import { RelationItem } from "./RelationItem";
 import { ByteBuffer } from "./utils/ByteBuffer";
 

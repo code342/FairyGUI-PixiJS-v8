@@ -1,9 +1,9 @@
 import { Texture } from "pixi.js";
+import { GObject } from "./GObject";
 import { AssetProxy } from "./AssetProxy";
 import { MovieClip } from "./display/MovieClip";
 import { LoaderFillType, ObjectPropID, PackageItemType } from "./FieldTypes";
 import { GComponent } from "./GComponent";
-import { GObject } from "./GObject";
 import { GObjectPool } from "./GObjectPool";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";

@@ -1,4 +1,4 @@
-import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter, FederatedPointerEvent, View} from "pixi.js";
+import { Container, DEG_TO_RAD, Point, Rectangle ,BLEND_MODES, Filter, FederatedPointerEvent} from "pixi.js";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -29,6 +29,7 @@ import { GComponent } from "./GComponent";
 import { GearDisplay } from "./gears/GearDisplay";
 import { GTreeNode } from "./GTreeNode";
 import { GearDisplay2 } from "./gears/GearDisplay2";
+import { createGear } from "./gears/GearFactory";
 
 
 export class GObject {
@@ -608,7 +609,7 @@ export class GObject {
     public getGear(index: number): GearBase {
         var gear: GearBase = this._gears[index];
         if (!gear)
-            this._gears[index] = gear = GearBase.create(this, index);
+            this._gears[index] = gear = createGear(this, index);
         return gear;
     }
 

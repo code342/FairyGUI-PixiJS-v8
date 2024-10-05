@@ -1,4 +1,5 @@
 import { Container, FederatedWheelEvent, isMobile, Point, Rectangle, Ticker } from "pixi.js";
+import { GObject } from "./GObject";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
@@ -9,7 +10,6 @@ import { ScrollBarDisplayType, ScrollType } from "./FieldTypes";
 import { UIConfig } from "./UIConfig";
 import { UIPackage } from "./UIPackage";
 import { GComponent } from "./GComponent";
-import { GObject } from "./GObject";
 import { Controller } from "./Controller";
 import { GScrollBar } from "./GScrollBar";
 import { GTween } from "./tween/GTween";

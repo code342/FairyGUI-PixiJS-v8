@@ -1,6 +1,6 @@
 import { ObjectPropID } from "./FieldTypes";
-import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { GComponent } from "./GComponent";
 import { GRoot } from "./GRoot";
 import { PackageItem } from "./PackageItem";
 import { EaseType } from "./tween/EaseType";

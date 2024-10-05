@@ -1,6 +1,6 @@
 import { FederatedPointerEvent, Point } from "pixi.js";
-import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
+import { GComponent } from "./GComponent";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { UIConfig } from "./UIConfig";
 import { UIPackage } from "./UIPackage";

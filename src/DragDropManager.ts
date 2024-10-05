@@ -1,6 +1,6 @@
 import { FederatedEvent, Point } from "pixi.js";
-import { GRoot } from "./GRoot";
 import { GObject } from "./GObject";
+import { GRoot } from "./GRoot";
 import { GLoader } from "./GLoader";
 import { DisplayEvent } from "./utils/LayaCompliant";
 

@@ -3,15 +3,8 @@ import { GObject } from "../GObject";
 import { EaseType } from "../tween/EaseType";
 import { GTweener } from "../tween/GTweener";
 import { ByteBuffer } from "../utils/ByteBuffer";
-import { GearAnimation } from "./GearAnimation";
-import { GearColor } from "./GearColor";
 import { GearDisplay } from "./GearDisplay";
 import { GearDisplay2 } from "./GearDisplay2";
-import { GearFontSize } from "./GearFontSize";
-import { GearIcon } from "./GearIcon";
-import { GearLook } from "./GearLook";
-import { GearSize } from "./GearSize";
-import { GearText } from "./GearText";
 import { GearXY } from "./GearXY";
 
 export class GearBase {
@@ -20,15 +13,6 @@ export class GearBase {
     protected _owner: GObject;
     protected _controller: Controller;
     protected _tweenConfig?: GearTweenConfig;
-
-    public static create(owner: GObject, index: number): GearBase {
-        if (!Classes)
-            Classes = [
-                GearDisplay, GearXY, GearSize, GearLook, GearColor,
-                GearAnimation, GearText, GearIcon, GearDisplay2, GearFontSize
-            ];
-        return new (Classes[index])(owner);
-    }
 
     constructor(owner: GObject) {
         this._owner = owner;
@@ -133,7 +117,7 @@ export class GearBase {
     }
 }
 
-var Classes: Array<typeof GearBase>;
+
 
 export class GearTweenConfig {
     public tween: boolean;

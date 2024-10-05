@@ -1,4 +1,4 @@
-import { Container, Graphics, IHitArea, Point, Rectangle } from "pixi.js";
+import { Container, IHitArea, Point, Rectangle } from "pixi.js";
 import { GObject } from "./GObject";
 import { DisplayEvent } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";

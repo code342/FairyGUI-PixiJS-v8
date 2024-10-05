@@ -1,4 +1,4 @@
-import { BitmapFont, BitmapFontManager, Point, Rectangle, Texture } from "pixi.js";
+import { Point, Rectangle, Texture } from "pixi.js";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";

@@ -1,9 +1,10 @@
 import { Controller } from "./Controller";
 import { PopupDirection, RelationType } from "./FieldTypes";
+import { GObject } from "./GObject";
+
 import { GButton } from "./GButton";
 import { GComponent } from "./GComponent";
 import { GList } from "./GList";
-import { GObject } from "./GObject";
 import { GRoot } from "./GRoot";
 import { UIConfig } from "./UIConfig";
 import { UIPackage } from "./UIPackage";

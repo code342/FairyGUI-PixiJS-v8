@@ -1,11 +1,11 @@
 import { FederatedPointerEvent } from "pixi.js";
+import { GObject } from "./GObject";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { Timer } from "./utils/Timer";
 import { GComponent } from "./GComponent";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { UIConfig } from "./UIConfig";
-import { GObject } from "./GObject";
 import { GList } from "./GList";
 import { ObjectPropID, PopupDirection, RelationType } from "./FieldTypes";
 import { Controller } from "./Controller";

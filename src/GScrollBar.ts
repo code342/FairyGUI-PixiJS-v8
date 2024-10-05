@@ -1,8 +1,8 @@
 import { FederatedPointerEvent, Point } from "pixi.js";
+import { GObject } from "./GObject";
 import { GRoot } from "./GRoot";
 import { MouseEvents } from "./utils/LayaCompliant";
 import { ByteBuffer } from "./utils/ByteBuffer";
-import { GObject } from "./GObject";
 import { GComponent } from "./GComponent";
 import { ScrollPane } from "./ScrollPane";
 

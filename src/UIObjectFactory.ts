@@ -1,4 +1,5 @@
 import { ObjectType, PackageItemType } from "./FieldTypes";
+import { GObject } from "./GObject";
 import { GButton } from "./GButton";
 import { GComboBox } from "./GComboBox";
 import { GComponent } from "./GComponent";
@@ -10,7 +11,6 @@ import { GList } from "./GList";
 import { GLoader } from "./GLoader";
 import { GLoader3D } from "./GLoader3D";
 import { GMovieClip } from "./GMovieClip";
-import { GObject } from "./GObject";
 import { GProgressBar } from "./GProgressBar";
 import { GRichTextField } from "./GRichTextField";
 import { GScrollBar } from "./GScrollBar";

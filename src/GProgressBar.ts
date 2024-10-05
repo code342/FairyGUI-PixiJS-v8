@@ -1,8 +1,9 @@
 import { FillMethod, ObjectPropID, ProgressTitleType } from "./FieldTypes";
+import { GObject } from "./GObject";
+
 import { GComponent } from "./GComponent";
 import { GImage } from "./GImage";
 import { GLoader } from "./GLoader";
-import { GObject } from "./GObject";
 import { EaseType } from "./tween/EaseType";
 import { GTween } from "./tween/GTween";
 import { GTweener } from "./tween/GTweener";

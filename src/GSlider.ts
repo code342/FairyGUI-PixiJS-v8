@@ -1,8 +1,8 @@
 import { FederatedPointerEvent, Point } from "pixi.js";
+import { GObject } from "./GObject";
 import { GRoot } from "./GRoot";
 import { DisplayEvent, MouseEvents } from "./utils/LayaCompliant";
 import { GComponent } from "./GComponent";
-import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { ToolSet } from "./utils/ToolSet";
 import { ProgressTitleType } from "./FieldTypes";
