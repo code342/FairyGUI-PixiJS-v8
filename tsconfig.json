@@ -22,7 +22,8 @@
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowUmdGlobalAccess": true
   },
   "include": ["src", "lib", "node_modules/pixi.js/dist/pixi.js.d.ts"]
 }

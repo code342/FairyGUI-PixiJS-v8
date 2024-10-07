@@ -1,4 +1,5 @@
-import { Application } from "pixi.js";
+//import { Application } from "pixi.js";
+
 
 
 export default class main {
@@ -7,7 +8,7 @@ export default class main {
   }
 
   async int() {
-    const app = new Application();
+    const app = new PIXI.Application();
     await app.init({ resizeTo: window });
     fgui.GRoot.inst.launch(app);
   }
