@@ -1,24 +1,24 @@
-import { IHitArea, Point } from "pixi.js";
-import { GGraph } from "../../GGraph";
+namespace fgui {
 
-export class ChildHitArea implements IHitArea {
+    export class ChildHitArea implements IHitArea {
 
-    private _child: GGraph;
-    private _reversed: boolean;
+        private _child: GGraph;
+        private _reversed: boolean;
 
-    constructor(child: GGraph, reversed?: boolean) {
+        constructor(child: GGraph, reversed?: boolean) {
 
-        this._child = child;
-        this._reversed = reversed;
-    }
+            this._child = child;
+            this._reversed = reversed;
+        }
 
-    public contains(x: number, y: number): boolean {
-        var tPos: Point = Point.shared.set(x,y);
-        //TODO:x,y是鼠标的世界坐标，可能需要做一下坐标转换; unHit
-        //如果不需要转换坐标那可以不需要这个类，直接就parent.hitArea = child.graphics
-        //也可能不需要额外设置hitArea，引擎内部自己会检测
-        //tPos = this._child.toParentPoint(tPos);
+        public contains(x: number, y: number): boolean {
+            var tPos: Point = Point.shared.set(x, y);
+            //TODO:x,y是鼠标的世界坐标，可能需要做一下坐标转换; unHit
+            //如果不需要转换坐标那可以不需要这个类，直接就parent.hitArea = child.graphics
+            //也可能不需要额外设置hitArea，引擎内部自己会检测
+            //tPos = this._child.toParentPoint(tPos);
 
-        return this._child.graphics.containsPoint(tPos);
+            return this._child.graphics.containsPoint(tPos);
+        }
     }
 }

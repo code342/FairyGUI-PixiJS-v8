@@ -1,6 +1,4 @@
-import { GObject } from "../GObject";
-import { Timer } from "../utils/Timer";
-import { GTweener } from "./GTweener";
+namespace fgui {
 
     export class TweenManager {
         public static createTween(): GTweener {
@@ -123,3 +121,4 @@ import { GTweener } from "./GTweener";
     var _tweenerPool: GTweener[] = [];
     var _totalActiveTweens: number = 0;
     var _inited: boolean = false;
+}

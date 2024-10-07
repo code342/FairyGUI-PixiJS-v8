@@ -1,28 +1,29 @@
-import {ExtensionType, LoaderParserPriority, checkExtension, LoaderParser} from "pixi.js";
+namespace fgui {
 
-export const loadBytes = {
-    extension:{
-        type: ExtensionType.LoadParser,
-        priority: LoaderParserPriority.High,
-        name:"loadBytes",
-    },
+    export const loadBytes = {
+        extension: {
+            type: ExtensionType.LoadParser,
+            priority: LoaderParserPriority.High,
+            name: "loadBytes",
+        },
 
-    name: "loadBytes",
+        name: "loadBytes",
 
-    test(url:string):boolean{
-        return checkExtension(url, '.fui');
-    },
+        test(url: string): boolean {
+            return checkExtension(url, '.fui');
+        },
 
-    async load(url:string):Promise<ArrayBuffer>{
-        const response = await fetch(url);
-        return await response.arrayBuffer();
-    },
+        async load(url: string): Promise<ArrayBuffer> {
+            const response = await fetch(url);
+            return await response.arrayBuffer();
+        },
 
-    unload(buff:ArrayBuffer|ArrayBuffer[]):void{
-        if(Array.isArray(buff)){
+        unload(buff: ArrayBuffer | ArrayBuffer[]): void {
+            if (Array.isArray(buff)) {
 
-        }else{
+            } else {
 
+            }
         }
-    }
-} satisfies LoaderParser<ArrayBuffer>;
+    } satisfies LoaderParser<ArrayBuffer>;
+}

@@ -1,7 +1,8 @@
-import { EventEmitter } from "pixi.js";
+namespace fgui {
 
-export default class Templet extends EventEmitter{
-    destroy(){
-        
+    export class SpineTemplet extends EventEmitter {
+        destroy() {
+
+        }
     }
 }

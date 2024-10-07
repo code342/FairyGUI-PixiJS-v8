@@ -1,5 +1,4 @@
-import { GTweener } from "./GTweener";
-import { TweenManager } from "./TweenManager";
+namespace fgui {
 
     export class GTween {
         public static catchCallbackExceptions: boolean = true;
@@ -46,3 +45,4 @@ import { TweenManager } from "./TweenManager";
             return TweenManager.getTween(target, propType);
         }
     }
+}

@@ -1,8 +1,4 @@
-import { Point } from "pixi.js";
-import { TweenValue } from "./TweenValue";
-import { GPath } from "./GPath";
-import { EaseType } from "./EaseType";
-import { evaluateEase } from "./EaseManager";
+namespace fgui {
 
     export class GTweener {
         public _target: any;
@@ -511,3 +507,4 @@ import { evaluateEase } from "./EaseManager";
     }
 
     var s_vec2: Point = new Point();
+}

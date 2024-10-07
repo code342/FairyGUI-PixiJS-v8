@@ -4,3 +4,4 @@ declare module "pixi.js"{
         $owner?:import('./GObject').GObject;
     };
 }
+

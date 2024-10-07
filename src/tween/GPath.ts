@@ -1,6 +1,4 @@
-import { Point } from "pixi.js";
-import { ToolSet } from "../utils/ToolSet";
-import { CurveType, GPathPoint } from "./GPathPoint";
+namespace fgui {
 
     export class GPath {
         private _segments: Array<Segment>;
@@ -29,7 +27,7 @@ import { CurveType, GPathPoint } from "./GPathPoint";
                 if (pt4)
                     points.push(pt4);
             }
-            
+
             this._segments.length = 0;
             this._points.length = 0;
             this._fullLength = 0;
@@ -299,3 +297,4 @@ import { CurveType, GPathPoint } from "./GPathPoint";
         ptStart?: number;
         ptCount?: number;
     }
+}

@@ -1,9 +1,5 @@
-import { Controller } from "../Controller";
-import { Transition } from "../Transition";
-import { ByteBuffer } from "../utils/ByteBuffer";
-import { ControllerAction } from "./ControllerAction";
-
-export class PlayTransitionAction extends ControllerAction {
+namespace fgui {
+  export class PlayTransitionAction extends ControllerAction {
     public transitionName: string;
     public playTimes: number;
     public delay: number;
@@ -12,33 +8,35 @@ export class PlayTransitionAction extends ControllerAction {
     private _currentTransition?: Transition;
 
     constructor() {
-        super();
+      super();
     }
 
     protected enter(controller: Controller): void {
-        var trans: Transition = controller.parent.getTransition(this.transitionName);
-        if (trans) {
-            if (this._currentTransition && this._currentTransition.playing)
-                trans.changePlayTimes(this.playTimes);
-            else
-                trans.play(null, this.playTimes, this.delay);
-            this._currentTransition = trans;
-        }
+      var trans: Transition = controller.parent.getTransition(
+        this.transitionName
+      );
+      if (trans) {
+        if (this._currentTransition && this._currentTransition.playing)
+          trans.changePlayTimes(this.playTimes);
+        else trans.play(null, this.playTimes, this.delay);
+        this._currentTransition = trans;
+      }
     }
 
     protected leave(controller: Controller): void {
-        if (this.stopOnExit && this._currentTransition) {
-            this._currentTransition.stop();
-            this._currentTransition = null;
-        }
+      if (this.stopOnExit && this._currentTransition) {
+        this._currentTransition.stop();
+        this._currentTransition = null;
+      }
     }
 
     public setup(buffer: ByteBuffer): void {
-        super.setup(buffer);
+      super.setup(buffer);
 
-        this.transitionName = buffer.readS();
-        this.playTimes = buffer.readInt32();
-        this.delay = buffer.readFloat32();
-        this.stopOnExit = buffer.readBool();
+      this.transitionName = buffer.readS();
+      this.playTimes = buffer.readInt32();
+      this.delay = buffer.readFloat32();
+      this.stopOnExit = buffer.readBool();
     }
+  }
 }

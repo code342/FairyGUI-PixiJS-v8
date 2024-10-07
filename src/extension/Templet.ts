@@ -1,12 +1,12 @@
-import { EventEmitter } from "pixi.js";
-import Skeleton from "./Skeleton";
+namespace fgui {
 
-export default class Templet extends EventEmitter{
-    buildArmature(idx:number):Skeleton{
-        return null;
-    }
+    export class Templet extends EventEmitter {
+        buildArmature(idx: number): Skeleton {
+            return null;
+        }
 
-    destroy(){
-        
+        destroy() {
+
+        }
     }
 }

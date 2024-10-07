@@ -1,3 +1,4 @@
+namespace fgui {
     export enum CurveType {
         CRSpline,
         Bezier,
@@ -82,3 +83,4 @@
             return ret;
         }
     }
+}

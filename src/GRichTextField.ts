@@ -1,13 +1,14 @@
-import { GTextField } from "./GTextField";
+namespace fgui {
 
-export class GRichTextField extends GTextField {
+    export class GRichTextField extends GTextField {
 
-    constructor() {
-        super();
+        constructor() {
+            super();
 
-        //this._displayObject.html = true;
-        this._displayObject.eventMode = "static";
+            //this._displayObject.html = true;
+            this._displayObject.eventMode = "static";
+        }
     }
+
+
 }
-
-

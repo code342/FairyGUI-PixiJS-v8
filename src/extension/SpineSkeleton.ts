@@ -1,20 +1,20 @@
-import { Container } from "pixi.js";
-import SpineTemplet from "./SpineTemplet";
+namespace fgui {
 
-export default class SpineSkeleton extends Container{
-    public templet:SpineTemplet;
-    public play(nameOrIndex: any, loop: boolean, force: boolean = true, start: number = 0, end: number = 0, freshSkin: boolean = true, playAudio: boolean = true): void {
-    }
+    export class SpineSkeleton extends Container {
+        public templet: SpineTemplet;
+        public play(nameOrIndex: any, loop: boolean, force: boolean = true, start: number = 0, end: number = 0, freshSkin: boolean = true, playAudio: boolean = true): void {
+        }
 
-    stop(){
+        stop() {
 
-    }
+        }
 
-    showSkinByName(name:string){
+        showSkinByName(name: string) {
 
-    }
+        }
 
-    showSkinByIndex(idx:number){
-        
+        showSkinByIndex(idx: number) {
+
+        }
     }
 }
