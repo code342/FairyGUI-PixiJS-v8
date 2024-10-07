@@ -435,7 +435,7 @@ namespace fgui {
             if (!child.displayObject)
                 return;
 
-            if (child.internalVisible && child.displayObject != this._displayObject.mask) {
+            if (child.internalVisible && child.displayObject != this._displayObject.mask as any) {
                 if (!child.displayObject.parent) {
                     var index: number = 0
                     if (this._childrenRenderOrder == ChildrenRenderOrder.Ascent) {
