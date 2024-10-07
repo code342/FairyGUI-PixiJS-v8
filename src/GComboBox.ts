@@ -416,11 +416,11 @@ namespace fgui {
                 this.setState(GButton.UP);
         }
 
-        private __clickItem(itemObject: GObject, evt: FederatedPointerEvent): void {
+        private __clickItem(itemObject: GObject, evt: PIXI.FederatedPointerEvent): void {
             Timer.shared.callLater(this, this.__clickItem2, [this._list.getChildIndex(itemObject), evt])
         }
 
-        private __clickItem2(index: number, evt: FederatedPointerEvent): void {
+        private __clickItem2(index: number, evt: PIXI.FederatedPointerEvent): void {
             if (this.dropdown.parent instanceof GRoot)
                 this.dropdown.parent.hidePopup();
 
@@ -445,7 +445,7 @@ namespace fgui {
             this.setState(GButton.UP);
         }
 
-        private __mousedown(evt: FederatedPointerEvent): void {
+        private __mousedown(evt: PIXI.FederatedPointerEvent): void {
             if (evt.target instanceof Input)
                 return;
 

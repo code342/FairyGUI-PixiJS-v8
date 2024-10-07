@@ -1,6 +1,6 @@
 namespace fgui {
 
-    export class SpineTemplet extends EventEmitter {
+    export class SpineTemplet extends PIXI.EventEmitter {
         destroy() {
 
         }

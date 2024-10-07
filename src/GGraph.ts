@@ -11,22 +11,22 @@ namespace fgui {
     export class GGraph extends GObject {
         private _type: number;
         private _lineSize: number;
-        private _lineColor: Color;
-        private _fillColor: Color;
+        private _lineColor: PIXI.Color;
+        private _fillColor: PIXI.Color;
         private _cornerRadius?: number[];
         private _sides?: number;
         private _startAngle?: number;
         private _polygonPoints?: number[];
         private _distances?: number[];
 
-        public graphics: Graphics;
+        public graphics: PIXI.Graphics;
         constructor() {
             super();
 
             this._type = GGGraphType.Empty;
             this._lineSize = 1;
-            this._lineColor = new Color("#000000");
-            this._fillColor = new Color("#FFFFFF");
+            this._lineColor = new PIXI.Color("#000000");
+            this._fillColor = new PIXI.Color("#FFFFFF");
         }
 
         get type(): GGGraphType { return this._type; }
@@ -111,7 +111,7 @@ namespace fgui {
 
         private updateGraph(): void {
             this._displayObject.eventMode = this.touchable ? "static" : "none";
-            var gr: Graphics = this.graphics;
+            var gr: PIXI.Graphics = this.graphics;
             gr.clear();
 
             var w: number = this.width;
@@ -145,7 +145,7 @@ namespace fgui {
             }
             else if (this._type == 4) {
                 let radius: number = Math.min(this._width, this._height) / 2;
-                let angle = DEG_TO_RAD * this._startAngle;
+                let angle = PIXI.DEG_TO_RAD * this._startAngle;
                 let dist = this._distances[0];
                 let isRegular = true;
                 for (let i: number = 1; i < this._sides; i++) {
@@ -222,7 +222,7 @@ namespace fgui {
             this._parent.addChildAt(target, index);
         }
 
-        public setNativeObject(obj: Container): void {
+        public setNativeObject(obj: PIXI.Container): void {
             this._type = 0;
             this._displayObject.eventMode = this.touchable ? "static" : "none";
             this.graphics.clear();
@@ -231,7 +231,7 @@ namespace fgui {
         }
 
         protected createDisplayObject(): void {
-            this._displayObject = this.graphics = new Graphics(); //在pixijs里Graphics就是独立的displayobject
+            this._displayObject = this.graphics = new PIXI.Graphics(); //在pixijs里Graphics就是独立的displayobject
             this._displayObject.$owner = this;
             this._displayObject.eventMode = 'none';
         }

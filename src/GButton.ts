@@ -460,7 +460,7 @@ namespace fgui {
             this.setState(this._selected ? GButton.DOWN : GButton.UP);
         }
 
-        private __mousedown(evt: FederatedPointerEvent): void {
+        private __mousedown(evt: PIXI.FederatedPointerEvent): void {
             this._down = true;
             GRoot.inst.checkPopups(evt.target);
 
@@ -500,7 +500,7 @@ namespace fgui {
             }
         }
 
-        private __click(evt: FederatedPointerEvent): void {
+        private __click(evt: PIXI.FederatedPointerEvent): void {
             if (this._sound) {
                 var pi: PackageItem = UIPackage.getItemByURL(this._sound);
                 if (pi)

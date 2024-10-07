@@ -30,7 +30,7 @@ namespace fgui {
         private _firstIndex: number = 0; //the top left index
         private _curLineItemCount: number = 0; //item count in one line
         private _curLineItemCount2: number; //只用在页面模式，表示垂直方向的项目数
-        private _itemSize?: Point;
+        private _itemSize?: PIXI.Point;
         private _virtualListChanged: number = 0; //1-content changed, 2-size changed
         private _virtualItems?: Array<ItemInfo>;
         private _eventLocked?: boolean;
@@ -50,7 +50,7 @@ namespace fgui {
             this._align = "left";
             this._verticalAlign = "top";
 
-            this._container = new Container();
+            this._container = new PIXI.Container();
             this._displayObject.addChild(this._container);
         }
 
@@ -154,11 +154,11 @@ namespace fgui {
             }
         }
 
-        public get virtualItemSize(): Point {
+        public get virtualItemSize(): PIXI.Point {
             return this._itemSize;
         }
 
-        public set virtualItemSize(value: Point) {
+        public set virtualItemSize(value: PIXI.Point) {
             if (this._virtual) {
                 if (this._itemSize == null)
                     this._itemSize = new Point();
@@ -627,7 +627,7 @@ namespace fgui {
             }
         }
 
-        private __clickItem(evt: FederatedPointerEvent): void {
+        private __clickItem(evt: PIXI.FederatedPointerEvent): void {
             if (this._scrollPane && this._scrollPane.isDragged)
                 return;
 
@@ -640,11 +640,11 @@ namespace fgui {
             this.dispatchItemEvent(item, evt);
         }
 
-        protected dispatchItemEvent(item: GObject, evt: FederatedPointerEvent): void {
+        protected dispatchItemEvent(item: GObject, evt: PIXI.FederatedPointerEvent): void {
             this.emit(DisplayEvent.ClickItem, [item, evt]);
         }
 
-        private setSelectionOnEvent(item: GObject, evt: FederatedPointerEvent): void {
+        private setSelectionOnEvent(item: GObject, evt: PIXI.FederatedPointerEvent): void {
             if (!(item instanceof GButton) || this._selectionMode == ListSelectionMode.None)
                 return;
 
@@ -805,10 +805,10 @@ namespace fgui {
                 || dir == 0 && delta > size / 2;
         }
 
-        public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: Point): Point {
+        public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: PIXI.Point): PIXI.Point {
             if (this._virtual) {
                 if (!result)
-                    result = new Point();
+                    result = new PIXI.Point();
 
                 var saved: number;
                 var index: number;
@@ -868,23 +868,23 @@ namespace fgui {
                 if (this._loop)
                     index = Math.floor(this._firstIndex / this._numItems) * this._numItems + index;
 
-                var rect: Rectangle;
+                var rect: PIXI.Rectangle;
                 var ii: ItemInfo = this._virtualItems[index];
                 var pos: number = 0;
                 var i: number;
                 if (this._layout == ListLayoutType.SingleColumn || this._layout == ListLayoutType.FlowHorizontal) {
                     for (i = this._curLineItemCount - 1; i < index; i += this._curLineItemCount)
                         pos += this._virtualItems[i].height + this._lineGap;
-                    rect = new Rectangle(0, pos, this._itemSize.x, ii.height);
+                    rect = new PIXI.Rectangle(0, pos, this._itemSize.x, ii.height);
                 }
                 else if (this._layout == ListLayoutType.SingleRow || this._layout == ListLayoutType.FlowVertical) {
                     for (i = this._curLineItemCount - 1; i < index; i += this._curLineItemCount)
                         pos += this._virtualItems[i].width + this._columnGap;
-                    rect = new Rectangle(pos, 0, ii.width, this._itemSize.y);
+                    rect = new PIXI.Rectangle(pos, 0, ii.width, this._itemSize.y);
                 }
                 else {
                     var page: number = index / (this._curLineItemCount * this._curLineItemCount2);
-                    rect = new Rectangle(page * this.viewWidth + (index % this._curLineItemCount) * (ii.width + this._columnGap),
+                    rect = new PIXI.Rectangle(page * this.viewWidth + (index % this._curLineItemCount) * (ii.width + this._columnGap),
                         (index / this._curLineItemCount) % this._curLineItemCount2 * (ii.height + this._lineGap),
                         ii.width, ii.height);
                 }
@@ -980,7 +980,7 @@ namespace fgui {
                 this.removeChildrenToPool();
 
                 if (this._itemSize == null) {
-                    this._itemSize = new Point();
+                    this._itemSize = new PIXI.Point();
                     var obj: GObject = this.getFromPool(null);
                     if (obj == null) {
                         throw new Error("Virtual List must have a default list item resource.");
@@ -1199,7 +1199,7 @@ namespace fgui {
             this.handleScroll(true);
         }
 
-        private __scrolled(evt: FederatedPointerEvent): void {
+        private __scrolled(evt: PIXI.FederatedPointerEvent): void {
             this.handleScroll(false);
         }
 

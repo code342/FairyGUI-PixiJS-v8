@@ -1,7 +1,7 @@
 namespace fgui {
     export interface Frame {
         addDelay: number;
-        texture?: Texture;
+        texture?: PIXI.Texture;
     }
 
     export class MovieClip extends Image {

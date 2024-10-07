@@ -11,12 +11,12 @@ namespace fgui {
         private _scrollPerc: number;
         private _fixedGripSize: boolean;
 
-        private _dragOffset: Point;
+        private _dragOffset: PIXI.Point;
         private _gripDragging: boolean;
 
         constructor() {
             super();
-            this._dragOffset = new Point();
+            this._dragOffset = new PIXI.Point();
             this._scrollPerc = 0;
         }
 
@@ -89,7 +89,7 @@ namespace fgui {
             this.on(MouseEvents.Down, this.__barMouseDown, this);
         }
 
-        private __gripMouseDown(evt: FederatedPointerEvent): void {
+        private __gripMouseDown(evt: PIXI.FederatedPointerEvent): void {
             evt.stopPropagation();
 
             this._gripDragging = true;
@@ -98,7 +98,7 @@ namespace fgui {
             GRoot.inst.stage.on(MouseEvents.Move, this.__gripMouseMove, this);
             GRoot.inst.stage.on(MouseEvents.Up, this.__gripMouseUp, this);
 
-            let mousePoint: Point = GRoot.inst.mousePosition;
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
             this.globalToLocal(mousePoint.x, mousePoint.y, this._dragOffset);
             this._dragOffset.x -= this._grip.x;
             this._dragOffset.y -= this._grip.y;
@@ -108,8 +108,8 @@ namespace fgui {
             if (!this.onStage)
                 return;
 
-            let mousePoint: Point = GRoot.inst.mousePosition;
-            var pt: Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
+            var pt: PIXI.Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
             if (this._vertical) {
                 var curY: number = pt.y - this._dragOffset.y;
                 this._target.setPercY((curY - this._bar.y) / (this._bar.height - this._grip.height), false);
@@ -120,7 +120,7 @@ namespace fgui {
             }
         }
 
-        private __gripMouseUp(evt: FederatedPointerEvent): void {
+        private __gripMouseUp(evt: PIXI.FederatedPointerEvent): void {
             if (!this.onStage)
                 return;
 
@@ -131,7 +131,7 @@ namespace fgui {
             this._target.updateScrollBarVisible();
         }
 
-        private __arrowButton1Click(evt: FederatedPointerEvent): void {
+        private __arrowButton1Click(evt: PIXI.FederatedPointerEvent): void {
             evt.stopPropagation();
 
             if (this._vertical)
@@ -140,7 +140,7 @@ namespace fgui {
                 this._target.scrollLeft();
         }
 
-        private __arrowButton2Click(evt: FederatedPointerEvent): void {
+        private __arrowButton2Click(evt: PIXI.FederatedPointerEvent): void {
             evt.stopPropagation();
 
             if (this._vertical)
@@ -149,9 +149,9 @@ namespace fgui {
                 this._target.scrollRight();
         }
 
-        private __barMouseDown(evt: FederatedPointerEvent): void {
-            let mousePoint: Point = GRoot.inst.mousePosition;
-            var pt: Point = this._grip.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+        private __barMouseDown(evt: PIXI.FederatedPointerEvent): void {
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
+            var pt: PIXI.Point = this._grip.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
             if (this._vertical) {
                 if (pt.y < 0)
                     this._target.scrollUp(4);
@@ -167,5 +167,5 @@ namespace fgui {
         }
     }
 
-    var s_vec2: Point = new Point();
+    var s_vec2: PIXI.Point = new PIXI.Point();
 }

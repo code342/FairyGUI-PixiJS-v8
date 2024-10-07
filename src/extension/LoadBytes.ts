@@ -2,15 +2,15 @@ namespace fgui {
 
     export const loadBytes = {
         extension: {
-            type: ExtensionType.LoadParser,
-            priority: LoaderParserPriority.High,
+            type: PIXI.ExtensionType.LoadParser,
+            priority: PIXI.LoaderParserPriority.High,
             name: "loadBytes",
         },
 
         name: "loadBytes",
 
         test(url: string): boolean {
-            return checkExtension(url, '.fui');
+            return PIXI.checkExtension(url, '.fui');
         },
 
         async load(url: string): Promise<ArrayBuffer> {
@@ -25,5 +25,5 @@ namespace fgui {
 
             }
         }
-    } satisfies LoaderParser<ArrayBuffer>;
+    } satisfies PIXI.LoaderParser<ArrayBuffer>;
 }

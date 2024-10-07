@@ -4,7 +4,7 @@ namespace fgui {
         private _sortingChildCount: number = 0;
         private _opaque: boolean;
         private _applyingController?: Controller;
-        private _mask?: Container;
+        private _mask?: PIXI.Container;
 
         protected _margin: Margin;
         protected _trackBounds: boolean;
@@ -16,9 +16,9 @@ namespace fgui {
         public _children: GObject[];
         public _controllers: Controller[];
         public _transitions: Transition[];
-        public _container: Container;
+        public _container: PIXI.Container;
         public _scrollPane?: ScrollPane;
-        public _alignOffset: Point;
+        public _alignOffset: PIXI.Point;
         private _scrollRect: ScrollRectComp;
         constructor() {
             super();
@@ -26,7 +26,7 @@ namespace fgui {
             this._controllers = [];
             this._transitions = [];
             this._margin = new Margin();
-            this._alignOffset = new Point();
+            this._alignOffset = new PIXI.Point();
             this._opaque = false;
             this._childrenRenderOrder = 0;
             this._apexIndex = 0;
@@ -68,7 +68,7 @@ namespace fgui {
             super.dispose();
         }
 
-        public get displayListContainer(): Container {
+        public get displayListContainer(): PIXI.Container {
             return this._container;
         }
 
@@ -618,10 +618,10 @@ namespace fgui {
                 this._opaque = value;
                 if (this._opaque) {
                     if (!this._displayObject.hitArea)
-                        this._displayObject.hitArea = new Rectangle();
+                        this._displayObject.hitArea = new PIXI.Rectangle();
 
-                    if (this._displayObject.hitArea instanceof Rectangle) {
-                        let rect: Rectangle = <Rectangle>this._displayObject.hitArea;
+                    if (this._displayObject.hitArea instanceof PIXI.Rectangle) {
+                        let rect: PIXI.Rectangle = <PIXI.Rectangle>this._displayObject.hitArea;
                         rect.x = 0;
                         rect.y = 0;
                         rect.width = this._width;
@@ -631,7 +631,7 @@ namespace fgui {
                     this._displayObject.eventMode = "static";
                 }
                 else {//透明的话直接穿透，不检测鼠标事件
-                    if (this._displayObject.hitArea instanceof Rectangle)
+                    if (this._displayObject.hitArea instanceof PIXI.Rectangle)
                         this._displayObject.hitArea = null;
 
                     this._displayObject.eventMode = "passive";
@@ -675,11 +675,11 @@ namespace fgui {
             }
         }
 
-        public get mask(): Container {
+        public get mask(): PIXI.Container {
             return this._mask;
         }
 
-        public set mask(value: Container) {
+        public set mask(value: PIXI.Container) {
             this.setMask(value, false);
         }
 
@@ -689,9 +689,9 @@ namespace fgui {
          * @param reversed 
          * TODO:反向遮罩，遮罩点击测试区域hitArea
          */
-        public setMask(value: Container, reversed: boolean): void {
+        public setMask(value: PIXI.Container, reversed: boolean): void {
             this._mask = value;
-            this._displayObject.mask = this._mask;
+            this._displayObject.mask = this._mask as any;
         }
 
         public get baseUserData(): string {
@@ -708,7 +708,7 @@ namespace fgui {
                 if (this.sourceHeight != 0)
                     hitTest.scaleY = this._height / this.sourceHeight;
             }
-            else if (this._displayObject.hitArea instanceof Rectangle) {
+            else if (this._displayObject.hitArea instanceof PIXI.Rectangle) {
                 let rect = this._displayObject.hitArea;
                 rect.x = rect.y = 0;
                 rect.width = this._width;
@@ -722,9 +722,9 @@ namespace fgui {
         }
 
         protected updateMask(): void {
-            var rect: Rectangle = this._scrollRect.rect;
+            var rect: PIXI.Rectangle = this._scrollRect.rect;
             if (!rect)
-                rect = new Rectangle();
+                rect = new PIXI.Rectangle();
 
             rect.x = this._margin.left;
             rect.y = this._margin.top;
@@ -737,7 +737,7 @@ namespace fgui {
 
         protected setupScroll(buffer: ByteBuffer): void {
             if (this._displayObject == this._container) {
-                this._container = new Container();
+                this._container = new PIXI.Container();
                 this._displayObject.addChild(this._container);
             }
             this._scrollPane = new ScrollPane(this);
@@ -747,7 +747,7 @@ namespace fgui {
         protected setupOverflow(overflow: number): void {
             if (overflow == OverflowType.Hidden) {
                 if (this._displayObject == this._container) {
-                    this._container = new Container();
+                    this._container = new PIXI.Container();
                     this._displayObject.addChild(this._container);
                 }
                 this.createScrollRect();
@@ -755,7 +755,7 @@ namespace fgui {
             }
             else if (this._margin.left != 0 || this._margin.top != 0) {
                 if (this._displayObject == this._container) {
-                    this._container = new Container();
+                    this._container = new PIXI.Container();
                     this._displayObject.addChild(this._container);
                 }
                 this._container.position.set(this._margin.left, this._margin.top);
@@ -897,7 +897,7 @@ namespace fgui {
                 this.height = value + this._margin.top + this._margin.bottom;
         }
 
-        public getSnappingPosition(xValue: number, yValue: number, result?: Point): Point {
+        public getSnappingPosition(xValue: number, yValue: number, result?: PIXI.Point): PIXI.Point {
             return this.getSnappingPositionWithDir(xValue, yValue, 0, 0, result);
         }
 
@@ -906,7 +906,7 @@ namespace fgui {
          */
         public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: Point): Point {
             if (!result)
-                result = new Point();
+                result = new PIXI.Point();
 
             var cnt: number = this._children.length;
             if (cnt == 0) {
@@ -1160,7 +1160,7 @@ namespace fgui {
             var hitTestId: string = buffer.readS();
             i1 = buffer.readInt32();
             i2 = buffer.readInt32();
-            var hitArea: IHitArea;
+            var hitArea: PIXI.IHitArea;
 
             if (hitTestId) {
                 pi = contentItem.owner.getItemById(hitTestId);

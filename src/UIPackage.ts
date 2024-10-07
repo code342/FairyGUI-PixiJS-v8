@@ -409,7 +409,7 @@ namespace fgui {
                     case PackageItemType.DragonBones:
                         {
                             pi.file = shortPath + pi.file;
-                            pi.skeletonAnchor = new Point();
+                            pi.skeletonAnchor = new PIXI.Point();
                             pi.skeletonAnchor.x = buffer.readFloat32();
                             pi.skeletonAnchor.y = buffer.readFloat32();
                             break;
@@ -452,7 +452,7 @@ namespace fgui {
                 var itemId: string = buffer.readS();
                 pi = this._itemsById[buffer.readS()];
 
-                let sprite: AtlasSprite = { atlas: pi, rect: new Rectangle(), offset: new Point(), originalSize: new Point() };
+                let sprite: AtlasSprite = { atlas: pi, rect: new PIXI.Rectangle(), offset: new PIXI.Point(), originalSize: new PIXI.Point() };
                 sprite.atlas = pi;
                 sprite.rect.x = buffer.readInt32();
                 sprite.rect.y = buffer.readInt32();
@@ -601,10 +601,10 @@ namespace fgui {
                         item.decoded = true;
                         var sprite: AtlasSprite = this._sprites[item.id];
                         if (sprite) {
-                            var atlasTexture: Texture = <Texture>(this.getItemAsset(sprite.atlas));
+                            var atlasTexture: PIXI.Texture = <PIXI.Texture>(this.getItemAsset(sprite.atlas));
                             if (atlasTexture) {
                                 let key = this._resKey + "_" + sprite.atlas + "_" + item.id;
-                                let orig = new Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
+                                let orig = new PIXI.Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
                                 item.texture = this.createSubTexture(key, atlasTexture, orig, sprite.rect, sprite.offset.x, sprite.offset.y, 0);
                                 /*item.texture = Texture.create(atlasTexture,
                                     sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
@@ -724,10 +724,10 @@ namespace fgui {
                 spriteId = buffer.readS();
 
                 if (spriteId != null && (sprite = this._sprites[spriteId]) != null) {
-                    var atlasTexture: Texture = <Texture>(this.getItemAsset(sprite.atlas));
+                    var atlasTexture: PIXI.Texture = <PIXI.Texture>(this.getItemAsset(sprite.atlas));
 
                     let key = this._resKey + "_" + sprite.atlas + "_" + spriteId;
-                    let orig = new Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
+                    let orig = new PIXI.Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
                     frame.texture = this.createSubTexture(key, atlasTexture, orig, sprite.rect, fx, fy, 0);
 
                     /*frame.texture = Texture.create(atlasTexture,
@@ -761,10 +761,10 @@ namespace fgui {
             let lineHeight = buffer.readInt32();
             //lineHeight = Math.max(lineHeight, font.fontSize);
 
-            let mainTexture: Texture = null;
+            let mainTexture: PIXI.Texture = null;
             let mainSprite = this._sprites[item.id];
             if (mainSprite)
-                mainTexture = <Texture>(this.getItemAsset(mainSprite.atlas));
+                mainTexture = <PIXI.Texture>(this.getItemAsset(mainSprite.atlas));
 
             buffer.seek(0, 1);
 
@@ -791,7 +791,7 @@ namespace fgui {
                 if (ttf) {
 
                     let key = this._resKey + "_" + mainSprite.atlas + "_" + item.id + "_" + i;
-                    let rect: Rectangle = new Rectangle(bx + mainSprite.rect.x, by + mainSprite.rect.y, bg.width, bg.height);
+                    let rect: PIXI.Rectangle = new PIXI.Rectangle(bx + mainSprite.rect.x, by + mainSprite.rect.y, bg.width, bg.height);
                     bg.texture = this.createSubTexture(key, mainTexture, rect);
 
                     //bg.texture = Texture.create(mainTexture,
@@ -820,10 +820,10 @@ namespace fgui {
             }
         }
 
-        createSubTexture(cacheId: string, mainTexture: Texture, frame: Rectangle, orig?: Rectangle, offsetX: number = 0, offsetY: number = 0, rotate: number = 0): Texture {
-            let subTexture = Cache.get(cacheId);
+        createSubTexture(cacheId: string, mainTexture: PIXI.Texture, frame: PIXI.Rectangle, orig?: PIXI.Rectangle, offsetX: number = 0, offsetY: number = 0, rotate: number = 0): PIXI.Texture {
+            let subTexture = PIXI.Cache.get(cacheId);
             if (subTexture) {
-                if (subTexture instanceof Texture && subTexture.width == frame.width && subTexture.height == frame.height) {
+                if (subTexture instanceof PIXI.Texture && subTexture.width == frame.width && subTexture.height == frame.height) {
                     return subTexture;
                 } else {
                     throw new Error("cacheId Error " + cacheId);
@@ -832,11 +832,11 @@ namespace fgui {
             } else {
                 let width = frame ? frame.width : orig.width;
                 let height = frame ? frame.height : orig.height;
-                let trim: Rectangle;
+                let trim: PIXI.Rectangle;
                 if (offsetX != 0 || offsetY != 0) {
-                    trim = new Rectangle(offsetX, offsetY, width, height);
+                    trim = new PIXI.Rectangle(offsetX, offsetY, width, height);
                 }
-                subTexture = new Texture({ source: mainTexture.source, frame: frame, orig: orig, trim: trim, rotate: rotate });
+                subTexture = new PIXI.Texture({ source: mainTexture.source, frame: frame, orig: orig, trim: trim, rotate: rotate });
             }
             return subTexture;
         }
@@ -844,9 +844,9 @@ namespace fgui {
 
     interface AtlasSprite {
         atlas: PackageItem;
-        rect: Rectangle;
-        offset: Point;        //裁剪的偏移
-        originalSize: Point;  //原始大小，即裁剪前的尺寸
+        rect: PIXI.Rectangle;
+        offset: PIXI.Point;        //裁剪的偏移
+        originalSize: PIXI.Point;  //原始大小，即裁剪前的尺寸
         rotated?: boolean;
     }
 }

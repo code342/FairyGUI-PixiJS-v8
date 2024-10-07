@@ -14,7 +14,7 @@ namespace fgui {
         private _skinName: string;
         private _color: string;
         private _contentItem: PackageItem;
-        private _container: Container;
+        private _container: PIXI.Container;
         private _content: Skeleton | SpineSkeleton;
         private _updatingLayout: boolean;
 
@@ -32,7 +32,7 @@ namespace fgui {
         protected createDisplayObject(): void {
             super.createDisplayObject();
 
-            this._container = new Container();
+            this._container = new PIXI.Container();
             this._displayObject.addChild(this._container);
         }
 
@@ -189,7 +189,7 @@ namespace fgui {
             }
         }
 
-        public get content(): Container {
+        public get content(): PIXI.Container {
             return this._content;
         }
 
@@ -241,7 +241,7 @@ namespace fgui {
             }
         }
 
-        public setSkeleton(skeleton: Skeleton | SpineSkeleton, anchor?: Point): void {
+        public setSkeleton(skeleton: Skeleton | SpineSkeleton, anchor?: PIXI.Point): void {
             this.url = null;
 
             this._content = skeleton;

@@ -19,11 +19,11 @@ namespace fgui {
         public branches?: Array<string>;
 
         //image
-        public scale9Grid?: Rectangle;
+        public scale9Grid?: PIXI.Rectangle;
         public scaleByTile?: boolean;
         public tileGridIndice?: number;
         public smoothing?: boolean;
-        public texture?: Texture;
+        public texture?: PIXI.Texture;
         public pixelHitTestData?: PixelHitTestData;
 
         //movieclip
@@ -36,11 +36,11 @@ namespace fgui {
         public extensionType?: any;
 
         //font 
-        public bitmapFont?: BitmapFont;
+        public bitmapFont?: PIXI.BitmapFont;
 
         //skeleton
         public templet?: Templet | SpineTemplet;
-        public skeletonAnchor?: Point;
+        public skeletonAnchor?: PIXI.Point;
 
         constructor() {
         }

@@ -113,18 +113,18 @@ namespace fgui {
             return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
         }
 
-        public static setColorFilter(obj: Container, color?: string | number[] | boolean): void {
+        public static setColorFilter(obj: PIXI.Container, color?: string | number[] | boolean): void {
             if (obj.filters == null) obj.filters = [];
-            let filters = obj.filters as Filter[];
-            let colorFilter: ColorMatrixFilter;
+            let filters = obj.filters as unknown as PIXI.Filter[];
+            let colorFilter: PIXI.ColorMatrixFilter;
             for (let filter of filters) {
-                if (filter instanceof ColorMatrixFilter) {
+                if (filter instanceof PIXI.ColorMatrixFilter) {
                     colorFilter = filter;
                     break;
                 }
             }
             if (colorFilter == null) {
-                colorFilter = new ColorMatrixFilter();
+                colorFilter = new PIXI.ColorMatrixFilter();
                 filters.push(colorFilter);
             }
 
@@ -135,7 +135,7 @@ namespace fgui {
                 return;
             } else if (colorType == "string") {
                 //trans color string to color array
-                let colorArray = new Color(color as string).toArray();
+                let colorArray = new PIXI.Color(color as string).toArray();
                 colorFilter.matrix = [
                     colorArray[0], 0, 0, 0, 0,
                     0, colorArray[1], 0, 0, 0,

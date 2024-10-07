@@ -297,7 +297,7 @@ namespace fgui {
             }
         }
 
-        private __cellMouseDown(evt: FederatedPointerEvent): void {
+        private __cellMouseDown(evt: PIXI.FederatedPointerEvent): void {
             var node: GTreeNode = GObject.cast(evt.currentTarget)._treeNode;
             this._expandedStatusInEvt = node.expanded;
         }
@@ -307,7 +307,7 @@ namespace fgui {
             node.expanded = cc.selectedIndex == 1;
         }
 
-        protected dispatchItemEvent(item: GObject, evt: FederatedPointerEvent): void {
+        protected dispatchItemEvent(item: GObject, evt: PIXI.FederatedPointerEvent): void {
             if (this._clickToExpand != 0) {
                 var node: GTreeNode = item._treeNode;
                 if (node && node.isFolder && this._expandedStatusInEvt == node.expanded) {

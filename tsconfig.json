@@ -6,7 +6,7 @@
     "moduleDetection": "auto",
     "noEmit": true,
 
-    "target": "es2020",
+    "target": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker"],
     "module": "ESNext",
     "allowJs": false,
@@ -22,7 +22,7 @@
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
-  "include": ["src","lib","node_modules/pixi.js/dist/pixi.js.d.ts"]
+  "include": ["src", "lib", "node_modules/pixi.js/dist/pixi.js.d.ts"]
 }

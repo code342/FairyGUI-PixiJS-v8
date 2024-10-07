@@ -12,7 +12,7 @@ namespace fgui {
         }
 
         public getRes(url: string, type?: string): any {
-            return Assets.get(url)
+            return PIXI.Assets.get(url)
         }
 
         getItemRes(item: PackageItem) {
@@ -21,12 +21,12 @@ namespace fgui {
 
         public load(url: string | string[], type?: string, onProgress?: (progress: number) => void): Promise<any> {
             //return this.loader.load(url, type, onProgress);
-            return Assets.load(url, onProgress);
+            return PIXI.Assets.load(url, onProgress);
         }
 
         //TODO：待测试是否释放texture
         clearTextureRes(url: string) {
-            Assets.unload(url);
+            PIXI.Assets.unload(url);
         }
     }
 }

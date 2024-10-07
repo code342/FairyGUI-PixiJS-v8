@@ -10,7 +10,7 @@ namespace fgui {
         private _ubbEnabled: boolean;
         private _strokeWidth: number;
         private _strokeColor: string;
-        declare _displayObject: Text | Input;
+        declare _displayObject: PIXI.Text | Input;
 
         constructor() {
             super();
@@ -20,7 +20,7 @@ namespace fgui {
         }
 
         protected createDisplayObject(): void {
-            this._displayObject = new Text();
+            this._displayObject = new PIXI.Text();
             this._displayObject.$owner = this;
             this._displayObject.style.padding = labelPadding[0];
             this._displayObject.eventMode = "none";
@@ -29,7 +29,7 @@ namespace fgui {
             //(<Text>this._displayObject)._onPostLayout = () => this.updateSize();
         }
 
-        public get displayObject(): Text {
+        public get displayObject(): PIXI.Text {
             return this._displayObject;
         }
 
@@ -80,7 +80,7 @@ namespace fgui {
             return this._displayObject.style.align;
         }
 
-        public set align(value: TextStyleAlign) {
+        public set align(value: PIXI.TextStyleAlign) {
             this._displayObject.style.align = value;
         }
 

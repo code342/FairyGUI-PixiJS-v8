@@ -16,7 +16,7 @@ namespace fgui {
         private _barMaxWidthDelta: number = 0;
         private _barMaxHeightDelta: number = 0;
         private _gripObject: GObject;
-        private _clickPos: Point;
+        private _clickPos: PIXI.Point;
         private _clickPercent: number = 0;
         private _barStartX: number = 0;
         private _barStartY: number = 0;
@@ -32,7 +32,7 @@ namespace fgui {
             this._titleType = ProgressTitleType.Percent;
             this._value = 50;
             this._max = 100;
-            this._clickPos = new Point();
+            this._clickPos = new PIXI.Point();
         }
 
         public get titleType(): number {
@@ -91,7 +91,7 @@ namespace fgui {
             this.updateWithPercent((this._value - this._min) / (this._max - this._min));
         }
 
-        private updateWithPercent(percent: number, evt?: FederatedPointerEvent): void {
+        private updateWithPercent(percent: number, evt?: PIXI.FederatedPointerEvent): void {
             percent = ToolSet.clamp01(percent);
             if (evt) {
                 var newValue: number = ToolSet.clamp(this._min + (this._max - this._min) * percent, this._min, this._max);
@@ -210,11 +210,11 @@ namespace fgui {
             this.update();
         }
 
-        private __gripMouseDown(evt: FederatedPointerEvent): void {
+        private __gripMouseDown(evt: PIXI.FederatedPointerEvent): void {
             this.canDrag = true;
             evt.stopPropagation();
 
-            let mousePoint: Point = GRoot.inst.mousePosition;
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
             this._clickPos = this.globalToLocal(mousePoint.x, mousePoint.y);
             this._clickPercent = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
 
@@ -222,13 +222,13 @@ namespace fgui {
             GRoot.inst.stage.on(MouseEvents.Up, this.__gripMouseUp, this);
         }
 
-        private __gripMouseMove(evt: FederatedPointerEvent): void {
+        private __gripMouseMove(evt: PIXI.FederatedPointerEvent): void {
             if (!this.canDrag) {
                 return;
             }
 
-            let mousePoint: Point = GRoot.inst.mousePosition;
-            var pt: Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
+            var pt: PIXI.Point = this.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
             var deltaX: number = pt.x - this._clickPos.x;
             var deltaY: number = pt.y - this._clickPos.y;
             if (this._reverse) {
@@ -243,16 +243,16 @@ namespace fgui {
             this.updateWithPercent(percent, evt);
         }
 
-        private __gripMouseUp(evt: FederatedPointerEvent): void {
+        private __gripMouseUp(evt: PIXI.FederatedPointerEvent): void {
             GRoot.inst.stage.off(MouseEvents.Move, this.__gripMouseMove, this);
             GRoot.inst.stage.off(MouseEvents.Up, this.__gripMouseUp, this);
         }
 
-        private __barMouseDown(evt: FederatedPointerEvent): void {
+        private __barMouseDown(evt: PIXI.FederatedPointerEvent): void {
             if (!this.changeOnClick)
                 return;
 
-            var pt: Point = this._gripObject.globalToLocal(evt.globalX, evt.globalY, s_vec2);
+            var pt: PIXI.Point = this._gripObject.globalToLocal(evt.globalX, evt.globalY, s_vec2);
             var percent: number = ToolSet.clamp01((this._value - this._min) / (this._max - this._min));
             var delta: number;
             if (this._barObjectH)
@@ -267,5 +267,5 @@ namespace fgui {
         }
     }
 
-    var s_vec2: Point = new Point();
+    var s_vec2: PIXI.Point = new PIXI.Point();
 }

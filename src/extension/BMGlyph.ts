@@ -10,6 +10,6 @@ namespace fgui {
         public advance: number = 0;
         public lineHeight: number = 0;
         public channel: number = 0;
-        public texture: Texture;
+        public texture: PIXI.Texture;
     }
 }

@@ -1,6 +1,6 @@
 namespace fgui {
 
-    export class SpineSkeleton extends Container {
+    export class SpineSkeleton extends PIXI.Container {
         public templet: SpineTemplet;
         public play(nameOrIndex: any, loop: boolean, force: boolean = true, start: number = 0, end: number = 0, freshSkin: boolean = true, playAudio: boolean = true): void {
         }

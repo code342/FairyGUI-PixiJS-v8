@@ -171,7 +171,7 @@ namespace fgui {
 
         protected layoutModalWaitPane(): void {
             if (this._contentArea) {
-                var pt: Point = this._frame.localToGlobal();
+                var pt: PIXI.Point = this._frame.localToGlobal();
                 pt = this.globalToLocal(pt.x, pt.y, pt);
                 this._modalWaitPane.setXY(pt.x + this._contentArea.x, pt.y + this._contentArea.y);
                 this._modalWaitPane.setSize(this._contentArea.width, this._contentArea.height);
@@ -285,7 +285,7 @@ namespace fgui {
                 this.bringToFront();
         }
 
-        private __dragStart(evt: FederatedPointerEvent): void {
+        private __dragStart(evt: PIXI.FederatedPointerEvent): void {
             GObject.cast(evt.currentTarget).stopDrag();
 
             this.startDrag();

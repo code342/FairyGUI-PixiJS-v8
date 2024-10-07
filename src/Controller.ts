@@ -2,7 +2,7 @@ namespace fgui {
 
     var _nextPageId: number = 0;
 
-    export class Controller extends EventEmitter {
+    export class Controller extends PIXI.EventEmitter {
         private _selectedIndex: number;
         private _previousIndex: number;
         private _pageIds: string[];

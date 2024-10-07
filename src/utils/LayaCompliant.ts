@@ -6,7 +6,7 @@ namespace fgui {
 
     let win: any = window;
     let hasPointer = !!(win.PointerEvent || win.MSPointerEvent);
-    let hasTouch = 'ontouchstart' in window && isMobile.any;
+    let hasTouch = 'ontouchstart' in window && PIXI.isMobile.any;
     export class MouseEvents {
         public static Down: string = hasPointer ? "pointerdown" : hasTouch ? "touchstart" : "mousedown";
         public static Cancel: string = hasPointer ? "pointercancel" : hasTouch ? "touchcancel" : "mousecancel";

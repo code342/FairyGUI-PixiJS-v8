@@ -414,7 +414,7 @@ namespace fgui {
                 }
             }
             else if (this._path) {
-                var pt: Point = s_vec2;
+                var pt: PIXI.Point = s_vec2;
                 this._path.getPointAt(this._normalizedTime, pt);
                 if (this._snapping) {
                     pt.x = Math.round(pt.x);
@@ -506,5 +506,5 @@ namespace fgui {
         }
     }
 
-    var s_vec2: Point = new Point();
+    var s_vec2: PIXI.Point = new PIXI.Point();
 }

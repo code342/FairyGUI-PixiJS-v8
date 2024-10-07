@@ -294,16 +294,16 @@ namespace fgui {
         }
 
         protected loadExternal(): void {
-            AssetProxy.inst.load(this._url).then((tex: Texture) => {
+            AssetProxy.inst.load(this._url).then((tex: PIXI.Texture) => {
                 this.__getResCompleted(tex);
             });
         }
 
-        protected freeExternal(texture: Texture): void {
+        protected freeExternal(texture: PIXI.Texture): void {
 
         }
 
-        protected onExternalLoadSuccess(texture: Texture): void {
+        protected onExternalLoadSuccess(texture: PIXI.Texture): void {
             this._content.imgOption = {
                 texture: texture,
                 scale9Grid: null,
@@ -318,7 +318,7 @@ namespace fgui {
             this.setErrorState();
         }
 
-        private __getResCompleted(tex: Texture): void {
+        private __getResCompleted(tex: PIXI.Texture): void {
             if (tex != null)
                 this.onExternalLoadSuccess(tex);
             else

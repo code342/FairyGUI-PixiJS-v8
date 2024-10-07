@@ -44,7 +44,7 @@ namespace fgui {
          * @zh 构造方法
          */
         constructor(autoActive: boolean = true) {
-            autoActive && Ticker.shared.add(this._update, this);
+            autoActive && PIXI.Ticker.shared.add(this._update, this);
             this.currTimer = this._getNowData();
             this._lastTimer = this._getNowData();
         }

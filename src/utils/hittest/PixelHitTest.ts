@@ -1,6 +1,6 @@
 namespace fgui {
 
-    export class PixelHitTest implements IHitArea {
+    export class PixelHitTest implements PIXI.IHitArea {
         private _data: PixelHitTestData;
 
         public offsetX: number;

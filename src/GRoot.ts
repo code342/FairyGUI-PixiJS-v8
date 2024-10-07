@@ -9,8 +9,8 @@ namespace fgui {
         private _tooltipWin: GObject;
         private _defaultTooltipWin: GObject;
         private _checkPopups: boolean;
-        public app: Application;
-        public stage: Container;
+        public app: PIXI.Application;
+        public stage: PIXI.Container;
         private static _inst: GRoot;
         public ScrollFrameRate: number = 30;
         public static get inst(): GRoot {
@@ -30,12 +30,12 @@ namespace fgui {
             this.displayObject.once(DisplayEvent.Added, this.__addedToStage, this);
         }
 
-        public launch(app: Application) {
+        public launch(app: PIXI.Application) {
             this.app = app;
             this.stage = app.stage;
         }
 
-        public get mousePosition(): Point {
+        public get mousePosition(): PIXI.Point {
             return this.app.renderer.events.pointer.global
         }
 
@@ -174,7 +174,7 @@ namespace fgui {
             this.addChild(popup);
             this.adjustModalLayer();
 
-            var pos: Point;
+            var pos: PIXI.Point;
             var sizeW: number = 0, sizeH: number = 0;
             if (target) {
                 pos = target.localToGlobal();
@@ -182,7 +182,7 @@ namespace fgui {
                 sizeH = target.height;
             }
             else {
-                let mousePoint: Point = this.mousePosition;
+                let mousePoint: PIXI.Point = this.mousePosition;
                 pos = this.globalToLocal(mousePoint.x, mousePoint.y);
             }
             var xx: number, yy: number;
@@ -254,7 +254,7 @@ namespace fgui {
             this.showTooltipsWin(this._defaultTooltipWin);
         }
 
-        public showTooltipsWin(tooltipWin: GObject, position?: Point): void {
+        public showTooltipsWin(tooltipWin: GObject, position?: PIXI.Point): void {
             this.hideTooltips();
 
             this._tooltipWin = tooltipWin;
@@ -262,7 +262,7 @@ namespace fgui {
             var xx: number = 0;
             var yy: number = 0;
             if (position == null) {
-                let mousePoint: Point = this.mousePosition;
+                let mousePoint: PIXI.Point = this.mousePosition;
                 xx = mousePoint.x + 10;
                 yy = mousePoint.y + 20;
             }
@@ -270,7 +270,7 @@ namespace fgui {
                 xx = position.x;
                 yy = position.y;
             }
-            var pt: Point = this.globalToLocal(xx, yy);
+            var pt: PIXI.Point = this.globalToLocal(xx, yy);
             xx = pt.x;
             yy = pt.y;
 
@@ -366,14 +366,14 @@ namespace fgui {
             this.__winResize();
         }
 
-        public checkPopups(clickTarget: Container): void {
+        public checkPopups(clickTarget: PIXI.Container): void {
             if (this._checkPopups)
                 return;
 
             this._checkPopups = true;
             this._justClosedPopups.length = 0;
             if (this._popupStack.length > 0) {
-                var mc: Container = clickTarget;
+                var mc: PIXI.Container = clickTarget;
                 while (mc != this.stage && mc) {
                     let owner = mc.$owner;
                     if (owner) {
@@ -400,7 +400,7 @@ namespace fgui {
             }
         }
 
-        private __stageMouseDown(evt: FederatedPointerEvent): void {
+        private __stageMouseDown(evt: PIXI.FederatedPointerEvent): void {
             if (this._tooltipWin)
                 this.hideTooltips();
 
@@ -418,7 +418,7 @@ namespace fgui {
         }
 
         private updateContentScaleLevel(): void {
-            var mat: Matrix = <Matrix>(this.stage)._canvasTransform;
+            /*var mat: Matrix = <Matrix>(this.stage)._canvasTransform;
             var ss: number = Math.max(mat.getScaleX(), mat.getScaleY());
             if (ss >= 3.5)
                 GRoot.contentScaleLevel = 3; //x4
@@ -427,7 +427,7 @@ namespace fgui {
             else if (ss >= 1.5)
                 GRoot.contentScaleLevel = 1; //x2
             else
-                GRoot.contentScaleLevel = 0;
+                GRoot.contentScaleLevel = 0;*/
         }
     }
 }

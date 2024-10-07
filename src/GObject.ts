@@ -1,3 +1,4 @@
+//import * as PIXI from "pixi.js"
 namespace fgui {
 
     export class GObject {
@@ -31,11 +32,11 @@ namespace fgui {
         private _relations: Relations;
         private _group?: GGroup;
         private _gears: GearBase[];
-        private _dragBounds?: Rectangle;
+        private _dragBounds?: PIXI.Rectangle;
         private _dragTesting?: boolean;
-        private _dragStartPos?: Point;
+        private _dragStartPos?: PIXI.Point;
 
-        protected _displayObject: Container;
+        protected _displayObject: PIXI.Container;
         protected _yOffset: number = 0;
 
         public minWidth: number = 0;
@@ -294,7 +295,7 @@ namespace fgui {
                 this._skewX = sx;
                 this._skewY = sy;
                 if (this._displayObject) {
-                    this._displayObject.skew = Point.shared.set(-sx * DEG_TO_RAD, sy * DEG_TO_RAD);
+                    this._displayObject.skew = PIXI.Point.shared.set(-sx * PIXI.DEG_TO_RAD, sy * PIXI.DEG_TO_RAD);
                     this.applyPivot();
                 }
             }
@@ -346,7 +347,7 @@ namespace fgui {
                     sHelperPoint.y = this._pivotY * this._height;
                     this._displayObject.updateLocalTransform();//TODO: sync with PIXI instead of update actively
                     let trans = this._displayObject.localTransform;
-                    let pt: Point = trans.apply(sHelperPoint, sHelperPoint);
+                    let pt: PIXI.Point = trans.apply(sHelperPoint, sHelperPoint);
                     pt.x -= trans.tx;   //pt cntains the translation
                     pt.y -= trans.ty;
                     this._pivotOffsetX = this._pivotX * this._width - pt.x;
@@ -415,7 +416,7 @@ namespace fgui {
             if (this._rotation != value) {
                 this._rotation = value;
                 if (this._displayObject) {
-                    this._displayObject.rotation = DEG_TO_RAD * this.normalizeRotation;
+                    this._displayObject.rotation = PIXI.DEG_TO_RAD * this.normalizeRotation;
                     this.applyPivot();
                 }
                 this.updateGear(3);
@@ -510,7 +511,7 @@ namespace fgui {
             }
         }
 
-        private __rollOver(evt: FederatedPointerEvent): void {
+        private __rollOver(evt: PIXI.FederatedPointerEvent): void {
             Timer.shared.once(100, this, this.__doShowTooltips);
         }
 
@@ -520,7 +521,7 @@ namespace fgui {
                 this.root.showTooltips(this._tooltips);
         }
 
-        private __rollOut(evt: FederatedPointerEvent): void {
+        private __rollOut(evt: PIXI.FederatedPointerEvent): void {
             Timer.shared.clear(this, this.__doShowTooltips);
             this.root.hideTooltips();
         }
@@ -530,15 +531,15 @@ namespace fgui {
         }
 
         public set blendMode(value: string) {
-            this._displayObject.blendMode = value as BLEND_MODES;
+            this._displayObject.blendMode = value as PIXI.BLEND_MODES;
         }
 
-        public get filters(): Filter | Filter[] {
-            return this._displayObject.filters;
+        public get filters(): PIXI.Filter | PIXI.Filter[] {
+            return this._displayObject.filters as any;
         }
 
-        public set filters(value: Filter | Filter[]) {
-            this._displayObject.filters = value;
+        public set filters(value: PIXI.Filter | PIXI.Filter[]) {
+            this._displayObject.filters = value as any;
         }
 
 
@@ -649,7 +650,7 @@ namespace fgui {
             this._relations.remove(target, relationType);
         }
 
-        public get displayObject(): Container {
+        public get displayObject(): PIXI.Container {
             return this._displayObject;
         }
 
@@ -810,11 +811,11 @@ namespace fgui {
             }
         }
 
-        public get dragBounds(): Rectangle {
+        public get dragBounds(): PIXI.Rectangle {
             return this._dragBounds;
         }
 
-        public set dragBounds(value: Rectangle) {
+        public set dragBounds(value: PIXI.Rectangle) {
             this._dragBounds = value;
         }
 
@@ -833,7 +834,7 @@ namespace fgui {
             return GObject.draggingObject == this;
         }
 
-        public localToGlobal(ax?: number, ay?: number, result?: Point, skipUpdate?: boolean): Point {
+        public localToGlobal(ax?: number, ay?: number, result?: PIXI.Point, skipUpdate?: boolean): PIXI.Point {
             ax = ax || 0;
             ay = ay || 0;
 
@@ -842,16 +843,16 @@ namespace fgui {
                 ay += this._pivotY * this._height;
             }
 
-            result = result || new Point();
+            result = result || new PIXI.Point();
             result.x = ax;
             result.y = ay;
             return this._displayObject.toGlobal(result, result, skipUpdate);
         }
 
-        public globalToLocal(ax?: number, ay?: number, result?: Point, skipUpdate?: boolean): Point {
+        public globalToLocal(ax?: number, ay?: number, result?: PIXI.Point, skipUpdate?: boolean): PIXI.Point {
             ax = ax || 0;
             ay = ay || 0;
-            result = result || new Point();
+            result = result || new PIXI.Point();
             result.set(ax, ay);
             result = this._displayObject.toLocal(result, null, result, skipUpdate);
 
@@ -863,13 +864,13 @@ namespace fgui {
             return result;
         }
 
-        public localToGlobalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: Rectangle): Rectangle {
+        public localToGlobalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: PIXI.Rectangle): PIXI.Rectangle {
             ax = ax || 0;
             ay = ay || 0;
             aw = aw || 0;
             ah = ah || 0;
-            result = result || new Rectangle();
-            var pt: Point = this.localToGlobal(ax, ay);
+            result = result || new PIXI.Rectangle();
+            var pt: PIXI.Point = this.localToGlobal(ax, ay);
             result.x = pt.x;
             result.y = pt.y;
             pt = this.localToGlobal(ax + aw, ay + ah, null, true);
@@ -878,13 +879,13 @@ namespace fgui {
             return result;
         }
 
-        public globalToLocalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: Rectangle): Rectangle {
+        public globalToLocalRect(ax?: number, ay?: number, aw?: number, ah?: number, result?: PIXI.Rectangle): PIXI.Rectangle {
             ax = ax || 0;
             ay = ay || 0;
             aw = aw || 0;
             ah = ah || 0;
-            result = result || new Rectangle();
-            var pt: Point = this.globalToLocal(ax, ay);
+            result = result || new PIXI.Rectangle();
+            var pt: PIXI.Point = this.globalToLocal(ax, ay);
             result.x = pt.x;
             result.y = pt.y;
             pt = this.globalToLocal(ax + aw, ay + ah, null, true);
@@ -906,7 +907,7 @@ namespace fgui {
         }
 
         protected createDisplayObject(): void {
-            this._displayObject = new Container();
+            this._displayObject = new PIXI.Container();
             this._displayObject.$owner = this;
         }
 
@@ -1132,7 +1133,7 @@ namespace fgui {
 
         private __begin(): void {
             if (!this._dragStartPos)
-                this._dragStartPos = new Point();
+                this._dragStartPos = new PIXI.Point();
             this._dragStartPos.copyFrom(GRoot.inst.mousePosition);
             this._dragTesting = true;
 
@@ -1140,10 +1141,10 @@ namespace fgui {
             GRoot.inst.stage.on(MouseEvents.Up, this.__end, this);
         }
 
-        private __moving(evt: FederatedPointerEvent): void {
+        private __moving(evt: PIXI.FederatedPointerEvent): void {
             if (GObject.draggingObject != this && this._draggable && this._dragTesting) {
                 var sensitivity: number = UIConfig.touchDragSensitivity;
-                let mousePoint: Point = GRoot.inst.mousePosition;
+                let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
                 if (this._dragStartPos
                     && Math.abs(this._dragStartPos.x - mousePoint.x) < sensitivity
                     && Math.abs(this._dragStartPos.y - mousePoint.y) < sensitivity)
@@ -1158,12 +1159,12 @@ namespace fgui {
             }
 
             if (GObject.draggingObject == this) {
-                let mousePoint: Point = GRoot.inst.mousePosition;
+                let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
                 var xx: number = mousePoint.x - sGlobalDragStart.x + sGlobalRect.x;
                 var yy: number = mousePoint.y - sGlobalDragStart.y + sGlobalRect.y;
 
                 if (this._dragBounds) {
-                    var rect: Rectangle = GRoot.inst.localToGlobalRect(this._dragBounds.x, this._dragBounds.y,
+                    var rect: PIXI.Rectangle = GRoot.inst.localToGlobalRect(this._dragBounds.x, this._dragBounds.y,
                         this._dragBounds.width, this._dragBounds.height, sDragHelperRect);
                     if (xx < rect.x)
                         xx = rect.x;
@@ -1183,7 +1184,7 @@ namespace fgui {
                 }
 
                 sUpdateInDragging = true;
-                var pt: Point = this.parent.globalToLocal(xx, yy, sHelperPoint);
+                var pt: PIXI.Point = this.parent.globalToLocal(xx, yy, sHelperPoint);
                 this.setXY(Math.round(pt.x), Math.round(pt.y));
                 sUpdateInDragging = false;
 
@@ -1191,7 +1192,7 @@ namespace fgui {
             }
         }
 
-        private __end(evt: FederatedPointerEvent): void {
+        private __end(evt: PIXI.FederatedPointerEvent): void {
             if (GObject.draggingObject == this) {
                 GObject.draggingObject = null;
                 this.reset();
@@ -1205,7 +1206,7 @@ namespace fgui {
         }
         //-------------------------------------------------------------------
 
-        public static cast(sprite: Container): GObject {
+        public static cast(sprite: PIXI.Container): GObject {
             return sprite.$owner;
         }
     }
@@ -1218,10 +1219,10 @@ namespace fgui {
 
 
     var _gInstanceCounter: number = 0;
-    var sGlobalDragStart: Point = new Point();
-    var sGlobalRect: Rectangle = new Rectangle();
-    var sHelperPoint: Point = new Point();
-    var sDragHelperRect: Rectangle = new Rectangle();
+    var sGlobalDragStart: PIXI.Point = new PIXI.Point();
+    var sGlobalRect: PIXI.Rectangle = new PIXI.Rectangle();
+    var sHelperPoint: PIXI.Point = new PIXI.Point();
+    var sDragHelperRect: PIXI.Rectangle = new PIXI.Rectangle();
     var sUpdateInDragging: boolean;
     var sDraggingQuery: boolean;
 }

@@ -39,8 +39,8 @@ namespace fgui {
             this._sourceData = sourceData;
             this._agent.url = icon;
             GRoot.inst.addChild(this._agent);
-            let mousePoint: Point = GRoot.inst.mousePosition;
-            var pt: Point = GRoot.inst.globalToLocal(mousePoint.x, mousePoint.y);
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
+            var pt: PIXI.Point = GRoot.inst.globalToLocal(mousePoint.x, mousePoint.y);
             this._agent.setXY(pt.x, pt.y);
             this._agent.startDrag(touchID);
         }
@@ -53,7 +53,7 @@ namespace fgui {
             }
         }
 
-        private __dragEnd(evt: FederatedEvent): void {
+        private __dragEnd(evt: PIXI.FederatedEvent): void {
             if (!this._agent.parent) //cancelled
                 return;
 

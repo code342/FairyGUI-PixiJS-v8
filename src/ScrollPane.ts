@@ -2,10 +2,10 @@ namespace fgui {
 
     export class ScrollPane {
         private _owner: GComponent;
-        private _container: Container;
-        private _maskContainer: Container;
+        private _container: PIXI.Container;
+        private _maskContainer: PIXI.Container;
         private _scrollRect: ScrollRectComp;
-        private _alignContainer?: Container;
+        private _alignContainer?: PIXI.Container;
 
         private _scrollType: number;
         private _scrollStep: number;
@@ -32,15 +32,15 @@ namespace fgui {
         private _xPos: number;
         private _yPos: number;
 
-        private _viewSize: Point;
-        private _contentSize: Point;
-        private _overlapSize: Point;
-        private _pageSize: Point;
-        private _containerPos: Point;
-        private _beginTouchPos: Point;
-        private _lastTouchPos: Point;
-        private _lastTouchGlobalPos: Point;
-        private _velocity: Point;
+        private _viewSize: PIXI.Point;
+        private _contentSize: PIXI.Point;
+        private _overlapSize: PIXI.Point;
+        private _pageSize: PIXI.Point;
+        private _containerPos: PIXI.Point;
+        private _beginTouchPos: PIXI.Point;
+        private _lastTouchPos: PIXI.Point;
+        private _lastTouchGlobalPos: PIXI.Point;
+        private _velocity: PIXI.Point;
         private _velocityScale: number;
         private _lastMoveTime: number;
         private _isHoldAreaDone: boolean;
@@ -52,10 +52,10 @@ namespace fgui {
         private _dragged: boolean;
 
         private _tweening: number;
-        private _tweenTime: Point;
-        private _tweenDuration: Point;
-        private _tweenStart: Point;
-        private _tweenChange: Point;
+        private _tweenTime: PIXI.Point;
+        private _tweenDuration: PIXI.Point;
+        private _tweenStart: PIXI.Point;
+        private _tweenChange: PIXI.Point;
 
         private _pageController?: Controller;
 
@@ -69,7 +69,7 @@ namespace fgui {
         constructor(owner: GComponent) {
             this._owner = owner;
 
-            this._maskContainer = new Container();
+            this._maskContainer = new PIXI.Container();
             this._owner.displayObject.addChild(this._maskContainer);
 
             this._container = this._owner._container;
@@ -85,19 +85,19 @@ namespace fgui {
             this._footerLockedSize = 0;
             this._headerLockedSize = 0;
             this._scrollBarMargin = new Margin();
-            this._viewSize = new Point();
-            this._contentSize = new Point();
-            this._pageSize = new Point(1, 1);
-            this._overlapSize = new Point();
-            this._tweenTime = new Point();
-            this._tweenStart = new Point();
-            this._tweenDuration = new Point();
-            this._tweenChange = new Point();
-            this._velocity = new Point();
-            this._containerPos = new Point();
-            this._beginTouchPos = new Point();
-            this._lastTouchPos = new Point();
-            this._lastTouchGlobalPos = new Point();
+            this._viewSize = new PIXI.Point();
+            this._contentSize = new PIXI.Point();
+            this._pageSize = new PIXI.Point(1, 1);
+            this._overlapSize = new PIXI.Point();
+            this._tweenTime = new PIXI.Point();
+            this._tweenStart = new PIXI.Point();
+            this._tweenDuration = new PIXI.Point();
+            this._tweenChange = new PIXI.Point();
+            this._velocity = new PIXI.Point();
+            this._containerPos = new PIXI.Point();
+            this._beginTouchPos = new PIXI.Point();
+            this._lastTouchPos = new PIXI.Point();
+            this._lastTouchGlobalPos = new PIXI.Point();
             this._scrollStep = UIConfig.defaultScrollStep;
             this._mouseWheelStep = this._scrollStep * 2;
             this._decelerationRate = UIConfig.defaultScrollDecelerationRate;
@@ -507,12 +507,12 @@ namespace fgui {
                 this.setPosX(this._xPos + this._scrollStep * ratio, ani);
         }
 
-        public scrollToView(target: Rectangle | GObject, ani?: boolean, setFirst?: boolean): void {
+        public scrollToView(target: PIXI.Rectangle | GObject, ani?: boolean, setFirst?: boolean): void {
             this._owner.ensureBoundsCorrect();
             if (this._needRefresh)
                 this.refresh();
 
-            var rect: Rectangle;
+            var rect: PIXI.Rectangle;
             if (target instanceof GObject) {
                 if (target.parent != this._owner) {
                     target.parent.localToGlobalRect(target.x, target.y, target.width, target.height, s_rect);
@@ -683,7 +683,7 @@ namespace fgui {
 
             if (mx != 0 || my != 0 || this._dontClipMargin) {
                 if (!this._alignContainer) {
-                    this._alignContainer = new Container();
+                    this._alignContainer = new PIXI.Container();
                     this._maskContainer.addChild(this._alignContainer);
                     this._alignContainer.addChild(this._container);
                 }
@@ -836,9 +836,9 @@ namespace fgui {
             this.updateScrollBarVisible();
 
             if (this._scrollRect) {
-                var rect: Rectangle = this._scrollRect.rect;
+                var rect: PIXI.Rectangle = this._scrollRect.rect;
                 if (rect == null) {
-                    rect = new Rectangle();
+                    rect = new PIXI.Rectangle();
                 }
                 rect.width = this._viewSize.x;
                 rect.height = this._viewSize.y;
@@ -998,8 +998,8 @@ namespace fgui {
             else
                 this._dragged = false;
 
-            let mousePoint: Point = GRoot.inst.mousePosition;
-            var pt: Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
+            var pt: PIXI.Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
 
             this._containerPos.set(this._container.x, this._container.y);
             this._beginTouchPos.set(pt.x, pt.y);
@@ -1024,8 +1024,8 @@ namespace fgui {
 
             var sensitivity: number = UIConfig.touchScrollSensitivity;
 
-            let mousePoint: Point = GRoot.inst.mousePosition;
-            var pt: Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
+            let mousePoint: PIXI.Point = GRoot.inst.mousePosition;
+            var pt: PIXI.Point = this._owner.globalToLocal(mousePoint.x, mousePoint.y, s_vec2);
 
             var diff: number, diff2: number;
             var sv: boolean, sh: boolean, st: boolean;
@@ -1307,7 +1307,7 @@ namespace fgui {
             this._dragged = false;
         }
 
-        private __mouseWheel(evt: FederatedWheelEvent): void {
+        private __mouseWheel(evt: PIXI.FederatedWheelEvent): void {
             if (!this._mouseWheelEnabled)
                 return;
             let delta = evt.deltaY * 0.025;
@@ -1405,7 +1405,7 @@ namespace fgui {
             return changed;
         }
 
-        private loopCheckingTarget(endPos: Point): void {
+        private loopCheckingTarget(endPos: PIXI.Point): void {
             if (this._loop == 1)
                 this.loopCheckingTarget2(endPos, "x");
 
@@ -1413,7 +1413,7 @@ namespace fgui {
                 this.loopCheckingTarget2(endPos, "y");
         }
 
-        private loopCheckingTarget2(endPos: Point, axis: 'x' | 'y'): void {
+        private loopCheckingTarget2(endPos: PIXI.Point, axis: 'x' | 'y'): void {
             var halfSize: number;
             var tmp: number;
             if (endPos[axis] > 0) {
@@ -1470,7 +1470,7 @@ namespace fgui {
             return value;
         }
 
-        private alignPosition(pos: Point, inertialScrolling: boolean): void {
+        private alignPosition(pos: PIXI.Point, inertialScrolling: boolean): void {
             if (this._pageMode) {
                 pos.x = this.alignByPage(pos.x, "x", inertialScrolling);
                 pos.y = this.alignByPage(pos.y, "y", inertialScrolling);
@@ -1483,7 +1483,7 @@ namespace fgui {
                     yDir = pos.y - this._containerPos.y;
                 }
 
-                var pt: Point = this._owner.getSnappingPositionWithDir(-pos.x, -pos.y, xDir, yDir, s_vec2);
+                var pt: PIXI.Point = this._owner.getSnappingPositionWithDir(-pos.x, -pos.y, xDir, yDir, s_vec2);
                 if (pos.x < 0 && pos.x > -this._overlapSize.x)
                     pos.x = -pt.x;
                 if (pos.y < 0 && pos.y > -this._overlapSize.y)
@@ -1545,7 +1545,7 @@ namespace fgui {
             return pos;
         }
 
-        private updateTargetAndDuration(orignPos: Point, resultPos: Point): void {
+        private updateTargetAndDuration(orignPos: PIXI.Point, resultPos: PIXI.Point): void {
             resultPos.x = this.updateTargetAndDuration2(orignPos.x, "x");
             resultPos.y = this.updateTargetAndDuration2(orignPos.y, "y");
         }
@@ -1561,11 +1561,11 @@ namespace fgui {
                 //以屏幕像素为基准
                 var v2: number = Math.abs(v) * this._velocityScale;
                 //在移动设备上，需要对不同分辨率做一个适配，我们的速度判断以1136分辨率为基准
-                if (isMobile.any)
+                if (PIXI.isMobile.any)
                     v2 *= 1136 / Math.max(GRoot.inst.stage.width, GRoot.inst.stage.height);
                 //这里有一些阈值的处理，因为在低速内，不希望产生较大的滚动（甚至不滚动）
                 var ratio: number = 0;
-                if (this._pageMode || !isMobile.any) {
+                if (this._pageMode || !PIXI.isMobile.any) {
                     if (v2 > 500)
                         ratio = Math.pow((v2 - 500) / 500, 2);
                 }
@@ -1642,7 +1642,7 @@ namespace fgui {
                 if (pos > 0) {
                     if (!this._header.displayObject.parent)
                         this._maskContainer.addChildAt(this._header.displayObject, 0);
-                    var pt: Point = s_vec2;
+                    var pt: PIXI.Point = s_vec2;
                     pt.set(this._header.width, this._header.height);
                     pt[this._refreshBarAxis] = pos;
                     this._header.setSize(pt.x, pt.y);
@@ -1785,10 +1785,10 @@ namespace fgui {
     const TWEEN_TIME_DEFAULT: number = 0.3; //惯性滚动的最小缓动时间
     const PULL_RATIO: number = 0.5; //下拉过顶或者上拉过底时允许超过的距离占显示区域的比例
 
-    var s_vec2: Point = new Point();
-    var s_rect: Rectangle = new Rectangle();
-    var sEndPos: Point = new Point();
-    var sOldChange: Point = new Point();
+    var s_vec2: PIXI.Point = new PIXI.Point();
+    var s_rect: PIXI.Rectangle = new PIXI.Rectangle();
+    var sEndPos: PIXI.Point = new PIXI.Point();
+    var sOldChange: PIXI.Point = new PIXI.Point();
 
     function easeFunc(t: number, d: number): number {
         return (t = t / d - 1) * t * t + 1;//cubicOut
