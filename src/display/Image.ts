@@ -116,7 +116,7 @@ namespace fgui {
                 this._view.eventMode = "none";
             }
             let graphic = <PIXI.Graphics>this._view;
-            this.mask = graphic;
+            this.mask = graphic as any;
             var w: number = this.width;
             var h: number = this.height;
 

@@ -18,7 +18,7 @@ namespace fgui {
         protected createDisplayObject(): void {
             this._displayObject = this._movieClip = new MovieClip();
             this._movieClip.eventMode = 'none';
-            this._displayObject.$owner = this;
+            (this._displayObject as any).$owner = this;
         }
 
         public get playing(): boolean {

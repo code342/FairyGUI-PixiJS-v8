@@ -908,7 +908,7 @@ namespace fgui {
 
         protected createDisplayObject(): void {
             this._displayObject = new PIXI.Container();
-            this._displayObject.$owner = this;
+            (this._displayObject as any).$owner = this;
         }
 
         protected handleXYChanged(): void {
@@ -1207,7 +1207,7 @@ namespace fgui {
         //-------------------------------------------------------------------
 
         public static cast(sprite: PIXI.Container): GObject {
-            return sprite.$owner;
+            return (sprite as any).$owner;
         }
     }
 

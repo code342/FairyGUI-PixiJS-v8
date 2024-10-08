@@ -1,3 +1,4 @@
+
 namespace fgui {
     export class GRoot extends GComponent {
         public static contentScaleLevel: number = 0;
@@ -33,6 +34,7 @@ namespace fgui {
         public launch(app: PIXI.Application) {
             this.app = app;
             this.stage = app.stage;
+            this.stage.addChild(this._displayObject);
         }
 
         public get mousePosition(): PIXI.Point {
@@ -375,7 +377,7 @@ namespace fgui {
             if (this._popupStack.length > 0) {
                 var mc: PIXI.Container = clickTarget;
                 while (mc != this.stage && mc) {
-                    let owner = mc.$owner;
+                    let owner = (mc as any).$owner;
                     if (owner) {
                         var pindex: number = this._popupStack.indexOf(owner);
                         if (pindex != -1) {

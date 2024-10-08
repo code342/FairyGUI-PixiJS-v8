@@ -1,3 +1,5 @@
+/// <reference path="./GObjectPool.ts" />
+
 namespace fgui {
 
     export class GLoader extends GObject {

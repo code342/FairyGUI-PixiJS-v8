@@ -232,7 +232,7 @@ namespace fgui {
 
         protected createDisplayObject(): void {
             this._displayObject = this.graphics = new PIXI.Graphics(); //在pixijs里Graphics就是独立的displayobject
-            this._displayObject.$owner = this;
+            (this._displayObject as any).$owner = this;
             this._displayObject.eventMode = 'none';
         }
 

@@ -355,7 +355,7 @@ namespace fgui {
                             pi.objectType = ObjectType.Image;
                             var scaleOption: number = buffer.readByte();
                             if (scaleOption == 1) {
-                                pi.scale9Grid = new Rectangle();
+                                pi.scale9Grid = new PIXI.Rectangle();
                                 pi.scale9Grid.x = buffer.readInt32();
                                 pi.scale9Grid.y = buffer.readInt32();
                                 pi.scale9Grid.width = buffer.readInt32();

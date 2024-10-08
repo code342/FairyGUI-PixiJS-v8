@@ -76,7 +76,7 @@ namespace fgui {
         protected createDisplayObject(): void {
             this._displayObject = this._image = new Image();
             this._image.eventMode = 'none';
-            this._displayObject.$owner = this;
+            (this._displayObject as any).$owner = this;
         }
 
         public constructFromResource(): void {

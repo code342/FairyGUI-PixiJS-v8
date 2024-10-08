@@ -2,17 +2,26 @@
   "name": "fairygui-pixi",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "start": "gulp start",
+    "build": "gulp build",
+    "compile": "gulp compile",
+    "copy": "gulp copy"
   },
   "devDependencies": {
     "typescript": "^5.5.3",
-    "vite": "^5.4.1"
+    "gulp": "^4.0.2",
+    "gulp-inject-string": "^1.1.2",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "merge2": "^1.4.1"
   },
   "dependencies": {
     "pixi.js": "^8.4.0"
-  }
+  },
+  "keywords": [
+    "PIXI",
+    "fairygui",
+    "fgui"
+  ]
 }

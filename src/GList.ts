@@ -161,7 +161,7 @@ namespace fgui {
         public set virtualItemSize(value: PIXI.Point) {
             if (this._virtual) {
                 if (this._itemSize == null)
-                    this._itemSize = new Point();
+                    this._itemSize = new PIXI.Point();
                 this._itemSize.set(value.x, value.y);
                 this.setVirtualListChangedFlag(true);
             }

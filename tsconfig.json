@@ -1,29 +1,12 @@
 {
   "compilerOptions": {
-    /* Bundler mode */
-    "allowImportingTsExtensions": true,
-    "isolatedModules": false,
-    "moduleDetection": "auto",
-    "noEmit": true,
-
-    "target": "ESNext",
-    "lib": ["ESNext", "DOM", "WebWorker"],
-    "module": "ESNext",
-    "allowJs": false,
+    "module": "system",
+    "target": "es6",
+    "declaration": true,
+    "sourceMap": false,
     "removeComments": false,
-    "strict": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "strictNullChecks": false,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "downlevelIteration": true,
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "allowUmdGlobalAccess": true
+    "outFile": "./fairygui.js",
+    "skipLibCheck": true
   },
   "include": ["src", "lib", "node_modules/pixi.js/dist/pixi.js.d.ts"]
 }

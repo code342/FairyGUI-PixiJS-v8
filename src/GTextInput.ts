@@ -9,7 +9,7 @@ namespace fgui {
 
         protected createDisplayObject(): void {
             this._displayObject = new Input();
-            this._displayObject.$owner = this;
+            (this._displayObject as any).$owner = this;
         }
 
         public get nativeInput(): Input {

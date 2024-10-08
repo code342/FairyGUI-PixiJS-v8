@@ -1,3 +1,4 @@
+/// <reference path="./GObject.ts" />
 namespace fgui {
 
     export class GComponent extends GObject {
@@ -904,7 +905,7 @@ namespace fgui {
         /**
          * dir正数表示右移或者下移，负数表示左移或者上移
          */
-        public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: Point): Point {
+        public getSnappingPositionWithDir(xValue: number, yValue: number, xDir: number, yDir: number, result?: PIXI.Point): PIXI.Point {
             if (!result)
                 result = new PIXI.Point();
 

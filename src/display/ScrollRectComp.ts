@@ -14,7 +14,7 @@ namespace fgui {
             if (!value || value.width == 0 || value.height == 0) {
                 if (this._mask) {
                     this._mask.removeFromParent();
-                    if (target.mask == this._mask) {
+                    if (target.mask == this._mask as any) {
                         target.mask = null;
                     }
                 }
@@ -29,7 +29,7 @@ namespace fgui {
                 this._mask.eventMode = "none";
             }
             target.addChild(this._mask);
-            target.mask = this._mask;
+            target.mask = this._mask as any;
             this._mask.clear().rect(value.x, value.y, value.width, value.height).fill();
         }
     }

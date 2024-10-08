@@ -1,3 +1,4 @@
+/// <reference path="./ControllerAction.ts" />
 namespace fgui {
   export class ChangePageAction extends ControllerAction {
     public objectId: string;

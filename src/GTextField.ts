@@ -21,7 +21,7 @@ namespace fgui {
 
         protected createDisplayObject(): void {
             this._displayObject = new PIXI.Text();
-            this._displayObject.$owner = this;
+            (this._displayObject as any).$owner = this;
             this._displayObject.style.padding = labelPadding[0];
             this._displayObject.eventMode = "none";
             this._autoSize = AutoSizeType.Both;
