@@ -20,7 +20,7 @@ gulp.task('compile', () => {
 });
 
 gulp.task('start', () => {
-    gulp.watch(['src/**/*.ts'], gulp.series('compile'));
+    gulp.watch(['src/**/*.ts'], gulp.series('compile', 'copy'));
 });
 
 gulp.task('copy', () => {

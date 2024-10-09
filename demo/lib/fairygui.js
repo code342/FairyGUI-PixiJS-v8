@@ -3586,8 +3586,8 @@
         drawRect(lineSize, lineColor, fillColor, cornerRadius) {
             this._type = GGGraphType.Rect;
             this._lineSize = lineSize;
-            this._lineColor.value = lineColor;
-            this._fillColor.value = fillColor;
+            this._lineColor.value = lineColor || "#000000";
+            this._fillColor.value = fillColor || "#FFFFFF";
             this._cornerRadius = cornerRadius;
             this.updateGraph();
         }
