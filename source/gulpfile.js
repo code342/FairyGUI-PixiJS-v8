@@ -24,7 +24,7 @@ gulp.task('start', () => {
 });
 
 gulp.task('copy', () => {
-    return gulp.src(['bin/*.js', 'bin/*.d.ts', 'bin/*.js.map']).pipe(gulp.dest('./demo/fairygui/'));
+    return gulp.src(['bin/*.js', 'bin/*.d.ts', 'bin/*.js.map']).pipe(gulp.dest('../demo/lib/'));
 });
 
 gulp.task('build', gulp.series('compile', 'copy'));

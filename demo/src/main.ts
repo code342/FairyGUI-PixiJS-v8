@@ -1,6 +1,5 @@
 
-import "../FairyGui";
-
+//import { Application } from "pixi.js";
 import { MainMenu } from "./MainMenu";
 
 const app = new PIXI.Application();
