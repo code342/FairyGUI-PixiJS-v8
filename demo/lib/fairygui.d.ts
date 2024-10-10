@@ -1203,6 +1203,8 @@ declare namespace fgui {
         private _strokeWidth;
         private _strokeColor;
         _displayObject: PIXI.Text | Input;
+        private _underline;
+        private _underlineGraphics;
         constructor();
         protected createDisplayObject(): void;
         get displayObject(): PIXI.Text;
@@ -1243,6 +1245,7 @@ declare namespace fgui {
         protected handleGrayedChanged(): void;
         getProp(index: number): any;
         setProp(index: number, value: any): void;
+        setDropShadow(color: string, offsetX: number, offsetY: number, blur?: number): void;
         setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
         setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
     }
@@ -2058,8 +2061,12 @@ declare namespace fgui {
         private _fillOrigin;
         private _fillAmount;
         private _fillClockwise?;
+        private _width;
+        private _height;
         private _view;
         constructor();
+        set width(value: number);
+        set height(value: number);
         get color(): string;
         set color(value: string);
         get fillMethod(): number;

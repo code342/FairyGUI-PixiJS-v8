@@ -47,6 +47,10 @@ namespace fgui {
         }
 
         public set font(value: string) {
+            if(value == null){
+                value = "Arial";
+                console.warn("font can't be null");
+            }
             if (ToolSet.startsWith(value, "ui://"))
                 UIPackage.getItemAssetByURL(value);
             this._displayObject.style.fontFamily = value;
@@ -101,11 +105,11 @@ namespace fgui {
         }
 
         public get letterSpacing(): number {
-            return this._letterSpacing;
+            return this._displayObject.style.letterSpacing;
         }
 
         public set letterSpacing(value: number) {
-            this._letterSpacing = value;
+            this._displayObject.style.letterSpacing = value;
         }
 
         public get bold(): boolean {
@@ -132,10 +136,11 @@ namespace fgui {
         }
 
         public get underline(): boolean {
-            return false;
+            return this._underline;
         }
 
         public set underline(value: boolean) {
+            this._underline = value;
             console.log('dont support underline!!!');
         }
 
@@ -145,7 +150,11 @@ namespace fgui {
 
         public set singleLine(value: boolean) {
             this._singleLine = value;
-            this._displayObject.style.wordWrap = !this._widthAutoSize && !this._singleLine;
+            this._displayObject.style.wordWrap 
+            let multiline = !this._widthAutoSize && !this._singleLine;
+            this._displayObject.style.breakWords = multiline;
+            this._displayObject.style.wordWrap = multiline;
+            this._displayObject.style.wordWrapWidth = this.width;
         }
 
 
@@ -274,6 +283,22 @@ namespace fgui {
             }
         }
 
+        public setDropShadow(color:string,offsetX:number,offsetY:number,blur:number=0){
+            let angle = Math.atan2(offsetY, offsetX);
+            let distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
+            // Round to two decimal places for precision
+            angle = Math.round(angle * 100) / 100 ;
+            distance = Math.round(distance * 100) / 100;
+
+            this._displayObject.style.dropShadow = {
+                color: color,
+                alpha: 1,
+                angle: angle,
+                blur: blur,
+                distance: distance
+            }
+        }
+
         public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
             super.setup_beforeAdd(buffer, beginPos);
 
@@ -307,6 +332,7 @@ namespace fgui {
                 let color = buffer.readColorS();
                 let offsetx = buffer.readFloat32();
                 let offsety = buffer.readFloat32();
+                this.setDropShadow(color, offsetx, offsety);
             }
 
             if (buffer.readBool()) {

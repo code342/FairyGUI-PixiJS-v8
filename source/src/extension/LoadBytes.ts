@@ -26,4 +26,6 @@ namespace fgui {
             }
         }
     } satisfies PIXI.LoaderParser<ArrayBuffer>;
+
+    PIXI.extensions.add(loadBytes);
 }

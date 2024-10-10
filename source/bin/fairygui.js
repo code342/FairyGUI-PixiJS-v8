@@ -7709,6 +7709,10 @@
             return this._displayObject.style.fontFamily;
         }
         set font(value) {
+            if (value == null) {
+                value = "Arial";
+                console.warn("font can't be null");
+            }
             if (fgui.ToolSet.startsWith(value, "ui://"))
                 fgui.UIPackage.getItemAssetByURL(value);
             this._displayObject.style.fontFamily = value;
@@ -7751,10 +7755,10 @@
             this._displayObject.style.leading = value;
         }
         get letterSpacing() {
-            return this._letterSpacing;
+            return this._displayObject.style.letterSpacing;
         }
         set letterSpacing(value) {
-            this._letterSpacing = value;
+            this._displayObject.style.letterSpacing = value;
         }
         get bold() {
             return this._displayObject.style.fontWeight == "bold";
@@ -7776,9 +7780,10 @@
                 this._displayObject.style.fontStyle = "normal";
         }
         get underline() {
-            return false;
+            return this._underline;
         }
         set underline(value) {
+            this._underline = value;
             console.log('dont support underline!!!');
         }
         get singleLine() {
@@ -7786,7 +7791,11 @@
         }
         set singleLine(value) {
             this._singleLine = value;
-            this._displayObject.style.wordWrap = !this._widthAutoSize && !this._singleLine;
+            this._displayObject.style.wordWrap;
+            let multiline = !this._widthAutoSize && !this._singleLine;
+            this._displayObject.style.breakWords = multiline;
+            this._displayObject.style.wordWrap = multiline;
+            this._displayObject.style.wordWrapWidth = this.width;
         }
         setStroke() {
             this._displayObject.style.stroke = {
@@ -7896,6 +7905,20 @@
                     break;
             }
         }
+        setDropShadow(color, offsetX, offsetY, blur = 0) {
+            let angle = Math.atan2(offsetY, offsetX);
+            let distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
+            // Round to two decimal places for precision
+            angle = Math.round(angle * 100) / 100;
+            distance = Math.round(distance * 100) / 100;
+            this._displayObject.style.dropShadow = {
+                color: color,
+                alpha: 1,
+                angle: angle,
+                blur: blur,
+                distance: distance
+            };
+        }
         setup_beforeAdd(buffer, beginPos) {
             super.setup_beforeAdd(buffer, beginPos);
             buffer.seek(beginPos, 5);
@@ -7925,6 +7948,7 @@
                 let color = buffer.readColorS();
                 let offsetx = buffer.readFloat32();
                 let offsety = buffer.readFloat32();
+                this.setDropShadow(color, offsetx, offsety);
             }
             if (buffer.readBool()) {
                 //this._displayObject.templateVars = {};
@@ -13063,7 +13087,7 @@
                 let pkg;
                 let urls = [];
                 for (i = 0; i < loadKeyArr.length; i++) {
-                    let asset = resArr[i];
+                    let asset = resArr[loadKeyArr[i]];
                     if (asset) {
                         pkg = new UIPackage();
                         pkgArr.push(pkg);
@@ -14312,8 +14336,16 @@
             this._fillMethod = 0;
             this._fillOrigin = 0;
             this._fillAmount = 0;
+            this._width = 0;
+            this._height = 0;
             this.eventMode = "none";
             this._color = "#FFFFFF";
+        }
+        set width(value) {
+            this._width = value;
+        }
+        set height(value) {
+            this._height = value;
         }
         get color() {
             return this._color;
@@ -14342,10 +14374,12 @@
         set texture(value) {
             if (this._source != value) {
                 this._source = value;
-                if (this._source)
-                    this.setSize(this._source.width, this._source.height);
-                else
-                    this.setSize(0, 0);
+                if (this._source) {
+                    if (this._width == 0 || this._height == 0) {
+                        this._width = this._source.width;
+                        this._height = this._source.height;
+                    }
+                }
                 this.fillImage();
             }
         }
@@ -14360,8 +14394,15 @@
                 this._tileGridIndice = options.tileGridIndice;
             if ("color" in options)
                 this._color = options.color;
-            if ("texture" in options)
+            if ("texture" in options) {
                 this._source = options.texture;
+                if (this._source) {
+                    if (this._width == 0 || this._height == 0) {
+                        this._width = this._source.width;
+                        this._height = this._source.height;
+                    }
+                }
+            }
             let reNew = oldScaleByTile != this._scaleByTile || (oldScale9Grid == null && this._scale9Grid != null)
                 || (oldScale9Grid != null && this._scale9Grid == null);
             this.fillImage(reNew);
@@ -14404,8 +14445,8 @@
         }
         //TODO:某个属性改变导致重复创建对象的问题；显示类型发生变化的问题
         fillImage(reNew = false) {
-            var w = this.width;
-            var h = this.height;
+            var w = this._width;
+            var h = this._height;
             var tex = this._source;
             if (this._view)
                 this._view.removeFromParent();
@@ -14864,6 +14905,7 @@
             }
         }
     };
+    PIXI.extensions.add(fgui.loadBytes);
 })(fgui);
 
 (function (fgui) {

@@ -113,11 +113,11 @@ namespace fgui {
                 return;
             }
 
-            AssetProxy.inst.load(loadKeyArr).then((resArr: Array<ByteBuffer>) => {
+            AssetProxy.inst.load(loadKeyArr).then((resArr: { [key: string]: ArrayBuffer }) => {
                 let pkg: UIPackage;
                 let urls = [];
                 for (i = 0; i < loadKeyArr.length; i++) {
-                    let asset = resArr[i];
+                    let asset = resArr[loadKeyArr[i]];
                     if (asset) {
                         pkg = new UIPackage();
                         pkgArr.push(pkg);

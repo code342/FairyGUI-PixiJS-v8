@@ -28,6 +28,9 @@ namespace fgui {
         private _fillAmount: number = 0;
         private _fillClockwise?: boolean;
 
+        private _width:number = 0;
+        private _height:number = 0;
+
         private _view: PIXI.Sprite | PIXI.TilingSprite | PIXI.NineSliceSprite | PIXI.Graphics;
 
         constructor() {
@@ -35,6 +38,14 @@ namespace fgui {
 
             this.eventMode = "none";
             this._color = "#FFFFFF";
+        }
+
+        set width(value:number){
+            this._width = value;
+        }
+
+        set height(value:number){
+            this._height = value;
         }
 
         public get color(): string {
@@ -70,10 +81,12 @@ namespace fgui {
         public set texture(value: PIXI.Texture) {
             if (this._source != value) {
                 this._source = value;
-                if (this._source)
-                    this.setSize(this._source.width, this._source.height);
-                else
-                    this.setSize(0, 0);
+                if (this._source){
+                    if(this._width == 0 || this._height == 0){
+                        this._width = this._source.width;
+                        this._height = this._source.height;
+                    }
+                }
 
                 this.fillImage();
             }
@@ -86,10 +99,19 @@ namespace fgui {
             if ("scaleByTile" in options) this._scaleByTile = options.scaleByTile
             if ("tileGridIndice" in options) this._tileGridIndice = options.tileGridIndice
             if ("color" in options) this._color = options.color;
-            if ("texture" in options) this._source = options.texture;
+            if ("texture" in options) {
+                this._source = options.texture;
+                if (this._source){
+                    if(this._width == 0 || this._height == 0){
+                        this._width = this._source.width;
+                        this._height = this._source.height;
+                    }
+                }
+            }
 
             let reNew = oldScaleByTile != this._scaleByTile || (oldScale9Grid == null && this._scale9Grid != null)
-                || (oldScale9Grid != null && this._scale9Grid == null)
+                || (oldScale9Grid != null && this._scale9Grid == null);
+
             this.fillImage(reNew);
         }
 
@@ -136,8 +158,8 @@ namespace fgui {
 
         //TODO:某个属性改变导致重复创建对象的问题；显示类型发生变化的问题
         private fillImage(reNew: boolean = false): void {
-            var w: number = this.width;
-            var h: number = this.height;
+            var w: number = this._width;
+            var h: number = this._height;
             var tex: PIXI.Texture = this._source;
 
             if (this._view) this._view.removeFromParent();
