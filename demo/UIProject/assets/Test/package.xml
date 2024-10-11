@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="nt10uk1f">
+  <resources>
+    <component id="f0u60" name="Component1.xml" path="/" exported="true"/>
+    <image id="f0u61" name="k19.png" path="/" atlas="alone"/>
+    <component id="f0u62" name="Button.xml" path="/"/>
+    <image id="f0u63" name="b7_png.png" path="/" scale="9grid" scale9grid="8,7,66,14"/>
+    <image id="f0u64" name="b5_png.png" path="/" scale="9grid" scale9grid="12,7,61,14"/>
+    <image id="f0u65" name="b6_png.png" path="/" scale="9grid" scale9grid="9,5,66,16"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

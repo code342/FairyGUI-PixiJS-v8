@@ -7,7 +7,10 @@
   "auxline2": true,
   "doc.activeDoc": "ui://rbw1tv9tfvaib",
   "libview.twoColumn": false,
-  "libview.expandedNodes": [],
+  "libview.expandedNodes": [
+    "rbw1tv9t",
+    "/"
+  ],
   "doc.openedDocs": [
     "ui://rbw1tv9tfvaib",
     "ui://rbw1tv9tkcy10"

@@ -927,11 +927,12 @@ namespace fgui {
         }
 
         protected handleSizeChanged(): void {
-            this._displayObject.width = this._width;
-            this._displayObject.height = this._height;
+            console.log("handleSizeChanged", this._width, this._height, this.constructor.name, this._displayObject.constructor.name, new Error().stack);
+            this._displayObject.setSize(this._width, this._height);
         }
 
         protected handleScaleChanged(): void {
+            console.log("handleScaleChanged", this._scaleX, this._scaleY);
             this._displayObject.scale.set(this._scaleX, this._scaleY);
         }
 

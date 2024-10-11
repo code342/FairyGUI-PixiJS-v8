@@ -11,7 +11,8 @@ namespace fgui {
         private _strokeWidth: number;
         private _strokeColor: string;
         declare _displayObject: PIXI.Text | Input;
-
+        private _halign:string;
+        private _valign:string;
         constructor() {
             super();
 
@@ -36,6 +37,7 @@ namespace fgui {
         public set text(value: string) {
 
             this._displayObject.text = value;
+            this.updateTextAlign();
         }
 
         public get text(): string {
@@ -81,18 +83,19 @@ namespace fgui {
         }
 
         public get align(): string {
-            return this._displayObject.style.align;
+            return this._halign;
         }
 
         public set align(value: PIXI.TextStyleAlign) {
-            this._displayObject.style.align = value;
+            this._halign = value;
         }
 
         public get valign(): string {
-            return "";
+            return this._valign;
         }
 
         public set valign(value: string) {
+            this._valign = value;
             console.log("dont support valign!!!");
         }
 
@@ -136,11 +139,10 @@ namespace fgui {
         }
 
         public get underline(): boolean {
-            return this._underline;
+            return false;
         }
 
         public set underline(value: boolean) {
-            this._underline = value;
             console.log('dont support underline!!!');
         }
 
@@ -199,10 +201,10 @@ namespace fgui {
             this._displayObject.style.wordWrap = !this._widthAutoSize && !this._singleLine;
             //this._displayObject.style.overflow = this._autoSize == AutoSizeType.Shrink ? "shrink" : (this._autoSize == AutoSizeType.Ellipsis ? "ellipsis" : "visible");
             if (!this._underConstruct) {
-                if (!this._heightAutoSize)
+                /*if (!this._heightAutoSize)
                     this._displayObject.setSize(this.width, this.height);
                 else if (!this._widthAutoSize)
-                    this._displayObject.width = this.width;
+                    this._displayObject.width = this.width;*/
             }
         }
 
@@ -240,8 +242,45 @@ namespace fgui {
                  this.height = this._displayObject.height;
          }*/
 
+        //pixi中设置Text的宽高会导致文本被缩放
         protected handleSizeChanged(): void {
-            this._displayObject.setSize(this._width, this._height);
+            console.log("GTextField handleSizeChanged", this._width, this._height);
+            this.updateTextAlign();
+        }
+
+        private updateTextAlign(): void {
+            if (!this._displayObject) return;
+
+            const align = this.align;
+            const valign = this.valign; 
+            const textWidth = this._displayObject.width;
+            const textHeight = this._displayObject.height;
+
+            // Horizontal alignment
+            switch (align) {
+                case 'left':
+                    this.x = 0;
+                    break;
+                case 'center':
+                    this.x = (this._width - textWidth) / 2;
+                    break;
+                case 'right':
+                    this.x = this._width - textWidth;
+                    break;
+            }
+
+            // Vertical alignment
+            switch (valign) {
+                case 'top':
+                    this.y = 0;
+                    break;
+                case 'middle':
+                    this.y = (this._height - textHeight) / 2;
+                    break;
+                case 'bottom':
+                    this.y = this._height - textHeight;
+                    break;
+            }
         }
 
         protected handleGrayedChanged(): void {

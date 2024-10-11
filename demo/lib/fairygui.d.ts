@@ -655,6 +655,7 @@ declare namespace fgui {
         getTextField(): GTextField;
         fireClick(downEffect?: boolean): void;
         protected setState(val: string): void;
+        protected handleSizeChanged(): void;
         handleControllerChanged(c: Controller): void;
         protected handleGrayedChanged(): void;
         getProp(index: number): any;
@@ -1203,8 +1204,8 @@ declare namespace fgui {
         private _strokeWidth;
         private _strokeColor;
         _displayObject: PIXI.Text | Input;
-        private _underline;
-        private _underlineGraphics;
+        private _halign;
+        private _valign;
         constructor();
         protected createDisplayObject(): void;
         get displayObject(): PIXI.Text;
@@ -1242,6 +1243,7 @@ declare namespace fgui {
         get textWidth(): number;
         ensureSizeCorrect(): void;
         protected handleSizeChanged(): void;
+        private updateTextAlign;
         protected handleGrayedChanged(): void;
         getProp(index: number): any;
         setProp(index: number, value: any): void;
@@ -2067,6 +2069,7 @@ declare namespace fgui {
         constructor();
         set width(value: number);
         set height(value: number);
+        setSize(value: number | PIXI.Optional<PIXI.Size, "height">, height?: number): void;
         get color(): string;
         set color(value: string);
         get fillMethod(): number;

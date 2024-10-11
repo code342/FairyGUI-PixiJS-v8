@@ -1427,10 +1427,11 @@
             this._displayObject.position.set(xv + this._pivotOffsetX, yv + this._pivotOffsetY);
         }
         handleSizeChanged() {
-            this._displayObject.width = this._width;
-            this._displayObject.height = this._height;
+            console.log("handleSizeChanged", this._width, this._height, this.constructor.name, this._displayObject.constructor.name, new Error().stack);
+            this._displayObject.setSize(this._width, this._height);
         }
         handleScaleChanged() {
+            console.log("handleScaleChanged", this._scaleX, this._scaleY);
             this._displayObject.scale.set(this._scaleX, this._scaleY);
         }
         handleGrayedChanged() {
@@ -2951,6 +2952,10 @@
                     }
                 }
             }
+        }
+        //TODO:子元件GImage宽高已经设置，不需要再设置父容器的宽高，不然效果会叠加
+        handleSizeChanged() {
+            console.log("GButton handleSizeChanged DO NOTHING!!!");
         }
         handleControllerChanged(c) {
             super.handleControllerChanged(c);
@@ -7701,6 +7706,7 @@
         }
         set text(value) {
             this._displayObject.text = value;
+            this.updateTextAlign();
         }
         get text() {
             return this._displayObject.text;
@@ -7737,15 +7743,16 @@
             }
         }
         get align() {
-            return this._displayObject.style.align;
+            return this._halign;
         }
         set align(value) {
-            this._displayObject.style.align = value;
+            this._halign = value;
         }
         get valign() {
-            return "";
+            return this._valign;
         }
         set valign(value) {
+            this._valign = value;
             console.log("dont support valign!!!");
         }
         get leading() {
@@ -7780,10 +7787,9 @@
                 this._displayObject.style.fontStyle = "normal";
         }
         get underline() {
-            return this._underline;
+            return false;
         }
         set underline(value) {
-            this._underline = value;
             console.log('dont support underline!!!');
         }
         get singleLine() {
@@ -7831,10 +7837,10 @@
             this._displayObject.style.wordWrap = !this._widthAutoSize && !this._singleLine;
             //this._displayObject.style.overflow = this._autoSize == AutoSizeType.Shrink ? "shrink" : (this._autoSize == AutoSizeType.Ellipsis ? "ellipsis" : "visible");
             if (!this._underConstruct) {
-                if (!this._heightAutoSize)
+                /*if (!this._heightAutoSize)
                     this._displayObject.setSize(this.width, this.height);
                 else if (!this._widthAutoSize)
-                    this._displayObject.width = this.width;
+                    this._displayObject.width = this.width;*/
             }
         }
         get textWidth() {
@@ -7867,8 +7873,42 @@
              else if (this._heightAutoSize)
                  this.height = this._displayObject.height;
          }*/
+        //pixi中设置Text的宽高会导致文本被缩放
         handleSizeChanged() {
-            this._displayObject.setSize(this._width, this._height);
+            console.log("GTextField handleSizeChanged", this._width, this._height);
+            this.updateTextAlign();
+        }
+        updateTextAlign() {
+            if (!this._displayObject)
+                return;
+            const align = this.align;
+            const valign = this.valign;
+            const textWidth = this._displayObject.width;
+            const textHeight = this._displayObject.height;
+            // Horizontal alignment
+            switch (align) {
+                case 'left':
+                    this.x = 0;
+                    break;
+                case 'center':
+                    this.x = (this._width - textWidth) / 2;
+                    break;
+                case 'right':
+                    this.x = this._width - textWidth;
+                    break;
+            }
+            // Vertical alignment
+            switch (valign) {
+                case 'top':
+                    this.y = 0;
+                    break;
+                case 'middle':
+                    this.y = (this._height - textHeight) / 2;
+                    break;
+                case 'bottom':
+                    this.y = this._height - textHeight;
+                    break;
+            }
         }
         handleGrayedChanged() {
             super.handleGrayedChanged();
@@ -14347,6 +14387,22 @@
         set height(value) {
             this._height = value;
         }
+        setSize(value, height) {
+            console.log("Image setSize", value, height);
+            if (value == this._width && height == this._height) {
+                console.log("setSize宽高无变化 Image", value, height);
+                return;
+            }
+            // super.setSize(value, height);
+            this._width = value;
+            this._height = height;
+            if (this.fillMethod != 0) {
+                this.fillMask();
+            }
+            else {
+                this.fillImage();
+            }
+        }
         get color() {
             return this._color;
         }
@@ -14432,8 +14488,8 @@
             }
             let graphic = this._view;
             this.mask = graphic;
-            var w = this.width;
-            var h = this.height;
+            var w = this._width;
+            var h = this._height;
             graphic.clear();
             if (w == 0 || h == 0)
                 return;

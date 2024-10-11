@@ -48,6 +48,22 @@ namespace fgui {
             this._height = value;
         }
 
+        override setSize(value: number | PIXI.Optional<PIXI.Size, "height">, height?: number): void {
+            console.log("Image setSize", value, height);
+            if(value == this._width && height == this._height){
+                console.log("setSize宽高无变化 Image", value, height);
+                return;
+            }
+           // super.setSize(value, height);
+            this._width = value as number;
+            this._height = height;
+            if(this.fillMethod != 0){
+                this.fillMask();
+            }else{
+                this.fillImage();
+            }
+        }
+
         public get color(): string {
             return this._color;
         }
@@ -139,8 +155,8 @@ namespace fgui {
             }
             let graphic = <PIXI.Graphics>this._view;
             this.mask = graphic as any;
-            var w: number = this.width;
-            var h: number = this.height;
+            var w: number = this._width;
+            var h: number = this._height;
 
             graphic.clear();
 

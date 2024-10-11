@@ -291,6 +291,11 @@ namespace fgui {
             }
         }
 
+        //TODO:子元件GImage宽高已经设置，不需要再设置父容器的宽高，不然效果会叠加
+        protected override handleSizeChanged(): void {
+            console.log("GButton handleSizeChanged DO NOTHING!!!");
+        }
+
         public handleControllerChanged(c: Controller): void {
             super.handleControllerChanged(c);
 
