@@ -8,7 +8,7 @@ export class MainMenu {
 
     onUILoaded(){
         this._view = fgui.UIPackage.createObject("MainMenu", "Main").asCom;
-       // this._view.makeFullScreen();
+        this._view.makeFullScreen();
         fgui.GRoot.inst.addChild(this._view);
 
         this._view.getChild("n1").onClick(this, () => {

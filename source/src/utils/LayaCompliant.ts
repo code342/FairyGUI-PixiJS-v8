@@ -25,8 +25,8 @@ namespace fgui {
     }
 
     export class Events {
-        public static DISPLAY = "pixi_added";
-        public static UNDISPLAY = "pixi_removed";
+        public static DISPLAY = "added";
+        public static UNDISPLAY = "removed";
 
         public static DRAG_START = 'fui_drag_start';
         public static DRAG_END = 'fui_drag_end';

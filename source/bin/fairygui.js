@@ -8362,7 +8362,7 @@
             this._checkPopups = false;
         }
         __winResize() {
-            this.setSize(this.stage.width, this.stage.height);
+            this.setSize(this.app.screen.width, this.app.screen.height);
             this.updateContentScaleLevel();
         }
         updateContentScaleLevel() {
@@ -17255,8 +17255,8 @@
     fgui.MouseEvents = MouseEvents;
     class Events {
     }
-    Events.DISPLAY = "pixi_added";
-    Events.UNDISPLAY = "pixi_removed";
+    Events.DISPLAY = "added";
+    Events.UNDISPLAY = "removed";
     Events.DRAG_START = 'fui_drag_start';
     Events.DRAG_END = 'fui_drag_end';
     Events.DRAG_MOVE = 'fui_drag_move';

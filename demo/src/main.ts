@@ -2,7 +2,7 @@
 import { DemoEntry } from "./DemoEntry";
 
 const app = new PIXI.Application();
-await app.init({ resizeTo: window });
+await app.init({ width:1136,height:640 });
 document.body.appendChild(app.canvas);
 app.stage.eventMode = "static";
 app.renderer.events.features.globalMove = false;

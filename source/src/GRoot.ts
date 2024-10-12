@@ -414,7 +414,7 @@ namespace fgui {
         }
 
         private __winResize(): void {
-            this.setSize(this.stage.width, this.stage.height);
+            this.setSize(this.app.screen.width, this.app.screen.height);
 
             this.updateContentScaleLevel();
         }
