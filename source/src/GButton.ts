@@ -294,6 +294,12 @@ namespace fgui {
         //TODO:子元件GImage宽高已经设置，不需要再设置父容器的宽高，不然效果会叠加
         protected override handleSizeChanged(): void {
             console.log("GButton handleSizeChanged DO NOTHING!!!");
+            this.updateHitArea();
+        }
+
+        protected override updateHitArea(): void {
+            super.updateHitArea();
+            this._displayObject.interactiveChildren = false;
         }
 
         public handleControllerChanged(c: Controller): void {
@@ -393,6 +399,7 @@ namespace fgui {
             this.on(MouseEvents.Out, this.__rollout, this);
             this.on(MouseEvents.Down, this.__mousedown, this);
             this.on(MouseEvents.Click, this.__click, this);
+
         }
 
         public setup_afterAdd(buffer: ByteBuffer, beginPos: number): void {

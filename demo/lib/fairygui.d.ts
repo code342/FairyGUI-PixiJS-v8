@@ -656,6 +656,7 @@ declare namespace fgui {
         fireClick(downEffect?: boolean): void;
         protected setState(val: string): void;
         protected handleSizeChanged(): void;
+        protected updateHitArea(): void;
         handleControllerChanged(c: Controller): void;
         protected handleGrayedChanged(): void;
         getProp(index: number): any;

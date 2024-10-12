@@ -2956,6 +2956,11 @@
         //TODO:子元件GImage宽高已经设置，不需要再设置父容器的宽高，不然效果会叠加
         handleSizeChanged() {
             console.log("GButton handleSizeChanged DO NOTHING!!!");
+            this.updateHitArea();
+        }
+        updateHitArea() {
+            super.updateHitArea();
+            this._displayObject.interactiveChildren = false;
         }
         handleControllerChanged(c) {
             super.handleControllerChanged(c);
@@ -8040,6 +8045,8 @@
             this.app = app;
             this.stage = app.stage;
             this.stage.addChild(this._displayObject);
+            this.stage.eventMode = "static";
+            app.renderer.events.features.globalMove = false;
         }
         get mousePosition() {
             return this.app.renderer.events.pointer.global;
@@ -13543,7 +13550,7 @@
                             if (atlasTexture) {
                                 let key = this._resKey + "_" + sprite.atlas + "_" + item.id;
                                 let orig = new PIXI.Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
-                                item.texture = this.createSubTexture(key, atlasTexture, orig, sprite.rect, sprite.offset.x, sprite.offset.y, 0);
+                                item.texture = this.createSubTexture(key, atlasTexture, sprite.rect, orig, sprite.offset.x, sprite.offset.y, 0);
                                 /*item.texture = Texture.create(atlasTexture,
                                     sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
                                     sprite.offset.x, sprite.offset.y,
@@ -13647,7 +13654,7 @@
                     var atlasTexture = (this.getItemAsset(sprite.atlas));
                     let key = this._resKey + "_" + sprite.atlas + "_" + spriteId;
                     let orig = new PIXI.Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
-                    frame.texture = this.createSubTexture(key, atlasTexture, orig, sprite.rect, fx, fy, 0);
+                    frame.texture = this.createSubTexture(key, atlasTexture, sprite.rect, orig, fx, fy, 0);
                     /*frame.texture = Texture.create(atlasTexture,
                         sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
                         fx, fy, item.width, item.height);*/

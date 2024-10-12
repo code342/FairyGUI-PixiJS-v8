@@ -35,6 +35,8 @@ namespace fgui {
             this.app = app;
             this.stage = app.stage;
             this.stage.addChild(this._displayObject);
+            this.stage.eventMode = "static";
+            app.renderer.events.features.globalMove = false;
         }
 
         public get mousePosition(): PIXI.Point {

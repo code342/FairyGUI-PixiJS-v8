@@ -605,7 +605,7 @@ namespace fgui {
                             if (atlasTexture) {
                                 let key = this._resKey + "_" + sprite.atlas + "_" + item.id;
                                 let orig = new PIXI.Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
-                                item.texture = this.createSubTexture(key, atlasTexture, orig, sprite.rect, sprite.offset.x, sprite.offset.y, 0);
+                                item.texture = this.createSubTexture(key, atlasTexture, sprite.rect, orig, sprite.offset.x, sprite.offset.y, 0);
                                 /*item.texture = Texture.create(atlasTexture,
                                     sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
                                     sprite.offset.x, sprite.offset.y,
@@ -728,7 +728,7 @@ namespace fgui {
 
                     let key = this._resKey + "_" + sprite.atlas + "_" + spriteId;
                     let orig = new PIXI.Rectangle(0, 0, sprite.originalSize.x, sprite.originalSize.y);
-                    frame.texture = this.createSubTexture(key, atlasTexture, orig, sprite.rect, fx, fy, 0);
+                    frame.texture = this.createSubTexture(key, atlasTexture, sprite.rect, orig, fx, fy, 0);
 
                     /*frame.texture = Texture.create(atlasTexture,
                         sprite.rect.x, sprite.rect.y, sprite.rect.width, sprite.rect.height,
