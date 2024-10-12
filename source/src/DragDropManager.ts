@@ -21,7 +21,7 @@ namespace fgui {
             this._agent.align = "center";
             this._agent.verticalAlign = "middle";
             this._agent.sortingOrder = 1000000;
-            this._agent.on(DisplayEvent.DragEnd, this.__dragEnd, this);
+            this._agent.on(Events.DRAG_END, this.__dragEnd, this);
         }
 
         public get dragAgent(): GObject {
@@ -64,9 +64,9 @@ namespace fgui {
 
             var obj: GObject = GObject.cast(evt.target);
             while (obj) {
-                if (obj.hasListener(DisplayEvent.DragDrop)) {
+                if (obj.hasListener(Events.DROP)) {
                     obj.requestFocus();
-                    obj.emit(DisplayEvent.DragDrop, [sourceData, evt]);
+                    obj.emit(Events.DROP, [sourceData, evt]);
                     return;
                 }
 

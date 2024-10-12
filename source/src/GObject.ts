@@ -115,7 +115,7 @@ namespace fgui {
                     this._parent.setBoundsChangedFlag();
                     if (this._group)
                         this._group.setBoundsChangedFlag(true);
-                    this.emit(DisplayEvent.PositionChanged);
+                    this.emit(Events.XY_CHANGED);
                 }
 
                 if (GObject.draggingObject == this && !sUpdateInDragging)
@@ -228,7 +228,7 @@ namespace fgui {
                         this._group.setBoundsChangedFlag();
                 }
 
-                this.emit(DisplayEvent.SizeChanged);
+                this.emit(Events.SIZE_CHANGED);
             }
         }
 
@@ -1105,7 +1105,7 @@ namespace fgui {
                 tmp.stopDrag();
                 GObject.draggingObject = null;
 
-                tmp.emit(DisplayEvent.DragEnd, { touchId: touchID });
+                tmp.emit(Events.DRAG_END, { touchId: touchID });
             }
 
             sGlobalDragStart.copyFrom(GRoot.inst.mousePosition);
@@ -1154,7 +1154,7 @@ namespace fgui {
                 this._dragTesting = false;
 
                 sDraggingQuery = true;
-                this.emit(DisplayEvent.DragStart, evt)
+                this.emit(Events.DRAG_START, evt)
                 if (sDraggingQuery)
                     this.dragBegin();
             }
@@ -1189,7 +1189,7 @@ namespace fgui {
                 this.setXY(Math.round(pt.x), Math.round(pt.y));
                 sUpdateInDragging = false;
 
-                this.emit(DisplayEvent.DragMove, evt);
+                this.emit(Events.DRAG_MOVE, evt);
             }
         }
 
@@ -1198,7 +1198,7 @@ namespace fgui {
                 GObject.draggingObject = null;
                 this.reset();
 
-                this.emit(DisplayEvent.DragEnd, evt);
+                this.emit(Events.DRAG_END, evt);
             }
             else if (this._dragTesting) {
                 this._dragTesting = false;

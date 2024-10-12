@@ -41,7 +41,7 @@ namespace fgui {
                 this._selectedIndex = value;
                 this.parent.applyController(this);
 
-                this.emit(DisplayEvent.StateChanged, this);
+                this.emit(Events.STATE_CHANGED, this);
                 this.changing = false;
             }
         }

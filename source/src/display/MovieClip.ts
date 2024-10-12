@@ -32,8 +32,8 @@ namespace fgui {
 
             this.setPlaySettings();
 
-            this.on(DisplayEvent.Added, this.__addToStage, this);
-            this.on(DisplayEvent.Removed, this.__removeFromStage, this);
+            this.on(Events.DISPLAY, this.__addToStage, this);
+            this.on(Events.UNDISPLAY, this.__removeFromStage, this);
         }
 
         public get frames(): Frame[] {

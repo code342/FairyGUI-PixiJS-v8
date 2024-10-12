@@ -1198,8 +1198,8 @@ namespace fgui {
             }
 
             if (this._transitions.length > 0) {
-                this.displayObject.on(DisplayEvent.Added, this.___added, this);
-                this.displayObject.on(DisplayEvent.Removed, this.___removed, this);
+                this.displayObject.on(Events.DISPLAY, this.___added, this);
+                this.displayObject.on(Events.UNDISPLAY, this.___removed, this);
             }
 
             this.applyAllControllers();

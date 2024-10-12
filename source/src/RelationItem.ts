@@ -504,8 +504,8 @@ namespace fgui {
 
         private addRefTarget(): void {
             if (this._target != this._owner.parent)
-                this._target.on(DisplayEvent.PositionChanged, this.__targetXYChanged, this);
-            this._target.on(DisplayEvent.SizeChanged, this.__targetSizeChanged, this);
+                this._target.on(Events.XY_CHANGED, this.__targetXYChanged, this);
+            this._target.on(Events.SIZE_CHANGED, this.__targetSizeChanged, this);
 
             this._targetX = this._targetInitX = this._target.x;
             this._targetY = this._targetInitY = this._target.y;
@@ -517,8 +517,8 @@ namespace fgui {
             if (this._target.displayObject == null)
                 return;
 
-            this._target.off(DisplayEvent.PositionChanged, this.__targetXYChanged, this);
-            this._target.off(DisplayEvent.SizeChanged, this.__targetSizeChanged, this);
+            this._target.off(Events.XY_CHANGED, this.__targetXYChanged, this);
+            this._target.off(Events.SIZE_CHANGED, this.__targetSizeChanged, this);
         }
 
         private __targetXYChanged(): void {

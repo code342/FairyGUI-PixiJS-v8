@@ -2702,21 +2702,21 @@ declare namespace fgui {
         static RightUpOutside: string;
         static Wheel: string;
     }
-    class DisplayEvent {
-        static Added: string;
-        static Removed: string;
-        static DragStart: string;
-        static DragEnd: string;
-        static DragMove: string;
-        static DragDrop: string;
-        static StateChanged: string;
-        static SizeChanged: string;
-        static PositionChanged: string;
-        static ClickItem: string;
-        static Scroll: string;
-        static ScrollEnd: string;
-        static PullDownRelease: string;
-        static PullUpRelease: string;
+    class Events {
+        static DISPLAY: string;
+        static UNDISPLAY: string;
+        static DRAG_START: string;
+        static DRAG_END: string;
+        static DRAG_MOVE: string;
+        static DROP: string;
+        static STATE_CHANGED: string;
+        static SIZE_CHANGED: string;
+        static XY_CHANGED: string;
+        static CLICK_ITEM: string;
+        static SCROLL: string;
+        static SCROLL_END: string;
+        static PULL_DOWN_RELEASE: string;
+        static PULL_UP_RELEASE: string;
     }
 }
 declare namespace fgui {

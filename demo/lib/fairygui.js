@@ -217,7 +217,7 @@
                 this._previousIndex = this._selectedIndex;
                 this._selectedIndex = value;
                 this.parent.applyController(this);
-                this.emit(fgui.DisplayEvent.StateChanged, this);
+                this.emit(fgui.Events.STATE_CHANGED, this);
                 this.changing = false;
             }
         }
@@ -438,7 +438,7 @@
             this._agent.align = "center";
             this._agent.verticalAlign = "middle";
             this._agent.sortingOrder = 1000000;
-            this._agent.on(fgui.DisplayEvent.DragEnd, this.__dragEnd, this);
+            this._agent.on(fgui.Events.DRAG_END, this.__dragEnd, this);
         }
         get dragAgent() {
             return this._agent;
@@ -472,9 +472,9 @@
             this._sourceData = null;
             var obj = fgui.GObject.cast(evt.target);
             while (obj) {
-                if (obj.hasListener(fgui.DisplayEvent.DragDrop)) {
+                if (obj.hasListener(fgui.Events.DROP)) {
                     obj.requestFocus();
-                    obj.emit(fgui.DisplayEvent.DragDrop, [sourceData, evt]);
+                    obj.emit(fgui.Events.DROP, [sourceData, evt]);
                     return;
                 }
                 obj = obj.parent;
@@ -768,7 +768,7 @@
                     this._parent.setBoundsChangedFlag();
                     if (this._group)
                         this._group.setBoundsChangedFlag(true);
-                    this.emit(fgui.DisplayEvent.PositionChanged);
+                    this.emit(fgui.Events.XY_CHANGED);
                 }
                 if (GObject.draggingObject == this && !sUpdateInDragging)
                     this.localToGlobalRect(0, 0, this.width, this.height, sGlobalRect);
@@ -862,7 +862,7 @@
                     if (this._group)
                         this._group.setBoundsChangedFlag();
                 }
-                this.emit(fgui.DisplayEvent.SizeChanged);
+                this.emit(fgui.Events.SIZE_CHANGED);
             }
         }
         ensureSizeCorrect() {
@@ -1571,7 +1571,7 @@
                 let tmp = GObject.draggingObject;
                 tmp.stopDrag();
                 GObject.draggingObject = null;
-                tmp.emit(fgui.DisplayEvent.DragEnd, { touchId: touchID });
+                tmp.emit(fgui.Events.DRAG_END, { touchId: touchID });
             }
             sGlobalDragStart.copyFrom(fgui.GRoot.inst.mousePosition);
             this.localToGlobalRect(0, 0, this.width, this.height, sGlobalRect);
@@ -1610,7 +1610,7 @@
                     return;
                 this._dragTesting = false;
                 sDraggingQuery = true;
-                this.emit(fgui.DisplayEvent.DragStart, evt);
+                this.emit(fgui.Events.DRAG_START, evt);
                 if (sDraggingQuery)
                     this.dragBegin();
             }
@@ -1639,14 +1639,14 @@
                 var pt = this.parent.globalToLocal(xx, yy, sHelperPoint);
                 this.setXY(Math.round(pt.x), Math.round(pt.y));
                 sUpdateInDragging = false;
-                this.emit(fgui.DisplayEvent.DragMove, evt);
+                this.emit(fgui.Events.DRAG_MOVE, evt);
             }
         }
         __end(evt) {
             if (GObject.draggingObject == this) {
                 GObject.draggingObject = null;
                 this.reset();
-                this.emit(fgui.DisplayEvent.DragEnd, evt);
+                this.emit(fgui.Events.DRAG_END, evt);
             }
             else if (this._dragTesting) {
                 this._dragTesting = false;
@@ -2662,8 +2662,8 @@
                 buffer.pos = nextPos;
             }
             if (this._transitions.length > 0) {
-                this.displayObject.on(fgui.DisplayEvent.Added, this.___added, this);
-                this.displayObject.on(fgui.DisplayEvent.Removed, this.___removed, this);
+                this.displayObject.on(fgui.Events.DISPLAY, this.___added, this);
+                this.displayObject.on(fgui.Events.UNDISPLAY, this.___removed, this);
             }
             this.applyAllControllers();
             this._buildingDisplayList = false;
@@ -3151,13 +3151,13 @@
             if (this._mode == fgui.ButtonMode.Check) {
                 if (this._changeStateOnClick) {
                     this.selected = !this._selected;
-                    this.emit(fgui.DisplayEvent.StateChanged, evt);
+                    this.emit(fgui.Events.STATE_CHANGED, evt);
                 }
             }
             else if (this._mode == fgui.ButtonMode.Radio) {
                 if (this._changeStateOnClick && !this._selected) {
                     this.selected = true;
-                    this.emit(fgui.DisplayEvent.StateChanged, evt);
+                    this.emit(fgui.Events.STATE_CHANGED, evt);
                 }
             }
             else {
@@ -3421,12 +3421,12 @@
                     console.log(this.resourceURL + ": 下拉框的弹出元件里必须包含名为list的列表");
                     return;
                 }
-                this._list.on(fgui.DisplayEvent.ClickItem, this.__clickItem, this);
+                this._list.on(fgui.Events.CLICK_ITEM, this.__clickItem, this);
                 this._list.addRelation(this.dropdown, fgui.RelationType.Width);
                 this._list.removeRelation(this.dropdown, fgui.RelationType.Height);
                 this.dropdown.addRelation(this._list, fgui.RelationType.Height);
                 this.dropdown.removeRelation(this._list, fgui.RelationType.Width);
-                this.dropdown.displayObject.on(fgui.DisplayEvent.Removed, this.__popupWinClosed, this);
+                this.dropdown.displayObject.on(fgui.Events.UNDISPLAY, this.__popupWinClosed, this);
             }
             this.on(fgui.MouseEvents.Over, this.__rollover, this);
             this.on(fgui.MouseEvents.Out, this.__rollout, this);
@@ -3519,7 +3519,7 @@
                 this.dropdown.parent.hidePopup();
             this._selectedIndex = -1;
             this.selectedIndex = index;
-            this.emit(fgui.DisplayEvent.StateChanged, evt);
+            this.emit(fgui.Events.STATE_CHANGED, evt);
         }
         __rollover() {
             this._over = true;
@@ -5023,7 +5023,7 @@
             this.dispatchItemEvent(item, evt);
         }
         dispatchItemEvent(item, evt) {
-            this.emit(fgui.DisplayEvent.ClickItem, [item, evt]);
+            this.emit(fgui.Events.CLICK_ITEM, [item, evt]);
         }
         setSelectionOnEvent(item, evt) {
             if (!(item instanceof fgui.GButton) || this._selectionMode == fgui.ListSelectionMode.None)
@@ -5342,7 +5342,7 @@
                     if (this._loop)
                         this._scrollPane._loop = 1;
                 }
-                this.on(fgui.DisplayEvent.Scroll, this.__scrolled, this);
+                this.on(fgui.Events.SCROLL, this.__scrolled, this);
                 this.setVirtualListChangedFlag(true);
             }
         }
@@ -8039,14 +8039,12 @@
             this.opaque = false;
             this._popupStack = [];
             this._justClosedPopups = [];
-            this.displayObject.once(fgui.DisplayEvent.Added, this.__addedToStage, this);
+            this.displayObject.once(fgui.Events.DISPLAY, this.__addedToStage, this);
         }
         launch(app) {
             this.app = app;
             this.stage = app.stage;
             this.stage.addChild(this._displayObject);
-            this.stage.eventMode = "static";
-            app.renderer.events.features.globalMove = false;
         }
         get mousePosition() {
             return this.app.renderer.events.pointer.global;
@@ -8591,7 +8589,7 @@
                 }
                 if (newValue != this._value) {
                     this._value = newValue;
-                    this.emit(fgui.DisplayEvent.StateChanged, evt);
+                    this.emit(fgui.Events.STATE_CHANGED, evt);
                 }
             }
             if (this._titleObject) {
@@ -8911,7 +8909,7 @@
             var cc;
             cc = child.getController("expanded");
             if (cc) {
-                cc.on(fgui.DisplayEvent.StateChanged, this.__expandedStateChanged, this);
+                cc.on(fgui.Events.STATE_CHANGED, this.__expandedStateChanged, this);
                 cc.selectedIndex = node.expanded ? 1 : 0;
             }
             cc = child.getController("leaf");
@@ -9394,13 +9392,13 @@
                     throw "UIConfig.popupMenu not defined";
             }
             this._contentPane = fgui.UIPackage.createObjectFromURL(resourceURL).asCom;
-            this._contentPane.on(fgui.DisplayEvent.Added, this.__addedToStage, this);
+            this._contentPane.on(fgui.Events.DISPLAY, this.__addedToStage, this);
             this._list = (this._contentPane.getChild("list"));
             this._list.removeChildrenToPool();
             this._list.addRelation(this._contentPane, fgui.RelationType.Width);
             this._list.removeRelation(this._contentPane, fgui.RelationType.Height);
             this._contentPane.addRelation(this._list, fgui.RelationType.Height);
-            this._list.on(fgui.DisplayEvent.ClickItem, this.__clickItem, this);
+            this._list.on(fgui.Events.CLICK_ITEM, this.__clickItem, this);
         }
         dispose() {
             this._contentPane.dispose();
@@ -9988,8 +9986,8 @@
         }
         addRefTarget() {
             if (this._target != this._owner.parent)
-                this._target.on(fgui.DisplayEvent.PositionChanged, this.__targetXYChanged, this);
-            this._target.on(fgui.DisplayEvent.SizeChanged, this.__targetSizeChanged, this);
+                this._target.on(fgui.Events.XY_CHANGED, this.__targetXYChanged, this);
+            this._target.on(fgui.Events.SIZE_CHANGED, this.__targetSizeChanged, this);
             this._targetX = this._targetInitX = this._target.x;
             this._targetY = this._targetInitY = this._target.y;
             this._targetWidth = this._target._width;
@@ -9998,8 +9996,8 @@
         releaseRefTarget() {
             if (this._target.displayObject == null)
                 return;
-            this._target.off(fgui.DisplayEvent.PositionChanged, this.__targetXYChanged, this);
-            this._target.off(fgui.DisplayEvent.SizeChanged, this.__targetSizeChanged, this);
+            this._target.off(fgui.Events.XY_CHANGED, this.__targetXYChanged, this);
+            this._target.off(fgui.Events.SIZE_CHANGED, this.__targetSizeChanged, this);
         }
         __targetXYChanged() {
             if (this._owner.relations.handling != null || this._owner.group != null && this._owner.group._updating) {
@@ -10947,7 +10945,7 @@
                 this._yPos = -sEndPos.y;
             }
             this.refresh2();
-            this._owner.emit(fgui.DisplayEvent.Scroll);
+            this._owner.emit(fgui.Events.SCROLL);
             if (this._needRefresh) //在onScroll事件里开发者可能修改位置，这里再刷新一次，避免闪烁
              {
                 this._needRefresh = false;
@@ -11164,7 +11162,7 @@
             this.updateScrollBarVisible();
             if (this._pageMode)
                 this.updatePageController();
-            this._owner.emit(fgui.DisplayEvent.Scroll);
+            this._owner.emit(fgui.Events.SCROLL);
         }
         __mouseUp() {
             if (this._owner.isDisposed)
@@ -11205,12 +11203,12 @@
                 this._tweenChange.set(sEndPos.x - this._tweenStart.x, sEndPos.y - this._tweenStart.y);
                 if (this._tweenChange.x < -fgui.UIConfig.touchDragSensitivity || this._tweenChange.y < -fgui.UIConfig.touchDragSensitivity) {
                     this._refreshEventDispatching = true;
-                    this._owner.emit(fgui.DisplayEvent.PullDownRelease);
+                    this._owner.emit(fgui.Events.PULL_DOWN_RELEASE);
                     this._refreshEventDispatching = false;
                 }
                 else if (this._tweenChange.x > fgui.UIConfig.touchDragSensitivity || this._tweenChange.y > fgui.UIConfig.touchDragSensitivity) {
                     this._refreshEventDispatching = true;
-                    this._owner.emit(fgui.DisplayEvent.PullUpRelease);
+                    this._owner.emit(fgui.Events.PULL_UP_RELEASE);
                     this._refreshEventDispatching = false;
                 }
                 if (this._headerLockedSize > 0 && sEndPos[this._refreshBarAxis] == 0) {
@@ -11542,12 +11540,12 @@
             if (this._tweening == 1) //取消类型为1的tween需立刻设置到终点
              {
                 this._container.position.set(this._tweenStart.x + this._tweenChange.x, this._tweenStart.y + this._tweenChange.y);
-                this._owner.emit(fgui.DisplayEvent.Scroll);
+                this._owner.emit(fgui.Events.SCROLL);
             }
             this._tweening = 0;
             fgui.Timer.shared.clear(this, this.tweenUpdate);
             this.updateScrollBarVisible();
-            this._owner.emit(fgui.DisplayEvent.ScrollEnd);
+            this._owner.emit(fgui.Events.SCROLL_END);
         }
         checkRefreshBar() {
             if (!this._header && !this._footer)
@@ -11610,12 +11608,12 @@
                 this.loopCheckingCurrent();
                 this.updateScrollBarPos();
                 this.updateScrollBarVisible();
-                this._owner.emit(fgui.DisplayEvent.Scroll);
-                this._owner.emit(fgui.DisplayEvent.ScrollEnd);
+                this._owner.emit(fgui.Events.SCROLL);
+                this._owner.emit(fgui.Events.SCROLL_END);
             }
             else {
                 this.updateScrollBarPos();
-                this._owner.emit(fgui.DisplayEvent.Scroll);
+                this._owner.emit(fgui.Events.SCROLL);
             }
         }
         runTween(axis) {
@@ -13765,8 +13763,8 @@
             this._requestingCmd = 0;
             this._uiSources = [];
             this.bringToFontOnClick = fgui.UIConfig.bringWindowToFrontOnClick;
-            this.displayObject.on(fgui.DisplayEvent.Added, this.__onShown, this);
-            this.displayObject.on(fgui.DisplayEvent.Removed, this.__onHidden, this);
+            this.displayObject.on(fgui.Events.DISPLAY, this.__onShown, this);
+            this.displayObject.on(fgui.Events.UNDISPLAY, this.__onHidden, this);
             this.displayObject.on(fgui.MouseEvents.Down, this.__mouseDown, this);
         }
         addUISource(source) {
@@ -13813,14 +13811,14 @@
             if (this._dragArea != value) {
                 if (this._dragArea) {
                     this._dragArea.draggable = false;
-                    this._dragArea.off(fgui.DisplayEvent.DragStart, this.__dragStart, this);
+                    this._dragArea.off(fgui.Events.DRAG_START, this.__dragStart, this);
                 }
                 this._dragArea = value;
                 if (this._dragArea) {
                     if (this._dragArea instanceof fgui.GGraph)
                         this._dragArea.asGraph.drawRect(0, null, null);
                     this._dragArea.draggable = true;
-                    this._dragArea.on(fgui.DisplayEvent.DragStart, this.__dragStart, this);
+                    this._dragArea.on(fgui.Events.DRAG_START, this.__dragStart, this);
                 }
             }
         }
@@ -14659,8 +14657,8 @@
             this._repeatedCount = 0;
             this.eventMode = 'none';
             this.setPlaySettings();
-            this.on(fgui.DisplayEvent.Added, this.__addToStage, this);
-            this.on(fgui.DisplayEvent.Removed, this.__removeFromStage, this);
+            this.on(fgui.Events.DISPLAY, this.__addToStage, this);
+            this.on(fgui.Events.UNDISPLAY, this.__removeFromStage, this);
         }
         get frames() {
             return this._frames;
@@ -17255,23 +17253,23 @@
     MouseEvents.RightUpOutside = "rightupoutside";
     MouseEvents.Wheel = "wheel";
     fgui.MouseEvents = MouseEvents;
-    class DisplayEvent {
+    class Events {
     }
-    DisplayEvent.Added = "added";
-    DisplayEvent.Removed = "removed";
-    DisplayEvent.DragStart = 'DragStart';
-    DisplayEvent.DragEnd = 'DragEnd';
-    DisplayEvent.DragMove = 'DragMove';
-    DisplayEvent.DragDrop = 'DragDrop';
-    DisplayEvent.StateChanged = "stateChanged";
-    DisplayEvent.SizeChanged = "sizeChanged";
-    DisplayEvent.PositionChanged = "positionChanged";
-    DisplayEvent.ClickItem = "clickItem";
-    DisplayEvent.Scroll = "scroll";
-    DisplayEvent.ScrollEnd = "scrollEnd";
-    DisplayEvent.PullDownRelease = "pullDownRelease";
-    DisplayEvent.PullUpRelease = "pullUpRelease";
-    fgui.DisplayEvent = DisplayEvent;
+    Events.DISPLAY = "pixi_added";
+    Events.UNDISPLAY = "pixi_removed";
+    Events.DRAG_START = 'fui_drag_start';
+    Events.DRAG_END = 'fui_drag_end';
+    Events.DRAG_MOVE = 'fui_drag_move';
+    Events.DROP = 'fui_drop';
+    Events.STATE_CHANGED = "fui_state_changed";
+    Events.SIZE_CHANGED = "fui_size_changed";
+    Events.XY_CHANGED = "fui_xy_changed";
+    Events.CLICK_ITEM = "fui_click_item";
+    Events.SCROLL = "fui_scroll";
+    Events.SCROLL_END = "fui_scroll_end";
+    Events.PULL_DOWN_RELEASE = "fui_pull_down_release";
+    Events.PULL_UP_RELEASE = "fui_pull_up_release";
+    fgui.Events = Events;
 })(fgui);
 
 (function (fgui) {

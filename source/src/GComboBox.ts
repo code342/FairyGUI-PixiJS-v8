@@ -306,7 +306,7 @@ namespace fgui {
                     console.log(this.resourceURL + ": 下拉框的弹出元件里必须包含名为list的列表");
                     return;
                 }
-                this._list.on(DisplayEvent.ClickItem, this.__clickItem, this);
+                this._list.on(Events.CLICK_ITEM, this.__clickItem, this);
 
                 this._list.addRelation(this.dropdown, RelationType.Width);
                 this._list.removeRelation(this.dropdown, RelationType.Height);
@@ -314,7 +314,7 @@ namespace fgui {
                 this.dropdown.addRelation(this._list, RelationType.Height);
                 this.dropdown.removeRelation(this._list, RelationType.Width);
 
-                this.dropdown.displayObject.on(DisplayEvent.Removed, this.__popupWinClosed, this);
+                this.dropdown.displayObject.on(Events.UNDISPLAY, this.__popupWinClosed, this);
             }
 
             this.on(MouseEvents.Over, this.__rollover, this);
@@ -426,7 +426,7 @@ namespace fgui {
 
             this._selectedIndex = -1;
             this.selectedIndex = index;
-            this.emit(DisplayEvent.StateChanged, evt)
+            this.emit(Events.STATE_CHANGED, evt)
         }
 
         private __rollover(): void {

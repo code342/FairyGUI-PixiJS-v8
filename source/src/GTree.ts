@@ -124,7 +124,7 @@ namespace fgui {
 
             cc = child.getController("expanded");
             if (cc) {
-                cc.on(DisplayEvent.StateChanged, this.__expandedStateChanged, this);
+                cc.on(Events.STATE_CHANGED, this.__expandedStateChanged, this);
                 cc.selectedIndex = node.expanded ? 1 : 0;
             }
 

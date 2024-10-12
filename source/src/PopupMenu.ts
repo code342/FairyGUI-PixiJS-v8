@@ -12,13 +12,13 @@ namespace fgui {
                     throw "UIConfig.popupMenu not defined";
             }
             this._contentPane = UIPackage.createObjectFromURL(resourceURL).asCom;
-            this._contentPane.on(DisplayEvent.Added, this.__addedToStage, this);
+            this._contentPane.on(Events.DISPLAY, this.__addedToStage, this);
             this._list = <GList>(this._contentPane.getChild("list"));
             this._list.removeChildrenToPool();
             this._list.addRelation(this._contentPane, RelationType.Width);
             this._list.removeRelation(this._contentPane, RelationType.Height);
             this._contentPane.addRelation(this._list, RelationType.Height);
-            this._list.on(DisplayEvent.ClickItem, this.__clickItem, this);
+            this._list.on(Events.CLICK_ITEM, this.__clickItem, this);
         }
 
         public dispose(): void {

@@ -641,7 +641,7 @@ namespace fgui {
         }
 
         protected dispatchItemEvent(item: GObject, evt: PIXI.FederatedPointerEvent): void {
-            this.emit(DisplayEvent.ClickItem, [item, evt]);
+            this.emit(Events.CLICK_ITEM, [item, evt]);
         }
 
         private setSelectionOnEvent(item: GObject, evt: PIXI.FederatedPointerEvent): void {
@@ -1003,7 +1003,7 @@ namespace fgui {
                         this._scrollPane._loop = 1;
                 }
 
-                this.on(DisplayEvent.Scroll, this.__scrolled, this);
+                this.on(Events.SCROLL, this.__scrolled, this);
                 this.setVirtualListChangedFlag(true);
             }
         }

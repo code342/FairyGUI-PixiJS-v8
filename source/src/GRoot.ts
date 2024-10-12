@@ -28,15 +28,13 @@ namespace fgui {
             this.opaque = false;
             this._popupStack = [];
             this._justClosedPopups = [];
-            this.displayObject.once(DisplayEvent.Added, this.__addedToStage, this);
+            this.displayObject.once(Events.DISPLAY, this.__addedToStage, this);
         }
 
         public launch(app: PIXI.Application) {
             this.app = app;
             this.stage = app.stage;
             this.stage.addChild(this._displayObject);
-            this.stage.eventMode = "static";
-            app.renderer.events.features.globalMove = false;
         }
 
         public get mousePosition(): PIXI.Point {

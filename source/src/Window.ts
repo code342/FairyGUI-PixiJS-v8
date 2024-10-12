@@ -23,8 +23,8 @@ namespace fgui {
             this._uiSources = [];
             this.bringToFontOnClick = UIConfig.bringWindowToFrontOnClick;
 
-            this.displayObject.on(DisplayEvent.Added, this.__onShown, this);
-            this.displayObject.on(DisplayEvent.Removed, this.__onHidden, this);
+            this.displayObject.on(Events.DISPLAY, this.__onShown, this);
+            this.displayObject.on(Events.UNDISPLAY, this.__onHidden, this);
             this.displayObject.on(MouseEvents.Down, this.__mouseDown, this);
         }
 
@@ -79,7 +79,7 @@ namespace fgui {
             if (this._dragArea != value) {
                 if (this._dragArea) {
                     this._dragArea.draggable = false;
-                    this._dragArea.off(DisplayEvent.DragStart, this.__dragStart, this);
+                    this._dragArea.off(Events.DRAG_START, this.__dragStart, this);
                 }
 
                 this._dragArea = value;
@@ -87,7 +87,7 @@ namespace fgui {
                     if (this._dragArea instanceof GGraph)
                         this._dragArea.asGraph.drawRect(0, null, null);
                     this._dragArea.draggable = true;
-                    this._dragArea.on(DisplayEvent.DragStart, this.__dragStart, this);
+                    this._dragArea.on(Events.DRAG_START, this.__dragStart, this);
                 }
             }
         }

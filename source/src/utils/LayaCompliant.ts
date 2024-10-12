@@ -24,23 +24,25 @@ namespace fgui {
         public static Wheel = "wheel";
     }
 
-    export class DisplayEvent {
-        public static Added = "added";
-        public static Removed = "removed";
-        public static DragStart = 'DragStart';
-        public static DragEnd = 'DragEnd';
-        public static DragMove = 'DragMove';
-        public static DragDrop = 'DragDrop';
+    export class Events {
+        public static DISPLAY = "pixi_added";
+        public static UNDISPLAY = "pixi_removed";
 
-        public static StateChanged = "stateChanged";
-        public static SizeChanged = "sizeChanged";
-        public static PositionChanged = "positionChanged";
+        public static DRAG_START = 'fui_drag_start';
+        public static DRAG_END = 'fui_drag_end';
+        public static DRAG_MOVE = 'fui_drag_move';
+        public static DROP = 'fui_drop';
 
-        public static ClickItem = "clickItem";
+        public static STATE_CHANGED = "fui_state_changed";
+        public static SIZE_CHANGED = "fui_size_changed";
+        public static XY_CHANGED = "fui_xy_changed";
 
-        public static Scroll = "scroll";
-        public static ScrollEnd = "scrollEnd";
-        public static PullDownRelease = "pullDownRelease";
-        public static PullUpRelease = "pullUpRelease";
+        public static CLICK_ITEM = "fui_click_item";
+
+        public static SCROLL = "fui_scroll";
+        public static SCROLL_END = "fui_scroll_end";
+
+        public static PULL_DOWN_RELEASE = "fui_pull_down_release";
+        public static PULL_UP_RELEASE = "fui_pull_up_release";
     }
 }
