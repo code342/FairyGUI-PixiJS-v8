@@ -62,7 +62,7 @@ namespace fgui {
             if(this.fillMethod != 0){
                 this.fillMask();
             }else{
-                this.fillImage();
+                this.fillTexture();
             }
         }
 
@@ -77,7 +77,7 @@ namespace fgui {
         public set color(value: string) {
             if (this._color != value) {
                 this._color = value;
-                this.fillImage();
+                this.fillTexture();
             }
         }
 
@@ -110,7 +110,7 @@ namespace fgui {
                     }
                 }
 
-                this.fillImage();
+                this.fillTexture();
             }
         }
 
@@ -135,7 +135,7 @@ namespace fgui {
             let reNew = oldScaleByTile != this._scaleByTile || (oldScale9Grid == null && this._scale9Grid != null)
                 || (oldScale9Grid != null && this._scale9Grid == null);
 
-            this.fillImage(reNew);
+            this.fillTexture(reNew);
         }
 
         public set maskOption(options: FillMaskOption) {
@@ -180,7 +180,7 @@ namespace fgui {
 
 
         //TODO:某个属性改变导致重复创建对象的问题；显示类型发生变化的问题
-        private fillImage(reNew: boolean = false): void {
+        private fillTexture(reNew: boolean = false): void {
             var w: number = this._width;
             var h: number = this._height;
             var tex: PIXI.Texture = this._source;

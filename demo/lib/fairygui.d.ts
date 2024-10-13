@@ -1206,12 +1206,10 @@ declare namespace fgui {
         private _ubbEnabled;
         private _strokeWidth;
         private _strokeColor;
-        _displayObject: PIXI.Text | Input;
-        private _halign;
-        private _valign;
+        _displayObject: TextField;
         constructor();
         protected createDisplayObject(): void;
-        get displayObject(): PIXI.Text;
+        get displayObject(): TextField;
         set text(value: string);
         get text(): string;
         get font(): string | string[];
@@ -1246,7 +1244,6 @@ declare namespace fgui {
         get textWidth(): number;
         ensureSizeCorrect(): void;
         protected handleSizeChanged(): void;
-        private updateTextAlign;
         protected handleGrayedChanged(): void;
         getProp(index: number): any;
         setProp(index: number, value: any): void;
@@ -2092,12 +2089,32 @@ declare namespace fgui {
         set imgOption(options: FillTextureOption);
         set maskOption(options: FillMaskOption);
         private fillMask;
-        private fillImage;
+        private fillTexture;
     }
     export {};
 }
 declare namespace fgui {
-    class Input extends PIXI.Text {
+    class TextField extends PIXI.Container {
+        private _textView;
+        private _halign;
+        private _valign;
+        private _width;
+        private _height;
+        constructor();
+        get style(): PIXI.TextStyle;
+        get view(): PIXI.Text;
+        set text(value: string);
+        get text(): string;
+        get align(): string;
+        set align(value: PIXI.TextStyleAlign);
+        get valign(): string;
+        set valign(value: string);
+        setSize(value: number | PIXI.Optional<PIXI.Size, "height">, height?: number): void;
+        private updateTextAlign;
+    }
+}
+declare namespace fgui {
+    class Input extends TextField {
         static TYPE_TEXT: string;
         /**
          * @en Password type for password input fields.

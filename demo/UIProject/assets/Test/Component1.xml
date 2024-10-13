@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="800,600">
   <displayList>
-    <image id="n5_vo8g" name="n5" src="vo8g6" fileName="images/long_dead2_png.png" xy="70,57" size="209,165" grayed="true" flip="both"/>
+    <text id="n9_vo8g" name="n9" xy="26,260" size="438,31" fontSize="22" color="#ccff00" text="The quick brown fox jump sover the lazy dog"/>
   </displayList>
 </component>

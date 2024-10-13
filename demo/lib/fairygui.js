@@ -7693,7 +7693,7 @@
             this._color = "#000000";
         }
         createDisplayObject() {
-            this._displayObject = new PIXI.Text();
+            this._displayObject = new fgui.TextField();
             this._displayObject.$owner = this;
             this._displayObject.style.padding = labelPadding[0];
             this._displayObject.eventMode = "none";
@@ -7706,7 +7706,7 @@
         }
         set text(value) {
             this._displayObject.text = value;
-            this.updateTextAlign();
+            //this._displayObject.updateTextAlign();
         }
         get text() {
             return this._displayObject.text;
@@ -7743,17 +7743,16 @@
             }
         }
         get align() {
-            return this._halign;
+            return this._displayObject.align;
         }
         set align(value) {
-            this._halign = value;
+            this._displayObject.align = value;
         }
         get valign() {
-            return this._valign;
+            return this._displayObject.valign;
         }
         set valign(value) {
-            this._valign = value;
-            console.log("dont support valign!!!");
+            this._displayObject.valign = value;
         }
         get leading() {
             return this._displayObject.style.leading;
@@ -7876,15 +7875,17 @@
         //pixi中设置Text的宽高会导致文本被缩放
         handleSizeChanged() {
             console.log("GTextField handleSizeChanged", this._width, this._height);
-            this.updateTextAlign();
+            // this._displayObject.updateTextAlign();
+            this._displayObject.setSize(this._width, this._height);
         }
-        updateTextAlign() {
-            if (!this._displayObject)
-                return;
+        /*private updateTextAlign(): void {
+            if (!this._displayObject) return;
+
             const align = this.align;
             const valign = this.valign;
             const textWidth = this._displayObject.width;
             const textHeight = this._displayObject.height;
+
             // Horizontal alignment
             switch (align) {
                 case 'left':
@@ -7897,6 +7898,7 @@
                     this.x = this._width - textWidth;
                     break;
             }
+
             // Vertical alignment
             switch (valign) {
                 case 'top':
@@ -7909,7 +7911,7 @@
                     this.y = this._height - textHeight;
                     break;
             }
-        }
+        }*/
         handleGrayedChanged() {
             super.handleGrayedChanged();
             if (this.grayed)
@@ -14400,7 +14402,7 @@
                 this.fillMask();
             }
             else {
-                this.fillImage();
+                this.fillTexture();
             }
         }
         get scaleByTile() {
@@ -14412,7 +14414,7 @@
         set color(value) {
             if (this._color != value) {
                 this._color = value;
-                this.fillImage();
+                this.fillTexture();
             }
         }
         get fillMethod() {
@@ -14439,7 +14441,7 @@
                         this._height = this._source.height;
                     }
                 }
-                this.fillImage();
+                this.fillTexture();
             }
         }
         set imgOption(options) {
@@ -14466,7 +14468,7 @@
             }
             let reNew = oldScaleByTile != this._scaleByTile || (oldScale9Grid == null && this._scale9Grid != null)
                 || (oldScale9Grid != null && this._scale9Grid == null);
-            this.fillImage(reNew);
+            this.fillTexture(reNew);
         }
         set maskOption(options) {
             if ("fillAmount" in options)
@@ -14505,7 +14507,7 @@
             graphic.poly(points).fill("#FFFFFF");
         }
         //TODO:某个属性改变导致重复创建对象的问题；显示类型发生变化的问题
-        fillImage(reNew = false) {
+        fillTexture(reNew = false) {
             var w = this._width;
             var h = this._height;
             var tex = this._source;
@@ -14566,7 +14568,81 @@
 })(fgui);
 
 (function (fgui) {
-    class Input extends PIXI.Text {
+    class TextField extends PIXI.Container {
+        constructor() {
+            super();
+            this._textView = new PIXI.Text();
+            this.addChild(this._textView);
+        }
+        get style() {
+            return this._textView.style;
+        }
+        get view() {
+            return this._textView;
+        }
+        set text(value) {
+            this._textView.text = value;
+            this.updateTextAlign();
+        }
+        get text() {
+            return this._textView.text;
+        }
+        get align() {
+            return this._halign;
+        }
+        set align(value) {
+            this._halign = value;
+        }
+        get valign() {
+            return this._valign;
+        }
+        set valign(value) {
+            this._valign = value;
+        }
+        setSize(value, height) {
+            // super.setSize(value, height);
+            this._width = value;
+            this._height = height;
+            this.updateTextAlign();
+        }
+        updateTextAlign() {
+            const align = this.align;
+            const valign = this.valign;
+            const textWidth = this._textView.width;
+            const textHeight = this._textView.height;
+            // Horizontal alignment
+            switch (align) {
+                case 'left':
+                    this._textView.x = 0;
+                    break;
+                case 'center':
+                    this._textView.x = (this._width - textWidth) / 2;
+                    break;
+                case 'right':
+                    this._textView.x = this._width - textWidth;
+                    break;
+            }
+            // Vertical alignment
+            switch (valign) {
+                case 'top':
+                    this._textView.y = 0;
+                    break;
+                case 'middle':
+                    this._textView.y = (this._height - textHeight) / 2;
+                    break;
+                case 'bottom':
+                    this._textView.y = this._height - textHeight;
+                    break;
+            }
+        }
+    }
+    fgui.TextField = TextField;
+})(fgui);
+/// <reference path="./TextField.ts" />
+
+/// <reference path="./TextField.ts" />
+(function (fgui) {
+    class Input extends fgui.TextField {
     }
     Input.TYPE_TEXT = "text";
     /**

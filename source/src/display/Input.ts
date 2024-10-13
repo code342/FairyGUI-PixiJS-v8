@@ -1,5 +1,6 @@
+/// <reference path="./TextField.ts" />
 namespace fgui {
-    export class Input extends PIXI.Text {
+    export class Input extends TextField {
         static TYPE_TEXT: string = "text";
         /**
          * @en Password type for password input fields.

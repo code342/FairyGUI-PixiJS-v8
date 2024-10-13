@@ -10,9 +10,7 @@ namespace fgui {
         private _ubbEnabled: boolean;
         private _strokeWidth: number;
         private _strokeColor: string;
-        declare _displayObject: PIXI.Text | Input;
-        private _halign:string;
-        private _valign:string;
+        declare _displayObject: TextField;
         constructor() {
             super();
 
@@ -21,7 +19,7 @@ namespace fgui {
         }
 
         protected createDisplayObject(): void {
-            this._displayObject = new PIXI.Text();
+            this._displayObject = new TextField();
             (this._displayObject as any).$owner = this;
             this._displayObject.style.padding = labelPadding[0];
             this._displayObject.eventMode = "none";
@@ -30,14 +28,14 @@ namespace fgui {
             //(<Text>this._displayObject)._onPostLayout = () => this.updateSize();
         }
 
-        public get displayObject(): PIXI.Text {
+        public get displayObject(): TextField {
             return this._displayObject;
         }
 
         public set text(value: string) {
 
             this._displayObject.text = value;
-            this.updateTextAlign();
+            //this._displayObject.updateTextAlign();
         }
 
         public get text(): string {
@@ -83,20 +81,19 @@ namespace fgui {
         }
 
         public get align(): string {
-            return this._halign;
+            return this._displayObject.align;
         }
 
         public set align(value: PIXI.TextStyleAlign) {
-            this._halign = value;
+            this._displayObject.align = value;
         }
 
         public get valign(): string {
-            return this._valign;
+            return this._displayObject.valign;
         }
 
         public set valign(value: string) {
-            this._valign = value;
-            console.log("dont support valign!!!");
+            this._displayObject.valign = value;
         }
 
         public get leading(): number {
@@ -245,10 +242,11 @@ namespace fgui {
         //pixi中设置Text的宽高会导致文本被缩放
         protected handleSizeChanged(): void {
             console.log("GTextField handleSizeChanged", this._width, this._height);
-            this.updateTextAlign();
+           // this._displayObject.updateTextAlign();
+            this._displayObject.setSize(this._width, this._height);
         }
 
-        private updateTextAlign(): void {
+        /*private updateTextAlign(): void {
             if (!this._displayObject) return;
 
             const align = this.align;
@@ -281,7 +279,7 @@ namespace fgui {
                     this.y = this._height - textHeight;
                     break;
             }
-        }
+        }*/
 
         protected handleGrayedChanged(): void {
             super.handleGrayedChanged();
