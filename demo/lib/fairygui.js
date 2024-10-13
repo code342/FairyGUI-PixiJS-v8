@@ -3644,6 +3644,7 @@
                 this.updateGraph();
         }
         updateGraph() {
+            console.log("updateGraph", this.name);
             this._displayObject.eventMode = this.touchable ? "static" : "none";
             var gr = this.graphics;
             gr.clear();
@@ -3681,37 +3682,30 @@
             else if (this._type == 4) {
                 let radius = Math.min(this._width, this._height) / 2;
                 let angle = PIXI.DEG_TO_RAD * this._startAngle;
-                let dist = this._distances[0];
-                let isRegular = true;
-                for (let i = 1; i < this._sides; i++) {
-                    if (this._distances[i] != dist) {
-                        isRegular = false;
-                        break;
-                    }
-                }
-                if (isRegular) { //正多边形，所有边一样长，角度一样大
-                    gr.regularPoly(0, 0, radius, this._sides, angle);
-                }
-                else {
-                    if (!this._polygonPoints)
-                        this._polygonPoints = [];
-                    this._polygonPoints.length = 0;
-                    var deltaAngle = 2 * Math.PI / this._sides;
-                    for (var i = 0; i < this._sides; i++) {
-                        if (this._distances) {
-                            dist = this._distances[i];
-                            if (isNaN(dist))
-                                dist = 1;
-                        }
-                        else
+                //let isRegular = false;//this._distances == null || this._distances.every(value => value === this._distances[0]);
+                ///if (isRegular) { //正多边形，所有边一样长，角度一样大
+                //    gr.regularPoly(w/2, h/2, radius, this._sides, angle);
+                //} else {
+                if (!this._polygonPoints)
+                    this._polygonPoints = [];
+                this._polygonPoints.length = 0;
+                var deltaAngle = 2 * Math.PI / this._sides;
+                let dist = 0;
+                for (var i = 0; i < this._sides; i++) {
+                    if (this._distances) {
+                        dist = this._distances[i];
+                        if (isNaN(dist))
                             dist = 1;
-                        var xv = radius + radius * dist * Math.cos(angle);
-                        var yv = radius + radius * dist * Math.sin(angle);
-                        this._polygonPoints.push(xv, yv);
-                        angle += deltaAngle;
                     }
-                    gr.poly(this._polygonPoints);
+                    else
+                        dist = 1;
+                    var xv = radius + radius * dist * Math.cos(angle);
+                    var yv = radius + radius * dist * Math.sin(angle);
+                    this._polygonPoints.push(xv, yv);
+                    angle += deltaAngle;
                 }
+                gr.poly(this._polygonPoints);
+                //}
             }
             if (this._fillColor.alpha > 0)
                 gr.fill(this._fillColor);
@@ -17769,16 +17763,8 @@
             return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
         }
         static setColorFilter(obj, color) {
-            if (obj.filters == null)
-                obj.filters = [];
-            let filters = obj.filters;
-            let colorFilter;
-            for (let filter of filters) {
-                if (filter instanceof PIXI.ColorMatrixFilter) {
-                    colorFilter = filter;
-                    break;
-                }
-            }
+            let filters = obj.filters ? obj.filters.slice() : [];
+            let colorFilter = filters.find(filter => filter instanceof PIXI.ColorMatrixFilter);
             if (colorFilter == null) {
                 colorFilter = new PIXI.ColorMatrixFilter();
                 filters.push(colorFilter);
@@ -17787,7 +17773,6 @@
             if (colorType == "boolean") {
                 //set gray
                 colorFilter.greyscale(0.3, true);
-                return;
             }
             else if (colorType == "string") {
                 //trans color string to color array
@@ -17806,6 +17791,7 @@
                 colorFilter.saturate(co[2]);
                 colorFilter.hue(co[3], false);
             }
+            obj.filters = filters;
         }
         static toHexColor(color) {
             if (color < 0 || isNaN(color))

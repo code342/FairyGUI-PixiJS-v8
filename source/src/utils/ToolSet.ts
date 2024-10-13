@@ -114,15 +114,8 @@ namespace fgui {
         }
 
         public static setColorFilter(obj: PIXI.Container, color?: string | number[] | boolean): void {
-            if (obj.filters == null) obj.filters = [];
-            let filters = obj.filters as unknown as PIXI.Filter[];
-            let colorFilter: PIXI.ColorMatrixFilter;
-            for (let filter of filters) {
-                if (filter instanceof PIXI.ColorMatrixFilter) {
-                    colorFilter = filter;
-                    break;
-                }
-            }
+            let filters = obj.filters ? (obj.filters as PIXI.Filter[]).slice() : [];
+            let colorFilter = filters.find(filter => filter instanceof PIXI.ColorMatrixFilter);
             if (colorFilter == null) {
                 colorFilter = new PIXI.ColorMatrixFilter();
                 filters.push(colorFilter);
@@ -132,7 +125,6 @@ namespace fgui {
             if (colorType == "boolean") {
                 //set gray
                 colorFilter.greyscale(0.3, true);
-                return;
             } else if (colorType == "string") {
                 //trans color string to color array
                 let colorArray = new PIXI.Color(color as string).toArray();
@@ -149,6 +141,7 @@ namespace fgui {
                 colorFilter.saturate(co[2]);
                 colorFilter.hue(co[3], false);
             }
+            obj.filters = filters;
         }
 
         static toHexColor(color: number): string {

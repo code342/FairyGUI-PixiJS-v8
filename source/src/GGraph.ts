@@ -110,6 +110,7 @@ namespace fgui {
         }
 
         private updateGraph(): void {
+            console.log("updateGraph",this.name);
             this._displayObject.eventMode = this.touchable ? "static" : "none";
             var gr: PIXI.Graphics = this.graphics;
             gr.clear();
@@ -146,21 +147,16 @@ namespace fgui {
             else if (this._type == 4) {
                 let radius: number = Math.min(this._width, this._height) / 2;
                 let angle = PIXI.DEG_TO_RAD * this._startAngle;
-                let dist = this._distances[0];
-                let isRegular = true;
-                for (let i: number = 1; i < this._sides; i++) {
-                    if (this._distances[i] != dist) {
-                        isRegular = false;
-                        break;
-                    }
-                }
-                if (isRegular) { //正多边形，所有边一样长，角度一样大
-                    gr.regularPoly(0, 0, radius, this._sides, angle);
-                } else {
+                //let isRegular = false;//this._distances == null || this._distances.every(value => value === this._distances[0]);
+
+                ///if (isRegular) { //正多边形，所有边一样长，角度一样大
+                //    gr.regularPoly(w/2, h/2, radius, this._sides, angle);
+                //} else {
                     if (!this._polygonPoints)
                         this._polygonPoints = [];
                     this._polygonPoints.length = 0;
                     var deltaAngle: number = 2 * Math.PI / this._sides;
+                    let dist: number = 0;
                     for (var i: number = 0; i < this._sides; i++) {
                         if (this._distances) {
                             dist = this._distances[i];
@@ -177,7 +173,7 @@ namespace fgui {
                         angle += deltaAngle;
                     }
                     gr.poly(this._polygonPoints);
-                }
+                //}
             }
             if (this._fillColor.alpha > 0)
                 gr.fill(this._fillColor);
