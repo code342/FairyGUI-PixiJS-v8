@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="800,600">
   <displayList>
-    <component id="n4_f0u6" name="n4" src="f0u62" fileName="Button.xml" xy="179,241" size="141,39">
-      <Button title="点击测试"/>
-    </component>
+    <image id="n5_vo8g" name="n5" src="vo8g6" fileName="images/long_dead2_png.png" xy="70,57" size="209,165" grayed="true" flip="both"/>
   </displayList>
 </component>

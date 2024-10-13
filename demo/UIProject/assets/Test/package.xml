@@ -7,6 +7,7 @@
     <image id="f0u63" name="b7_png.png" path="/" scale="9grid" scale9grid="8,7,66,14"/>
     <image id="f0u64" name="b5_png.png" path="/" scale="9grid" scale9grid="12,7,61,14"/>
     <image id="f0u65" name="b6_png.png" path="/" scale="9grid" scale9grid="9,5,66,16"/>
+    <image id="vo8g6" name="long_dead2_png.png" path="/images/" scale="tile"/>
   </resources>
   <publish name=""/>
 </packageDescription>

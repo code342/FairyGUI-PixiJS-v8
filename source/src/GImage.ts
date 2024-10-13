@@ -27,43 +27,31 @@ namespace fgui {
             return this._flip;
         }
 
+        //TODO:如果是ScaleByTile，则需要在Image的TilingSprite做flip
         public set flip(value: number) {
             if (this._flip != value) {
                 this._flip = value;
-
-                var sx: number = 1, sy: number = 1;
-                if (this._flip == FlipType.Horizontal || this._flip == FlipType.Both)
-                    sx = -1;
-                if (this._flip == FlipType.Vertical || this._flip == FlipType.Both)
-                    sy = -1;
-                this.setScale(sx, sy);
+                let scale = this.getScaleByFlip(value);
+                this.setScale(scale.x, scale.y);
                 this.handleXYChanged();
             }
+        }
+
+        private getScaleByFlip(flip:number): { x: number, y: number } {
+            var sx: number = 1, sy: number = 1;
+            if (flip == FlipType.Horizontal || flip == FlipType.Both) sx = -1;
+            if (flip == FlipType.Vertical || flip == FlipType.Both) sy = -1;
+            return { x: sx, y: sy };
+        }
+
+        protected override handleScaleChanged(): void {
+            if(this.image.scaleByTile) return;
+            super.handleScaleChanged();
         }
 
         public get fillMethod(): number {
             return this._image.fillMethod;
         }
-
-        /*public set fillMethod(value: number) {
-            this._image.fillMethod = value;
-        }
-    
-        public get fillOrigin(): number {
-            return this._image.fillOrigin;
-        }
-    
-        public set fillOrigin(value: number) {
-            this._image.fillOrigin = value;
-        }
-    
-        public get fillClockwise(): boolean {
-            return this._image.fillClockwise;
-        }
-    
-        public set fillClockwise(value: boolean) {
-            this._image.fillClockwise = value;
-        }*/
 
         public get fillAmount(): number {
             return this._image.fillAmount;
@@ -80,6 +68,7 @@ namespace fgui {
         }
 
         public constructFromResource(): void {
+            console.log("GImage constructFromResource", this.name);
             this._contentItem = this.packageItem.getBranch();
 
             this.sourceWidth = this._contentItem.width;
@@ -90,12 +79,6 @@ namespace fgui {
             this._contentItem = this._contentItem.getHighResolution();
             this._contentItem.load();
 
-            this._image.imgOption = {
-                scale9Grid: this._contentItem.scale9Grid,
-                scaleByTile: this._contentItem.scaleByTile,
-                tileGridIndice: this._contentItem.tileGridIndice,
-                texture: this._contentItem.texture
-            }
 
             this.setSize(this.sourceWidth, this.sourceHeight);
         }
@@ -103,11 +86,13 @@ namespace fgui {
         protected handleXYChanged(): void {
             super.handleXYChanged();
 
-            if (this._flip != FlipType.None) {
-                if (this.scaleX == -1)
+            if(!this._image.scaleByTile){
+                if (this._flip != FlipType.None) {
+                    if (this.scaleX == -1)
                     this._image.x += this.width;
                 if (this.scaleY == -1)
                     this._image.y += this.height;
+                }
             }
         }
 
@@ -126,20 +111,32 @@ namespace fgui {
         }
 
         public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
+            console.log("GImage setup_beforeAdd", this.name);
             super.setup_beforeAdd(buffer, beginPos);
 
             buffer.seek(beginPos, 5);
 
             if (buffer.readBool())
                 this.color = buffer.readColorS();
-            this.flip = buffer.readByte();
+            let flip = buffer.readByte();
             let fillMethod = buffer.readByte();
             if (fillMethod != 0) {
                 let fillOrigin = buffer.readByte();
                 let fillClockwise = buffer.readBool();
                 let fillAmount = buffer.readFloat32();
                 this._image.maskOption = { fillMethod: fillMethod, fillOrigin: fillOrigin, fillClockwise: fillClockwise, fillAmount: fillAmount }
+            }else{
+                let scaleByTile = this._contentItem.scaleByTile;
+                let tileScale = this.getScaleByFlip(flip);
+                this._image.imgOption = {
+                    scale9Grid: this._contentItem.scale9Grid,
+                    scaleByTile: scaleByTile,
+                    tileGridIndice: this._contentItem.tileGridIndice,
+                    texture: this._contentItem.texture,
+                    tileScale: tileScale
+                }
             }
+            this.flip = flip;
         }
     }
 }

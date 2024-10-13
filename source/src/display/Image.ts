@@ -13,12 +13,14 @@ namespace fgui {
         scaleByTile?: boolean;
         tileGridIndice?: number;
         color?: string;
+        tileScale?: { x: number, y: number };
     }
 
     export class Image extends PIXI.Container {
         protected _source: PIXI.Texture;
         protected _scaleByTile?: boolean;
         protected _scale9Grid?: PIXI.Rectangle;
+        protected _tileScale?: { x: number, y: number };
         //画九宫格的时候是否重复填充（0：不重复填充，1：重复填充）。
         private _tileGridIndice: number = 0;
         private _color: string;
@@ -62,6 +64,10 @@ namespace fgui {
             }else{
                 this.fillImage();
             }
+        }
+
+        public get scaleByTile(): boolean {
+            return this._scaleByTile;
         }
 
         public get color(): string {
@@ -115,6 +121,7 @@ namespace fgui {
             if ("scaleByTile" in options) this._scaleByTile = options.scaleByTile
             if ("tileGridIndice" in options) this._tileGridIndice = options.tileGridIndice
             if ("color" in options) this._color = options.color;
+            if ("tileScale" in options) this._tileScale = options.tileScale;
             if ("texture" in options) {
                 this._source = options.texture;
                 if (this._source){
@@ -186,7 +193,7 @@ namespace fgui {
 
             if (this._scaleByTile) {
                 if (this._view == null || reNew) {
-                    this._view = new PIXI.TilingSprite({ texture: tex, width: w, height: h, tilePosition: { x: 0, y: 0 } });
+                    this._view = new PIXI.TilingSprite({tileScale: this._tileScale, texture: tex, width: w, height: h, tilePosition: { x: 0, y: 0 } });
                 }
                 else { //just update
                     this._view.texture = tex;

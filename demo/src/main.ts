@@ -14,7 +14,4 @@ let demo = new DemoEntry();
     fgui.GRoot.inst.addChild(view);
    // view.getChild("n3").asTextField.text = "Pixi.js 中文测试";
 });*/
-/*PIXI.Assets.load("resources/1.png").then((texture)=>{
-    let sprite = new PIXI.Sprite(texture);
-    app.stage.addChild(sprite);
-});*/
+

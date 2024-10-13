@@ -4201,40 +4201,31 @@
         get flip() {
             return this._flip;
         }
+        //TODO:如果是ScaleByTile，则需要在Image的TilingSprite做flip
         set flip(value) {
             if (this._flip != value) {
                 this._flip = value;
-                var sx = 1, sy = 1;
-                if (this._flip == fgui.FlipType.Horizontal || this._flip == fgui.FlipType.Both)
-                    sx = -1;
-                if (this._flip == fgui.FlipType.Vertical || this._flip == fgui.FlipType.Both)
-                    sy = -1;
-                this.setScale(sx, sy);
+                let scale = this.getScaleByFlip(value);
+                this.setScale(scale.x, scale.y);
                 this.handleXYChanged();
             }
+        }
+        getScaleByFlip(flip) {
+            var sx = 1, sy = 1;
+            if (flip == fgui.FlipType.Horizontal || flip == fgui.FlipType.Both)
+                sx = -1;
+            if (flip == fgui.FlipType.Vertical || flip == fgui.FlipType.Both)
+                sy = -1;
+            return { x: sx, y: sy };
+        }
+        handleScaleChanged() {
+            if (this.image.scaleByTile)
+                return;
+            super.handleScaleChanged();
         }
         get fillMethod() {
             return this._image.fillMethod;
         }
-        /*public set fillMethod(value: number) {
-            this._image.fillMethod = value;
-        }
-    
-        public get fillOrigin(): number {
-            return this._image.fillOrigin;
-        }
-    
-        public set fillOrigin(value: number) {
-            this._image.fillOrigin = value;
-        }
-    
-        public get fillClockwise(): boolean {
-            return this._image.fillClockwise;
-        }
-    
-        public set fillClockwise(value: boolean) {
-            this._image.fillClockwise = value;
-        }*/
         get fillAmount() {
             return this._image.fillAmount;
         }
@@ -4247,6 +4238,7 @@
             this._displayObject.$owner = this;
         }
         constructFromResource() {
+            console.log("GImage constructFromResource", this.name);
             this._contentItem = this.packageItem.getBranch();
             this.sourceWidth = this._contentItem.width;
             this.sourceHeight = this._contentItem.height;
@@ -4254,21 +4246,17 @@
             this.initHeight = this.sourceHeight;
             this._contentItem = this._contentItem.getHighResolution();
             this._contentItem.load();
-            this._image.imgOption = {
-                scale9Grid: this._contentItem.scale9Grid,
-                scaleByTile: this._contentItem.scaleByTile,
-                tileGridIndice: this._contentItem.tileGridIndice,
-                texture: this._contentItem.texture
-            };
             this.setSize(this.sourceWidth, this.sourceHeight);
         }
         handleXYChanged() {
             super.handleXYChanged();
-            if (this._flip != fgui.FlipType.None) {
-                if (this.scaleX == -1)
-                    this._image.x += this.width;
-                if (this.scaleY == -1)
-                    this._image.y += this.height;
+            if (!this._image.scaleByTile) {
+                if (this._flip != fgui.FlipType.None) {
+                    if (this.scaleX == -1)
+                        this._image.x += this.width;
+                    if (this.scaleY == -1)
+                        this._image.y += this.height;
+                }
             }
         }
         getProp(index) {
@@ -4284,11 +4272,12 @@
                 super.setProp(index, value);
         }
         setup_beforeAdd(buffer, beginPos) {
+            console.log("GImage setup_beforeAdd", this.name);
             super.setup_beforeAdd(buffer, beginPos);
             buffer.seek(beginPos, 5);
             if (buffer.readBool())
                 this.color = buffer.readColorS();
-            this.flip = buffer.readByte();
+            let flip = buffer.readByte();
             let fillMethod = buffer.readByte();
             if (fillMethod != 0) {
                 let fillOrigin = buffer.readByte();
@@ -4296,6 +4285,18 @@
                 let fillAmount = buffer.readFloat32();
                 this._image.maskOption = { fillMethod: fillMethod, fillOrigin: fillOrigin, fillClockwise: fillClockwise, fillAmount: fillAmount };
             }
+            else {
+                let scaleByTile = this._contentItem.scaleByTile;
+                let tileScale = this.getScaleByFlip(flip);
+                this._image.imgOption = {
+                    scale9Grid: this._contentItem.scale9Grid,
+                    scaleByTile: scaleByTile,
+                    tileGridIndice: this._contentItem.tileGridIndice,
+                    texture: this._contentItem.texture,
+                    tileScale: tileScale
+                };
+            }
+            this.flip = flip;
         }
     }
     fgui.GImage = GImage;
@@ -14402,6 +14403,9 @@
                 this.fillImage();
             }
         }
+        get scaleByTile() {
+            return this._scaleByTile;
+        }
         get color() {
             return this._color;
         }
@@ -14449,6 +14453,8 @@
                 this._tileGridIndice = options.tileGridIndice;
             if ("color" in options)
                 this._color = options.color;
+            if ("tileScale" in options)
+                this._tileScale = options.tileScale;
             if ("texture" in options) {
                 this._source = options.texture;
                 if (this._source) {
@@ -14510,7 +14516,7 @@
             }
             if (this._scaleByTile) {
                 if (this._view == null || reNew) {
-                    this._view = new PIXI.TilingSprite({ texture: tex, width: w, height: h, tilePosition: { x: 0, y: 0 } });
+                    this._view = new PIXI.TilingSprite({ tileScale: this._tileScale, texture: tex, width: w, height: h, tilePosition: { x: 0, y: 0 } });
                 }
                 else { //just update
                     this._view.texture = tex;

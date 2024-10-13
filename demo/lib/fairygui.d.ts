@@ -832,6 +832,8 @@ declare namespace fgui {
         set color(value: string);
         get flip(): number;
         set flip(value: number);
+        private getScaleByFlip;
+        protected handleScaleChanged(): void;
         get fillMethod(): number;
         get fillAmount(): number;
         set fillAmount(value: number);
@@ -2053,11 +2055,19 @@ declare namespace fgui {
         scaleByTile?: boolean;
         tileGridIndice?: number;
         color?: string;
+        tileScale?: {
+            x: number;
+            y: number;
+        };
     }
     export class Image extends PIXI.Container {
         protected _source: PIXI.Texture;
         protected _scaleByTile?: boolean;
         protected _scale9Grid?: PIXI.Rectangle;
+        protected _tileScale?: {
+            x: number;
+            y: number;
+        };
         private _tileGridIndice;
         private _color;
         private _fillMethod;
@@ -2071,6 +2081,7 @@ declare namespace fgui {
         set width(value: number);
         set height(value: number);
         setSize(value: number | PIXI.Optional<PIXI.Size, "height">, height?: number): void;
+        get scaleByTile(): boolean;
         get color(): string;
         set color(value: string);
         get fillMethod(): number;
