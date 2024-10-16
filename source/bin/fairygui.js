@@ -1427,7 +1427,7 @@
             this._displayObject.position.set(xv + this._pivotOffsetX, yv + this._pivotOffsetY);
         }
         handleSizeChanged() {
-            console.log("handleSizeChanged", this._width, this._height, this.constructor.name, this._displayObject.constructor.name, new Error().stack);
+            console.log("handleSizeChanged", this._width, this._height, this.constructor.name, this._displayObject.constructor.name);
             this._displayObject.setSize(this._width, this._height);
         }
         handleScaleChanged() {
@@ -8386,6 +8386,12 @@
             this._dragOffset = new PIXI.Point();
             this._scrollPerc = 0;
         }
+        //TODO:不更新displayobject的size，避免叠加
+        handleSizeChanged() {
+            console.log("GSrollBar");
+            if (this._displayObject.hitArea)
+                this.updateHitArea();
+        }
         setScrollPane(target, vertical) {
             this._target = target;
             this._vertical = vertical;
@@ -14952,17 +14958,23 @@
                 this.texture = null;
         }
         checkTimer() {
-            if (this._playing && this._frameCount > 0 && this.parentRenderGroup != null)
-                fgui.Timer.shared.frameLoop(1, this, this.update);
+            if (this._playing && this._frameCount > 0)
+                this.play();
             else
-                fgui.Timer.shared.clear(this, this.update);
+                this.stop();
         }
         __addToStage() {
-            if (this._playing && this._frameCount > 0)
-                fgui.Timer.shared.frameLoop(1, this, this.update);
+            if (this._playing && this._frameCount > 0 && this.parentRenderGroup != null)
+                this.play();
+        }
+        play() {
+            fgui.Timer.shared.frameLoop(1, this, this.update);
+        }
+        stop() {
+            fgui.Timer.shared.clear(this, this.update);
         }
         __removeFromStage() {
-            fgui.Timer.shared.clear(this, this.update);
+            this.stop();
         }
     }
     fgui.MovieClip = MovieClip;
@@ -17331,6 +17343,7 @@
     fgui.MouseEvents = MouseEvents;
     class Events {
     }
+    //PIXI.Container被添加到父容器上就触发，不是Stage。可以通过parentRenderGroup检测是否在Stage上
     Events.DISPLAY = "added";
     Events.UNDISPLAY = "removed";
     Events.DRAG_START = 'fui_drag_start';

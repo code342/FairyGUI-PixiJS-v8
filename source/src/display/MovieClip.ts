@@ -281,19 +281,27 @@ namespace fgui {
         }
 
         private checkTimer(): void {
-            if (this._playing && this._frameCount > 0 && this.parentRenderGroup != null)
-                Timer.shared.frameLoop(1, this, this.update);
+            if (this._playing && this._frameCount > 0)
+                this.play();
             else
-                Timer.shared.clear(this, this.update);
+                this.stop();
         }
 
         private __addToStage(): void {
-            if (this._playing && this._frameCount > 0)
-                Timer.shared.frameLoop(1, this, this.update);
+            if (this._playing && this._frameCount > 0 && this.parentRenderGroup != null)
+                this.play();
+        }
+
+        private play(){
+            Timer.shared.frameLoop(1, this, this.update);
+        }
+
+        private stop(){
+            Timer.shared.clear(this, this.update);
         }
 
         private __removeFromStage(): void {
-            Timer.shared.clear(this, this.update);
+            this.stop();
         }
     }
 }

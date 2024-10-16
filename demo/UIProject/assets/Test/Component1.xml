@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="800,600">
   <displayList>
-    <text id="n9_vo8g" name="n9" xy="26,260" size="438,31" fontSize="22" color="#ccff00" text="The quick brown fox jump sover the lazy dog"/>
+    <list id="n11_bvlk" name="n11" xy="99,170" size="571,126" layout="row" overflow="scroll" scroll="horizontal" scrollBarRes=",ui://nt10uk1fbvlkd" clipSoftness="0,20" lineGap="6" colGap="6" defaultItem="ui://nt10uk1fbvlk8">
+      <item title="100" icon="ui://nt10uk1fbvlkc"/>
+      <item title="1" icon="ui://nt10uk1fbvlkc"/>
+      <item title="2" icon="ui://nt10uk1fbvlkc"/>
+      <item title="99" icon="ui://nt10uk1fbvlkc"/>
+      <item title="4" icon="ui://nt10uk1fbvlkc"/>
+      <item title="5" icon="ui://nt10uk1fbvlkc"/>
+    </list>
   </displayList>
 </component>

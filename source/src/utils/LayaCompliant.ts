@@ -25,7 +25,8 @@ namespace fgui {
     }
 
     export class Events {
-        public static DISPLAY = "added";
+        //PIXI.Container被添加到父容器上就触发，不是Stage。可以通过parentRenderGroup检测是否在Stage上
+        public static DISPLAY = "added";       
         public static UNDISPLAY = "removed";
 
         public static DRAG_START = 'fui_drag_start';

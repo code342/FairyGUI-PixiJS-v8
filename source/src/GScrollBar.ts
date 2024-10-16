@@ -20,6 +20,13 @@ namespace fgui {
             this._scrollPerc = 0;
         }
 
+        //TODO:不更新displayobject的size，避免叠加
+        protected override handleSizeChanged(): void {
+            console.log("GSrollBar")
+            if (this._displayObject.hitArea)
+                this.updateHitArea();
+        }
+
         public setScrollPane(target: ScrollPane, vertical: boolean): void {
             this._target = target;
             this._vertical = vertical;

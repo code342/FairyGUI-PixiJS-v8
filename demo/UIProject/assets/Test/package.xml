@@ -8,6 +8,28 @@
     <image id="f0u64" name="b5_png.png" path="/" scale="9grid" scale9grid="12,7,61,14"/>
     <image id="f0u65" name="b6_png.png" path="/" scale="9grid" scale9grid="9,5,66,16"/>
     <image id="vo8g6" name="long_dead2_png.png" path="/images/" scale="tile"/>
+    <movieclip id="bvlk7" name="pet.jta" path="/images/"/>
+    <component id="bvlk8" name="BagGridSub.xml" path="/components/"/>
+    <image id="bvlk9" name="k0.png" path="/images/"/>
+    <image id="bvlka" name="k2.png" path="/images/"/>
+    <image id="bvlkb" name="k1.png" path="/images/" scale="9grid" scale9grid="17,16,74,73"/>
+    <image id="bvlkc" name="k19.png" path="/images/"/>
+    <component id="bvlkd" name="ScrollBar_HZ.xml" path="/" exported="true"/>
+    <image id="bvlke" name="s10.png.jpg" path="/" duplicatePadding="true"/>
+    <component id="bvlkf" name="ScrollUpButton.xml" path="/"/>
+    <image id="bvlkg" name="s6.png.jpg" path="/" duplicatePadding="true"/>
+    <image id="bvlkh" name="s4.png.jpg" path="/" duplicatePadding="true"/>
+    <image id="bvlki" name="s5.png.jpg" path="/" duplicatePadding="true"/>
+    <component id="bvlkj" name="ScrollDownButton.xml" path="/"/>
+    <image id="bvlkk" name="s9.png.jpg" path="/" duplicatePadding="true"/>
+    <image id="bvlkl" name="s7.png.jpg" path="/" duplicatePadding="true"/>
+    <image id="bvlkm" name="s8.png.jpg" path="/" duplicatePadding="true"/>
+    <component id="bvlkn" name="GripButton_HZ.xml" path="/"/>
+    <image id="bvlko" name="s1.png.jpg" path="/" duplicatePadding="true"/>
+    <image id="bvlkp" name="s2.png.jpg" path="/" duplicatePadding="true"/>
+    <image id="bvlkq" name="s3.png.jpg" path="/" duplicatePadding="true"/>
+    <component id="bvlkr" name="ScrollBar_VT.xml" path="/" exported="true"/>
+    <component id="bvlks" name="GripButton_VT.xml" path="/"/>
   </resources>
   <publish name=""/>
 </packageDescription>

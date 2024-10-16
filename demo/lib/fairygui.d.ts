@@ -1323,6 +1323,7 @@ declare namespace fgui {
         private _dragOffset;
         private _gripDragging;
         constructor();
+        protected handleSizeChanged(): void;
         setScrollPane(target: ScrollPane, vertical: boolean): void;
         setDisplayPerc(value: number): void;
         setScrollPerc(val: number): void;
@@ -2230,6 +2231,8 @@ declare namespace fgui {
         private drawFrame;
         private checkTimer;
         private __addToStage;
+        private play;
+        private stop;
         private __removeFromStage;
     }
 }

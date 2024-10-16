@@ -927,7 +927,7 @@ namespace fgui {
         }
 
         protected handleSizeChanged(): void {
-            console.log("handleSizeChanged", this._width, this._height, this.constructor.name, this._displayObject.constructor.name, new Error().stack);
+            console.log("handleSizeChanged", this._width, this._height, this.constructor.name, this._displayObject.constructor.name);
             this._displayObject.setSize(this._width, this._height);
         }
 
