@@ -102,7 +102,7 @@ namespace fgui {
 
                 if (newValue != this._value) {
                     this._value = newValue;
-                    this.emit(Events.STATE_CHANGED, evt)
+                    this.emitProxy(Events.STATE_CHANGED, evt)
                 }
             }
 

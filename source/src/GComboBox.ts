@@ -426,7 +426,7 @@ namespace fgui {
 
             this._selectedIndex = -1;
             this.selectedIndex = index;
-            this.emit(Events.STATE_CHANGED, evt)
+            this.emitProxy(Events.STATE_CHANGED, evt)
         }
 
         private __rollover(): void {

@@ -215,7 +215,7 @@ export class BasicDemo {
         fgui.DragDropManager.inst.startDrag(btn, btn.icon, btn.icon);
     }
 
-    private __onDrop(data: any, evt: PIXI.FederatedEvent): void {
+    private __onDrop(evt: PIXI.FederatedEvent, data:any): void {
         var btn: fgui.GButton = <fgui.GButton>fgui.GObject.cast(evt.currentTarget);
         btn.icon = data;
     }
@@ -312,6 +312,8 @@ export class BasicDemo {
 
     private __playProgress(): void {
         var obj: fgui.GComponent = this._demoObjects["ProgressBar"];
+        if(obj.displayObject.parentRenderGroup == null)
+            this.__removeTimer();
         var cnt: number = obj.numChildren;
         for (var i: number = 0; i < cnt; i++) {
             var child: fgui.GProgressBar = obj.getChildAt(i) as fgui.GProgressBar;

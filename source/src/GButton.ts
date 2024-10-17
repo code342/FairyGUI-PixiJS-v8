@@ -525,13 +525,13 @@ namespace fgui {
             if (this._mode == ButtonMode.Check) {
                 if (this._changeStateOnClick) {
                     this.selected = !this._selected;
-                    this.emit(Events.STATE_CHANGED, evt)
+                    this.emitProxy(Events.STATE_CHANGED, evt)
                 }
             }
             else if (this._mode == ButtonMode.Radio) {
                 if (this._changeStateOnClick && !this._selected) {
                     this.selected = true;
-                    this.emit(Events.STATE_CHANGED, evt)
+                    this.emitProxy(Events.STATE_CHANGED, evt)
                 }
             }
             else {

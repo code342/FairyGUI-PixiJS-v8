@@ -66,7 +66,7 @@ namespace fgui {
             while (obj) {
                 if (obj.hasListener(Events.DROP)) {
                     obj.requestFocus();
-                    obj.emit(Events.DROP, [sourceData, evt]);
+                    obj.emitProxy(Events.DROP, evt, sourceData);
                     return;
                 }
 

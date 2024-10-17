@@ -932,7 +932,7 @@ namespace fgui {
 
             this.refresh2();
 
-            this._owner.emit(Events.SCROLL);
+            this._owner.emitProxy(Events.SCROLL);
             if (this._needRefresh) //在onScroll事件里开发者可能修改位置，这里再刷新一次，避免闪烁
             {
                 this._needRefresh = false;
@@ -1188,7 +1188,7 @@ namespace fgui {
             if (this._pageMode)
                 this.updatePageController();
 
-            this._owner.emit(Events.SCROLL);
+            this._owner.emitProxy(Events.SCROLL);
         }
 
         private __mouseUp(): void {
@@ -1237,12 +1237,12 @@ namespace fgui {
                 this._tweenChange.set(sEndPos.x - this._tweenStart.x, sEndPos.y - this._tweenStart.y);
                 if (this._tweenChange.x < -UIConfig.touchDragSensitivity || this._tweenChange.y < -UIConfig.touchDragSensitivity) {
                     this._refreshEventDispatching = true;
-                    this._owner.emit(Events.PULL_DOWN_RELEASE);
+                    this._owner.emitProxy(Events.PULL_DOWN_RELEASE);
                     this._refreshEventDispatching = false;
                 }
                 else if (this._tweenChange.x > UIConfig.touchDragSensitivity || this._tweenChange.y > UIConfig.touchDragSensitivity) {
                     this._refreshEventDispatching = true;
-                    this._owner.emit(Events.PULL_UP_RELEASE);
+                    this._owner.emitProxy(Events.PULL_UP_RELEASE);
                     this._refreshEventDispatching = false;
                 }
 
@@ -1622,7 +1622,7 @@ namespace fgui {
             if (this._tweening == 1) //取消类型为1的tween需立刻设置到终点
             {
                 this._container.position.set(this._tweenStart.x + this._tweenChange.x, this._tweenStart.y + this._tweenChange.y);
-                this._owner.emit(Events.SCROLL);
+                this._owner.emitProxy(Events.SCROLL);
             }
 
             this._tweening = 0;
@@ -1630,7 +1630,7 @@ namespace fgui {
 
             this.updateScrollBarVisible();
 
-            this._owner.emit(Events.SCROLL_END);
+            this._owner.emitProxy(Events.SCROLL_END);
         }
 
         private checkRefreshBar(): void {
@@ -1706,14 +1706,14 @@ namespace fgui {
                 this.updateScrollBarPos();
                 this.updateScrollBarVisible();
 
-                this._owner.emit(Events.SCROLL);
+                this._owner.emitProxy(Events.SCROLL);
 
-                this._owner.emit(Events.SCROLL_END);
+                this._owner.emitProxy(Events.SCROLL_END);
 
             }
             else {
                 this.updateScrollBarPos();
-                this._owner.emit(Events.SCROLL);
+                this._owner.emitProxy(Events.SCROLL);
             }
         }
 

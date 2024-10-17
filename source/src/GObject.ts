@@ -1105,7 +1105,7 @@ namespace fgui {
                 tmp.stopDrag();
                 GObject.draggingObject = null;
 
-                tmp.emit(Events.DRAG_END, { touchId: touchID });
+                tmp.emitProxy(Events.DRAG_END);
             }
 
             sGlobalDragStart.copyFrom(GRoot.inst.mousePosition);
@@ -1142,6 +1142,15 @@ namespace fgui {
             GRoot.inst.stage.on(MouseEvents.Up, this.__end, this);
         }
 
+        public emitProxy(type:string, evt?:PIXI.FederatedEvent, data?:any){
+            let e = new PIXI.FederatedPointerEvent(null);
+            e.currentTarget = this._displayObject;
+            e.target = evt ? (evt.target || this._displayObject) : this._displayObject;
+            e.type = type;
+           // e.nativeEvent = evt;
+            this.emit(type, e, data);
+        }
+
         private __moving(evt: PIXI.FederatedPointerEvent): void {
             if (GObject.draggingObject != this && this._draggable && this._dragTesting) {
                 var sensitivity: number = UIConfig.touchDragSensitivity;
@@ -1154,7 +1163,8 @@ namespace fgui {
                 this._dragTesting = false;
 
                 sDraggingQuery = true;
-                this.emit(Events.DRAG_START, evt)
+
+                this.emitProxy(Events.DRAG_START, evt)
                 if (sDraggingQuery)
                     this.dragBegin();
             }
@@ -1189,7 +1199,7 @@ namespace fgui {
                 this.setXY(Math.round(pt.x), Math.round(pt.y));
                 sUpdateInDragging = false;
 
-                this.emit(Events.DRAG_MOVE, evt);
+                this.emitProxy(Events.DRAG_MOVE, evt);
             }
         }
 
@@ -1198,7 +1208,7 @@ namespace fgui {
                 GObject.draggingObject = null;
                 this.reset();
 
-                this.emit(Events.DRAG_END, evt);
+                this.emitProxy(Events.DRAG_END, evt);
             }
             else if (this._dragTesting) {
                 this._dragTesting = false;

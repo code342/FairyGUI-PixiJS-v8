@@ -185,7 +185,7 @@ namespace fgui {
             var h: number = this._height;
             var tex: PIXI.Texture = this._source;
 
-            if (this._view) this._view.removeFromParent();
+           // if (this._view) this._view.removeFromParent();
 
             if (tex == null || w == 0 || h == 0) {
                 return;
@@ -193,7 +193,9 @@ namespace fgui {
 
             if (this._scaleByTile) {
                 if (this._view == null || reNew) {
+                    this._view?.removeFromParent();
                     this._view = new PIXI.TilingSprite({tileScale: this._tileScale, texture: tex, width: w, height: h, tilePosition: { x: 0, y: 0 } });
+                    this.addChild(this._view);
                 }
                 else { //just update
                     this._view.texture = tex;
@@ -213,7 +215,9 @@ namespace fgui {
                     texture: tex, tint: this._color, x: 0, y: 0, width: w, height: h
                 };
                 if (this._view == null || reNew) {
+                    this._view?.removeFromParent();
                     this._view = new PIXI.NineSliceSprite(opt)
+                    this.addChild(this._view);
                 } else {
                     let view = <PIXI.NineSliceSprite>this._view;
                     view.texture = tex;
@@ -227,14 +231,15 @@ namespace fgui {
             }
             else {
                 if (this._view == null || reNew) {
+                    this._view?.removeFromParent();
                     this._view = new PIXI.Sprite({ texture: tex, x: 0, y: 0, width: w, height: h, tint: this._color });
+                    this.addChild(this._view);
                 } else {
                     this._view.tint = this._color;
                     this._view.texture = tex;
                     this._view.setSize(w, h);
                 }
             }
-            this.addChild(this._view);
         }
     }
 }
